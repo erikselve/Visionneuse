@@ -1,0 +1,24 @@
+.conteneurIm img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    /* border-top-left-radius: 8px;
+    border-top-right-radius: 8px; */
+}
+
+.conteneurImage {
+    display: flex;
+    flex-direction:  row;
+}
+
+.conteneurComplet .image {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+.conteneurComplet .image img {
+    width: max-content;
+    height: max-content;
+    max-width: 100%;
+}

@@ -1,0 +1,27 @@
+.princ {
+    display: flex;
+    justify-content: space-around;
+}
+
+.action {
+    width: 100%;
+}
+
+.panneau {
+    width: 48vw;
+    float: left;
+}
+
+.panneau img {
+    width: 100%;
+    height: auto;
+}
+
+.panneau video {
+    width: 100%;
+    height: auto;  
+}
+
+.panneau .info {
+    position: relative;
+}

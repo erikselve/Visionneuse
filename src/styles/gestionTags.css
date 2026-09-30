@@ -1,0 +1,45 @@
+.gestionTags .tag {
+    border-width: 1px;
+    border-color: black;
+    border-radius: 10px;
+    border-style: solid;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+}
+
+/* .gestionTags .icone {
+    width: 30px;
+    height: 30px;
+}
+
+.gestionTags .clicable:hover {
+    cursor: pointer;
+} */
+
+.gestionTags .listeTags {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.gestionTags .case {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.gestionTags .menu {
+    margin-bottom: 20px;
+}
+
+.gestionTags .menu span {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.gestionTags .selec {
+    background-color: darkgray;
+}

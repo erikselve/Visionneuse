@@ -1,0 +1,13 @@
+
+
+.titre{
+    color: black;
+    text-align: right;
+    padding: 32px;
+    border-bottom: solid 3px black;
+}
+
+.titre img {
+    width: 50px;
+    height: 60px;
+}

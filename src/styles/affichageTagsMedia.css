@@ -1,0 +1,50 @@
+.conteneurTags {
+    width: 20%;
+}
+
+.conteneurTags .ligne {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.conteneurTags .colonne {
+    display: flex;
+    flex-direction: column;
+}
+
+/* .conteneurTags .clicable:hover {
+    cursor: pointer;
+} */
+
+.conteneurTags .categorie {
+    font-weight: bold;
+}
+
+.conteneurTags .tags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.conteneurTags .tag {
+    border-width: 1px;
+    border-color: black;
+    border-radius: 10px;
+    border-style: solid;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+}
+
+/* .conteneurTags .clicable:hover {
+    cursor: pointer;
+} */
+
+.conteneurTags .selec {
+    background-color: dodgerblue;
+}

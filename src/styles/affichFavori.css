@@ -1,0 +1,37 @@
+.conteneurFavori .boutonStop {
+    position: fixed;
+    width: 10%;
+    top: 0px;
+    right: 0px;
+    bottom: 50%;
+}
+
+.conteneurFavori .boutonStop img {
+    width: 100%;
+    height: auto;
+}
+
+.conteneurFavori {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conteneurFavori video {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* .conteneurFavori .portrait {
+    width: auto;
+    height: max-content;
+    max-height: 100%;
+}
+
+.conteneurFavori .paysage {
+    height: auto;
+    width: max-content;
+    max-width: 100%;
+} */

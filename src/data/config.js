@@ -1,0 +1,9 @@
+export const URL_server = "http://localhost:4000/"
+export const NB_IMAGE_PAR_PAGE = 20
+export const NB_COLONNE_GALLERIE = 5
+export const PATH_IMAGE = 'images_traitees/'
+export const PATH_ALBUM = 'albums/'
+export const PATH_VIDEO = 'videos/'
+// export const PATH_IMAGE = 'medias_surs/'
+// export const PATH_ALBUM = 'medias_surs/'
+// export const PATH_VIDEO = 'medias_surs/'

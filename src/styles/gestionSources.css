@@ -1,0 +1,41 @@
+.affSource {
+    display: flex;
+    flex-direction: column;
+}
+
+.affSource .nom {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    background-color: cadetblue;
+}
+
+.affSource div {
+    display: flex;
+    flex-direction: column;
+}
+
+.affSource div .notes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.affSource div .infoNote {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 20px;
+}
+
+.affSource .notes span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.affSource .bilan {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}

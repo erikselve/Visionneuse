@@ -1,0 +1,92 @@
+.conteneurVideo .video {
+    width: 80%;
+    display: flex;
+    align-items: center;
+}
+
+.conteneurVideo video.portrait {
+    width: max-content;
+    height: max-content;
+    max-height: 100vh;
+}
+
+.conteneurVideo video.paysage {
+    width: max-content;
+    height: max-content;
+    max-width: 100%;
+}
+
+.conteneurVideo .couverture {
+    width: 100%;
+    height: auto;
+}
+
+.conteneurVideoMini {
+    display: flex;
+    flex-direction: column;
+}
+
+.conteneurVideoMini img {
+    width: 100%;
+    height: auto;
+}
+
+.conteneurVideoMini video {
+    width: 100%;
+    height: auto;
+}
+
+.conteneurVideoMini {
+    width: auto;
+    height: auto;
+    position: relative;
+}
+
+.conteneurVideoMini .bordure {
+    position: absolute;
+    top:0px;
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+    /* top: 0px; */
+    /* width:100%; */
+    /* height:100%; */
+    /* display: flex; */
+}
+
+.conteneurVideoMini .bordure img {
+width: 100%;
+}
+
+.conteneurVideoMini .bordure img.bord {
+    height: auto;
+}
+
+.conteneurVideoMini .bordure img.centre {
+    height: 100%;
+}
+
+.conteneurVideo {
+    display: flex;
+    flex-direction:  row;
+    position: relative;
+}
+
+.conteneurVideo .video {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+.barre {
+    height: 10px;
+    display: flex;
+    flex-direction: row;
+    background-color: gray;
+}
+
+.barre .barreRemplie {
+    height: auto;
+    background-color: whitesmoke;
+}
