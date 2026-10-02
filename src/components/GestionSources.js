@@ -70,8 +70,8 @@ function GestionSources() {
                                 <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation, (derniereSource.notesCalculees && derniereSource.notesCalculees.animation !== undefined))}</span>
                                 <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene, (derniereSource.notesCalculees && derniereSource.notesCalculees.miseEnScene !== undefined))}</span>
                                 <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon, (derniereSource.notesCalculees && derniereSource.notesCalculees.son !== undefined))}</span>
+                                <div className='infoNote'><span>{(derniereSource.nom === infoNote.source)?infoNote.texte:''}</span></div>
                             </div>
-                            <div className='infoNote'><span>{(derniereSource.nom === infoNote.source)?infoNote.texte:''}</span></div>
                         </div>
                         <div className='bilan'>
                             <span>Evaluation {derniereSource.evaluation.toFixed(2)}%</span>
@@ -98,7 +98,6 @@ function GestionSources() {
                                 <span>son {afficheNote(source.son, 'son', source.nom, infoSon, (source.notesCalculees && source.notesCalculees.son !== undefined))}</span>
                                 <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div>
                             </div>
-                            {/* <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div> */}
                         </div>
                         <div className='bilan'>
                             <span>Evaluation {source.evaluation.toFixed(2)}%</span>
