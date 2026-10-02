@@ -26,13 +26,8 @@ function Video(props) {
                 {(affMiniVideo)?
                     <video autoPlay><source src={URL_server+PATH_VIDEO+props.nom} type="video/mp4" /></video>:
                     <div>
-                        <div className="barre"><animated.div style={{...springs}} className='barreRemplie'></animated.div></div>
+                        {/* <div className="barre"><animated.div style={{...springs}} className='barreRemplie'></animated.div></div> */}
                         <img src={URL_server+PATH_VIDEO+'couvertures/'+couverture} className='couverture' alt="présentation de la vidéo" />
-                        {/* <div className="bordure">
-                            <img className='bord' src={bordureHaut} alt="fioriture" />
-                            <img className="centre" src={bordure} alt="fioriture" />
-                            <img className="bord" src={bordureBas} alt="fioriture" />
-                        </div> */}
                     </div>
                 }
                 </div>

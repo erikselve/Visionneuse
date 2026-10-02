@@ -45,6 +45,7 @@ export const sourcesSlice = createSlice({
             liste = tri(liste, 'nom', -1)
             let listeNom = []
             listeNom.push('Inconnu')
+            state.plusGrandeUrgence = 0
 
             liste.forEach(element => {
                 element.evaluation = calculeEval(element, max)
@@ -58,17 +59,11 @@ export const sourcesSlice = createSlice({
                 state.derniereSourceUtilisee = state.sources[state.sources.findIndex((elt) => elt.nom === state.derniereSourceUtilisee.nom)]
         },
         triSources: (state, action) => {
-            // let nom = null
-            // if (state.derniereSourceUtilisee !== null)
-            //     nom = state.sources[state.derniereSourceUtilisee].nom
             state.sources = tri(state.sources, action.payload, state.sensTri)
             state.sensTri = state.sensTri * -1
-            // if (nom !== null)
-            //     state.derniereSourceUtilisee = state.sources.findIndex((elt) => elt.nom === nom)
         },
         changeDerniereSource: (state, action) => {
             state.derniereSourceUtilisee = state.sources[state.sources.findIndex((elt) => elt.nom === action.payload)]
-            // state.derniereSourceUtilisee = state.listeNomAlphab.findIndex((elt) => elt.nom === action.payload)
         }
     }
 })

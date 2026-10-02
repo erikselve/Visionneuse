@@ -17,11 +17,11 @@ function GestionSources() {
     const [chargement, setChargement] = useState(true)
     const [infoNote, setInfoNote] = useState({texte: '', source: ''})
 
-    function afficheNote(note, type, auteur, infos) {
+    function afficheNote(note, type, auteur, infos, calcul) {
         let suiteNotes = []
         const noteMax = infos.length
         for (let pos = 0; pos < noteMax; pos++) {
-            suiteNotes = [...suiteNotes, <img key={type+'_'+pos} src={(pos <= note)?etoile:etoileVide} className='icone clicable' alt='etoile' onClick={() => {
+            suiteNotes = [...suiteNotes, <img key={type+'_'+pos} src={(pos <= note)?etoile:etoileVide} className={(calcul)?'icone':'icone clicable'} alt='etoile' onClick={(calcul)?undefined:() => {
                 fetch_json({type: type, nouvelleNote: pos, auteur: auteur}, 'PUT', 'source/note/').then((rep) => {
                     dispatch(chargeSources(rep.liste))
                 })
@@ -66,10 +66,10 @@ function GestionSources() {
                         }} /></div>
                         <div>
                             <div className='notes'>
-                                <span>graphisme {afficheNote(derniereSource.graphisme, 'graphisme', derniereSource.nom, infoGraphisme)}</span>
-                                <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation)}</span>
-                                <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene)}</span>
-                                <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon)}</span>
+                                <span>graphisme {afficheNote(derniereSource.graphisme, 'graphisme', derniereSource.nom, infoGraphisme, (derniereSource.notesCalculees && derniereSource.notesCalculees.graphisme !== undefined))}</span>
+                                <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation, (derniereSource.notesCalculees && derniereSource.notesCalculees.animation !== undefined))}</span>
+                                <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene, (derniereSource.notesCalculees && derniereSource.notesCalculees.miseEnScene !== undefined))}</span>
+                                <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon, (derniereSource.notesCalculees && derniereSource.notesCalculees.son !== undefined))}</span>
                             </div>
                             <div className='infoNote'><span>{(derniereSource.nom === infoNote.source)?infoNote.texte:''}</span></div>
                         </div>
@@ -92,10 +92,10 @@ function GestionSources() {
                         }} /></div>
                         <div>
                             <div className='notes'>
-                                <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, infoGraphisme)}</span>
-                                <span>animation {afficheNote(source.animation, 'animation', source.nom, infoAnimation)}</span>
-                                <span>mise en scène {afficheNote(source.miseEnScene, 'miseEnScene', source.nom, infoMiseEnScene)}</span>
-                                <span>son {afficheNote(source.son, 'son', source.nom, infoSon)}</span>
+                                <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, infoGraphisme, (source.notesCalculees && source.notesCalculees.graphisme !== undefined))}</span>
+                                <span>animation {afficheNote(source.animation, 'animation', source.nom, infoAnimation, (source.notesCalculees && source.notesCalculees.animation !== undefined))}</span>
+                                <span>mise en scène {afficheNote(source.miseEnScene, 'miseEnScene', source.nom, infoMiseEnScene, (source.notesCalculees && source.notesCalculees.miseEnScene !== undefined))}</span>
+                                <span>son {afficheNote(source.son, 'son', source.nom, infoSon, (source.notesCalculees && source.notesCalculees.son !== undefined))}</span>
                             </div>
                             <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div>
                         </div>

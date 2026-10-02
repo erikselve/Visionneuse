@@ -4,6 +4,8 @@ import { fetch_get, fetch_form, fetch_json } from '../modules/com'
 import { changeTache, agir, augmenteObjectif } from '../store/slices/indiceProgressionSlice'
 import { ajoute, changeEtat} from '../store/slices/mediasCompSlice'
 import { selectionneMedia, annuleSelection, changeBarreProgression, changePrinc, changeLoading } from '../store/slices/displaySlice'
+import { infoGraphisme, infoAnimation, infoMiseEnScene, infoSon } from '../data/source'
+
 import Image from './Image'
 import Album from './Album'
 import Video from './Video'
@@ -21,6 +23,8 @@ import boutonSuivGrise from '../assets/flecheDroiteGrise.png'
 import boutonPoubelle from '../assets/poubelle2.png'
 import favori_vide from '../assets/coeur_vide.png'
 import favori_plein from '../assets/coeur_plein.png'
+import etoile from '../assets/etoile.png'
+import etoileVide from '../assets/etoileVide.png'
 
 function Gallerie(props) {
     const dispatch = useDispatch()
@@ -53,8 +57,31 @@ function Gallerie(props) {
     const indexMediaEnCours = useSelector((state) => state.mediasComp.indexMediaActuel)
     const type = useSelector((state) => state.mediasComp.typeMedia)
     const [site8musesEnsemble, setsite8musesEnsemble] = useState(false)
+    
+    const [infoNote, setInfoNote] = useState({texte: '', critere: ''})
+    const criteres = [
+        {nom: 'graphisme', libelle: 'Graphisme', echelle: infoGraphisme},
+        {nom: 'animation', libelle: 'Animation', echelle: infoAnimation},
+        {nom: 'miseEnScene', libelle: 'Mise en scène', echelle: infoMiseEnScene},
+        {nom: 'son', libelle: 'Son', echelle: infoSon}
+    ]
 
-
+    function afficheNote(note, critere, echelle) {
+        let suiteNotes = []
+        for (let pos = 0; pos < echelle.length; pos++) {
+            suiteNotes = [...suiteNotes, <img key={critere.nom+'_'+pos} src={(pos <= note)?etoile:etoileVide} className='icone clicable' alt='etoile' onClick={() => {
+                const notes = {...(liste[mediaSelec].notes ?? {})}
+                notes[critere.nom] = (pos === note)?null:pos
+                fetch_json({media: liste[mediaSelec].name, notes: notes}, 'put', 'media/notes').then(rep => {
+                    if (rep) setListe(liste.map((elt, index) => {
+                        if (index === mediaSelec) elt.notes = notes
+                        return elt
+                    }))
+                })
+            }} onMouseOver={() => setInfoNote({texte: echelle[pos].msg, critere: critere.nom})} onMouseLeave={() => setInfoNote({texte: '', critere: ''})} />]
+        }
+        return(<span>{suiteNotes}</span>)
+    }
 
     function colonnePlusPetite(tailleColonnes) {
         let res = 0
@@ -488,10 +515,29 @@ function Gallerie(props) {
                     </div>
                 </div>
                 <div className='conteneurInfo'>
-                    <label for='source'>Auteur :</label>
-                    <select id='source'>
-                        {listeSource.map((elt) => <option value={elt}>{elt}</option>)}
-                    </select>
+                    <div className='navigation'>
+                        <label htmlFor ='source'>Auteur :</label>
+                        <select id='source' value={liste[mediaSelec].source ?? 'Inconnu'} onChange={(e) => {
+                            const source = e.target.value
+                            fetch_json({media: liste[mediaSelec].name, source: source}, 'put', 'media/source').then(rep => {
+                                if (rep) setListe(liste.map((elt, index) => {
+                                    if (index === mediaSelec) elt.source = source
+                                    return elt
+                                }))
+                            })
+                        }}>
+                            {listeSource.map((elt) => <option key={elt} value={elt}>{elt}</option>)}
+                        </select>
+                    </div>
+                    <div className='info'>
+                        {criteres.map(critere => (
+                            <div key={critere.nom}>
+                                <label>{critere.libelle} :</label>
+                                {afficheNote((liste[mediaSelec].notes && liste[mediaSelec].notes[critere.nom] !== null)?liste[mediaSelec].notes[critere.nom]:-1, critere, critere.echelle)}
+                                {(infoNote.critere === critere.nom)?<span className='infoNote'>{infoNote.texte}</span>:null}
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 {(liste[mediaSelec].type === 'image')?<Image display='complet' nom={liste[mediaSelec].name} />:
                 (liste[mediaSelec].type === 'video')?<Video display='complet' orientation={orientation} nom={liste[mediaSelec].name} />:

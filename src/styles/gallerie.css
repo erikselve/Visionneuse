@@ -152,3 +152,21 @@
     display: flex;
     align-items: center;
 }
+
+/* chaque ligne de critère devient le point d'ancrage */
+.info > div {
+    position: relative;
+}
+
+.infoNote {
+    position: absolute;
+    bottom: 100%;          /* la bulle apparaît au-dessus de la ligne */
+    left: 0;
+    padding: 4px 8px;
+    background: #333;     /* à assortir à votre thème */
+    color: #eee;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;  /* la bulle ne masque pas le survol des étoiles */
+}
