@@ -15,7 +15,7 @@ function GestionSources() {
     const derniereSource = useSelector((state) => state.sources.derniereSourceUtilisee)
     const meilleureUrgence = useSelector((state) => state.sources.plusGrandeUrgence)
     const [chargement, setChargement] = useState(true)
-    const [infoNote, setInfoNote] = useState({texte: '', source: ''})
+    const [infoNote, setInfoNote] = useState({texte: '', source: '', critere: ''})
 
     function afficheNote(note, type, auteur, infos, calcul) {
         let suiteNotes = []
@@ -25,7 +25,7 @@ function GestionSources() {
                 fetch_json({type: type, nouvelleNote: pos, auteur: auteur}, 'PUT', 'source/note/').then((rep) => {
                     dispatch(chargeSources(rep.liste))
                 })
-            }} onMouseOver={() => setInfoNote({texte: infos[pos].msg, source: auteur})} onMouseLeave={() => setInfoNote({texte: '', source: ''})} />]
+            }} onMouseOver={() => setInfoNote({texte: infos[pos].msg, source: auteur, critere: type})} onMouseLeave={() => setInfoNote({texte: '', source: '', critere: ''})} />]
         }
         return(<span>{suiteNotes}</span>)
     }
@@ -65,13 +65,20 @@ function GestionSources() {
                             })
                         }} /></div>
                         <div>
-                            <div className='notes'>
-                                <span>graphisme {afficheNote(derniereSource.graphisme, 'graphisme', derniereSource.nom, infoGraphisme, (derniereSource.notesCalculees && derniereSource.notesCalculees.graphisme !== undefined))}</span>
-                                <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation, (derniereSource.notesCalculees && derniereSource.notesCalculees.animation !== undefined))}</span>
-                                <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene, (derniereSource.notesCalculees && derniereSource.notesCalculees.miseEnScene !== undefined))}</span>
-                                <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon, (derniereSource.notesCalculees && derniereSource.notesCalculees.son !== undefined))}</span>
-                                <div className='infoNote'><span>{(derniereSource.nom === infoNote.source)?infoNote.texte:''}</span></div>
-                            </div>
+                        <div className='notes'>
+                            <span>graphisme {afficheNote(derniereSource.graphisme, 'graphisme', derniereSource.nom, infoGraphisme, (derniereSource.notesCalculees && derniereSource.notesCalculees.graphisme !== undefined))}
+                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'graphisme')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                            </span>
+                            <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation, (derniereSource.notesCalculees && derniereSource.notesCalculees.animation !== undefined))}
+                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'animation')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                            </span>
+                            <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene, (derniereSource.notesCalculees && derniereSource.notesCalculees.miseEnScene !== undefined))}
+                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'miseEnScene')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                            </span>
+                            <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon, (derniereSource.notesCalculees && derniereSource.notesCalculees.son !== undefined))}
+                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'son')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                            </span>
+                        </div>
                         </div>
                         <div className='bilan'>
                             <span>Evaluation {derniereSource.evaluation.toFixed(2)}%</span>
@@ -92,11 +99,18 @@ function GestionSources() {
                         }} /></div>
                         <div>
                             <div className='notes'>
-                                <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, infoGraphisme, (source.notesCalculees && source.notesCalculees.graphisme !== undefined))}</span>
-                                <span>animation {afficheNote(source.animation, 'animation', source.nom, infoAnimation, (source.notesCalculees && source.notesCalculees.animation !== undefined))}</span>
-                                <span>mise en scène {afficheNote(source.miseEnScene, 'miseEnScene', source.nom, infoMiseEnScene, (source.notesCalculees && source.notesCalculees.miseEnScene !== undefined))}</span>
-                                <span>son {afficheNote(source.son, 'son', source.nom, infoSon, (source.notesCalculees && source.notesCalculees.son !== undefined))}</span>
-                                <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div>
+                                <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, infoGraphisme, (source.notesCalculees && source.notesCalculees.graphisme !== undefined))}
+                                    {(source.nom === infoNote.source && infoNote.critere === 'graphisme')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                                <span>animation {afficheNote(source.animation, 'animation', source.nom, infoAnimation, (source.notesCalculees && source.notesCalculees.animation !== undefined))}
+                                    {(source.nom === infoNote.source && infoNote.critere === 'animation')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                                <span>mise en scène {afficheNote(source.miseEnScene, 'miseEnScene', source.nom, infoMiseEnScene, (source.notesCalculees && source.notesCalculees.miseEnScene !== undefined))}
+                                    {(source.nom === infoNote.source && infoNote.critere === 'miseEnScene')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                                <span>son {afficheNote(source.son, 'son', source.nom, infoSon, (source.notesCalculees && source.notesCalculees.son !== undefined))}
+                                    {(source.nom === infoNote.source && infoNote.critere === 'son')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
                             </div>
                         </div>
                         <div className='bilan'>
