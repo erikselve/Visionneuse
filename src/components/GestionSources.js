@@ -50,6 +50,17 @@ function GestionSources() {
                     document.getElementById('F95URL').value = ''
                 })
             }} />
+            <label>Saisir le nom d'une nouvelle source:</label><br/>
+            <input type='text' id='nomSource' /><input type='button' value='Ajouter' onClick={() => {
+                const nom = document.getElementById('nomSource').value
+                if (nom.trim() !== '') {
+                    fetch_json({nom: nom}, 'POST', 'source/ajoutManuel').then((rep) => {
+                        dispatch(chargeSources(rep.liste))
+                        dispatch(changeDerniereSource(rep.auteur))
+                        document.getElementById('nomSource').value = ''
+                    })
+                }
+            }} />            
             <input type='button' value='trier selon urgence' onClick={() => {
                 dispatch(triSources("urgence"))
             }} />
@@ -89,8 +100,12 @@ function GestionSources() {
             </div>
             <div>
                 {sources.map((source) => {
-                    const urgence = source.urgence * 100 / meilleureUrgence                    
-                    
+                    const urgence = source.urgence * 100 / meilleureUrgence
+                    let origine = source.origines[0]
+                    source.origines.forEach(elt => {
+                        if (elt.derniereRecup > origine.derniereRecup) origine = elt
+                    })
+
                     return(<div key={source._id} className='affSource'>
                         <div className='nom'><span>{source.nom}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
                             fetch_json({source: source._id},'PATCH','source/consulte/').then((rep) => {
@@ -115,7 +130,7 @@ function GestionSources() {
                         </div>
                         <div className='bilan'>
                             <span>Evaluation {source.evaluation.toFixed(2)}%</span>
-                            <span>A surveiller {urgence.toFixed(2)}% ({source.origines.find(element => element.nom === 'f95')['derniereRecup']})</span>
+                            <span>A surveiller {urgence.toFixed(2)}% ({origine.derniereRecup})</span>
                         </div>
                     </div>)
                 })}
