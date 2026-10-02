@@ -50,14 +50,15 @@ function Gallerie(props) {
     const displayPrinc = useSelector((state) => state.display.princ)
     const [scroll, setScroll] = useState(0)
     const listeSource = useSelector((state) => state.sources.listeNomAlphab)
-    const derniereSource = useSelector((state) => state.sources.sources[state.sources.derniereSourceUtilisee])
+    const derniereSource = useSelector((state) => state.sources.derniereSourceUtilisee)
     //uploads de nouveaux médias
     const etat = useSelector((state) => state.mediasComp.etat)
     const listeSelec = useSelector((state) => state.mediasComp.listeSelec)
     const indexMediaEnCours = useSelector((state) => state.mediasComp.indexMediaActuel)
     const type = useSelector((state) => state.mediasComp.typeMedia)
     const [site8musesEnsemble, setsite8musesEnsemble] = useState(false)
-    
+    const [assocSource, setAssocSource] = useState(true)
+    //tout pour les notation de médias
     const [infoNote, setInfoNote] = useState({texte: '', critere: ''})
     const criteres = [
         {nom: 'graphisme', libelle: 'Graphisme', echelle: infoGraphisme},
@@ -131,6 +132,8 @@ function Gallerie(props) {
     useEffect(() => {
         if ((listeSelec.length > indexMediaEnCours) && (etat === 'working')) {
             let formData = new FormData()
+            if (assocSource && derniereSource !== null)
+                formData.append('source', derniereSource.nom)
             dispatch(changeEtat())
             if (type === 'album') {
                 const info = listeSelec[indexMediaEnCours][0].webkitRelativePath.split('/')
@@ -298,6 +301,10 @@ function Gallerie(props) {
 
                 {/*zone de saisie pour ajouter de nouveaux médias */}
                 {(affAjoutData)?<div>
+                    {(derniereSource !== null)?<div>
+                        <input type='checkbox' checked={assocSource} onClick={() => setAssocSource(!assocSource)} />
+                        <label>Associer ces médias à la source « {derniereSource.nom} »</label>
+                    </div>:null}
                     <div className='ajoutImages'>
                         <label>Sélectionner des images à ajouter:</label>
                         <input type='file' accept='image/*' id='selecFichiers' multiple onChange={async () => {
