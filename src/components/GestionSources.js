@@ -96,8 +96,9 @@ function GestionSources() {
                                 <span>animation {afficheNote(source.animation, 'animation', source.nom, infoAnimation, (source.notesCalculees && source.notesCalculees.animation !== undefined))}</span>
                                 <span>mise en scène {afficheNote(source.miseEnScene, 'miseEnScene', source.nom, infoMiseEnScene, (source.notesCalculees && source.notesCalculees.miseEnScene !== undefined))}</span>
                                 <span>son {afficheNote(source.son, 'son', source.nom, infoSon, (source.notesCalculees && source.notesCalculees.son !== undefined))}</span>
+                                <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div>
                             </div>
-                            <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div>
+                            {/* <div className='infoNote'><span>{(source.nom === infoNote.source)?infoNote.texte:''}</span></div> */}
                         </div>
                         <div className='bilan'>
                             <span>Evaluation {source.evaluation.toFixed(2)}%</span>
