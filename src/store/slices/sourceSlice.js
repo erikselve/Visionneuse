@@ -48,6 +48,11 @@ export const sourcesSlice = createSlice({
             state.plusGrandeUrgence = 0
 
             liste.forEach(element => {
+                if (element.notesCalculees !== undefined) {
+                    Object.keys(element.notesCalculees).forEach(critere => {
+                        element[critere] = element.notesCalculees[critere]
+                    })
+                }
                 element.evaluation = calculeEval(element, max)
                 element.urgence = calculeUrgence(element)
                 if (element.urgence > state.plusGrandeUrgence) state.plusGrandeUrgence = element.urgence
