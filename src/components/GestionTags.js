@@ -16,7 +16,7 @@ function GestionTags() {
     return (
         <div className='gestionTags'>
             <div className='menu'>
-                {listeCategoriesTags.map((elt, index) => <span className={(categorieSelec === index)?'clicable selec':'menu clicable'} key={elt.categorie} onClick={() => {
+                {listeCategoriesTags.map((elt, index) => <span className={(categorieSelec === index)?'menu clicable selec':'menu clicable'} key={elt.categorie} onClick={() => {
                     setCategorieSelec(index)
                     setTagSelec(null)
                 }}>{elt.categorie}</span>)}

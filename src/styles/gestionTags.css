@@ -1,6 +1,6 @@
 .gestionTags .tag {
     border-width: 1px;
-    border-color: black;
+    border-color: rgba(255,255,255,0.25);
     border-radius: 10px;
     border-style: solid;
     padding: 2px;
@@ -41,5 +41,5 @@
 }
 
 .gestionTags .selec {
-    background-color: darkgray;
+    background-color: rgba(91,141,239,0.25);
 }

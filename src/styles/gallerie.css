@@ -5,19 +5,10 @@
     margin-right: 0.5%;
 }
 
-/* .conteneur .icone {
-    height: 30px;
-    width: auto;
-} */
-
 .conteneur .gestionPage {
     display: flex;
     justify-content: right;
 }
-
-/* .conteneur .clicable:hover {
-    cursor: pointer;
-} */
 
 .zoneFiltre .tag {
     border-width: 1px;
