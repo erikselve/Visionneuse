@@ -533,7 +533,7 @@ function Gallerie(props) {
                                 }))
                             })
                         }}>
-                            {listeSource.map((elt) => <option key={elt} value={elt}>{elt}</option>)}
+                            {listeSource.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nom}</option>)}
                         </select>
                     </div>
                     <div className='info'>

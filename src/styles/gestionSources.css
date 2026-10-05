@@ -48,3 +48,13 @@
     flex-direction: row;
     justify-content: space-around;
 }
+
+.suggestion {
+    cursor: pointer;
+    padding: 2px 8px;
+}
+
+.suggestion:hover {
+    background-color: cadetblue;
+    color: white;
+}

@@ -16,6 +16,8 @@ function GestionSources() {
     const meilleureUrgence = useSelector((state) => state.sources.plusGrandeUrgence)
     const [chargement, setChargement] = useState(true)
     const [infoNote, setInfoNote] = useState({texte: '', source: '', critere: ''})
+    const listeNomManuel = useSelector((state) => state.sources.listeNomAlphab.filter((elt) => elt.manuel))
+    const [nomTape, setNomTape] = useState('')
 
     function afficheNote(note, type, auteur, infos, calcul) {
         let suiteNotes = []
@@ -49,18 +51,23 @@ function GestionSources() {
                     dispatch(changeDerniereSource(rep.auteur))
                     document.getElementById('F95URL').value = ''
                 })
-            }} />
-            <label>Saisir le nom d'une nouvelle source:</label><br/>
-            <input type='text' id='nomSource' /><input type='button' value='Ajouter' onClick={() => {
-                const nom = document.getElementById('nomSource').value
-                if (nom.trim() !== '') {
+            }} /><br/>
+            <label>Saisir le nom d'une source:</label><br/>
+            <input type='text' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
+            {(nomTape.trim() !== '')?listeNomManuel
+                .filter((elt) => elt.nom.toLowerCase().startsWith(nomTape.toLowerCase()) && elt.nom.toLowerCase() !== nomTape.toLowerCase())
+                .map((elt) => <div key={elt.nom} className='suggestion' onClick={() => setNomTape(elt.nom)}>{elt.nom}</div>)
+            :null}
+            <input type='button' value='Envoyer' onClick={() => {
+                const nom = nomTape.trim()
+                if (nom !== '') {
                     fetch_json({nom: nom}, 'POST', 'source/ajoutManuel').then((rep) => {
                         dispatch(chargeSources(rep.liste))
                         dispatch(changeDerniereSource(rep.auteur))
-                        document.getElementById('nomSource').value = ''
+                        setNomTape('')
                     })
                 }
-            }} />            
+            }} /><br/>         
             <input type='button' value='trier selon urgence' onClick={() => {
                 dispatch(triSources("urgence"))
             }} />

@@ -44,7 +44,7 @@ export const sourcesSlice = createSlice({
             let liste = [...action.payload]
             liste = tri(liste, 'nom', -1)
             let listeNom = []
-            listeNom.push('Inconnu')
+            listeNom.push({nom: 'Inconnu', manuel: false})
             state.plusGrandeUrgence = 0
 
             liste.forEach(element => {
@@ -56,7 +56,7 @@ export const sourcesSlice = createSlice({
                 element.evaluation = calculeEval(element, max)
                 element.urgence = calculeUrgence(element)
                 if (element.urgence > state.plusGrandeUrgence) state.plusGrandeUrgence = element.urgence
-                listeNom.push(element.nom)
+                listeNom.push({nom: element.nom, manuel: element.origines.find((origine) => origine.nom === 'manuel') !== undefined})
             });
             state.listeNomAlphab = listeNom
             state.sources = action.payload
