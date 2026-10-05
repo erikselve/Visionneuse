@@ -63,7 +63,7 @@ function App() {
 
   if (!chargement)
     return (
-      <div>
+      <div className='appli'>
         <Menu id='menu' />
         {(progBarDisplay)?<AffProgression/>:null}
         {(princDisplay.comparateur)?<Comparateur />:null}
