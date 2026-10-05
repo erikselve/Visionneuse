@@ -44,68 +44,70 @@ function GestionSources() {
         return(<div><span>En chargement</span></div>)
     else
         return(<div>
-            <label>Saisir l'url de la source F95 ici:</label><br/>
-            <input type='text' id='F95URL' /><input type='button' value='Envoyer' onClick={() => {
-                fetch_json({url: document.getElementById('F95URL').value}, 'POST', 'source/ajout/f95').then((rep) => {
-                    dispatch(chargeSources(rep.liste))
-                    dispatch(changeDerniereSource(rep.auteur))
-                    document.getElementById('F95URL').value = ''
-                })
-            }} /><br/>
-            <label>Saisir le nom d'une source:</label><br/>
-            <input type='text' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
-            {(nomTape.trim() !== '')?listeNomManuel
-                .filter((elt) => elt.nom.toLowerCase().startsWith(nomTape.toLowerCase()) && elt.nom.toLowerCase() !== nomTape.toLowerCase())
-                .map((elt) => <div key={elt.nom} className='suggestion' onClick={() => setNomTape(elt.nom)}>{elt.nom}</div>)
-            :null}
-            <input type='button' value='Envoyer' onClick={() => {
-                const nom = nomTape.trim()
-                if (nom !== '') {
-                    fetch_json({nom: nom}, 'POST', 'source/ajoutManuel').then((rep) => {
+            <div className='zoneCtrl'>
+                <label>Saisir l'url de la source F95 ici:</label><br/>
+                <input type='text' id='F95URL' /><input type='button' value='Envoyer' onClick={() => {
+                    fetch_json({url: document.getElementById('F95URL').value}, 'POST', 'source/ajout/f95').then((rep) => {
                         dispatch(chargeSources(rep.liste))
                         dispatch(changeDerniereSource(rep.auteur))
-                        setNomTape('')
+                        document.getElementById('F95URL').value = ''
                     })
-                }
-            }} /><br/>         
-            <input type='button' value='trier selon urgence' onClick={() => {
-                dispatch(triSources("urgence"))
-            }} />
-            <input type='button' value='trier selon évaluation' onClick={() => {
-                dispatch(triSources("evaluation"))
-            }} />
-            <div>    
-                {(derniereSource !== null)?<div className='affSource'>
-                        <label>Dernier ajout:</label>
-                        <div className='nom'><span>{derniereSource.nom}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
-                            fetch_json({source: derniereSource._id},'PATCH','source/consulte/').then((rep) => {
-                                dispatch(chargeSources(rep.liste))
-                            })
-                        }} /></div>
-                        <div>
-                        <div className='notes'>
-                            <span>graphisme {afficheNote(derniereSource.graphisme, 'graphisme', derniereSource.nom, infoGraphisme, (derniereSource.notesCalculees && derniereSource.notesCalculees.graphisme !== undefined))}
-                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'graphisme')?<span className='infoNote'>{infoNote.texte}</span>:null}
-                            </span>
-                            <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation, (derniereSource.notesCalculees && derniereSource.notesCalculees.animation !== undefined))}
-                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'animation')?<span className='infoNote'>{infoNote.texte}</span>:null}
-                            </span>
-                            <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene, (derniereSource.notesCalculees && derniereSource.notesCalculees.miseEnScene !== undefined))}
-                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'miseEnScene')?<span className='infoNote'>{infoNote.texte}</span>:null}
-                            </span>
-                            <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon, (derniereSource.notesCalculees && derniereSource.notesCalculees.son !== undefined))}
-                                {(derniereSource.nom === infoNote.source && infoNote.critere === 'son')?<span className='infoNote'>{infoNote.texte}</span>:null}
-                            </span>
-                        </div>
-                        </div>
-                        <div className='bilan'>
-                            <span>Evaluation {derniereSource.evaluation.toFixed(2)}%</span>
-                            <span>A surveiller {(derniereSource.urgence*100/meilleureUrgence).toFixed(2)}%</span>
-                        </div>
-                    </div>:null
-                }
+                }} /><br/>
+                <label>Saisir le nom d'une source:</label><br/>
+                <input type='text' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
+                {(nomTape.trim() !== '')?listeNomManuel
+                    .filter((elt) => elt.nom.toLowerCase().startsWith(nomTape.toLowerCase()) && elt.nom.toLowerCase() !== nomTape.toLowerCase())
+                    .map((elt) => <div key={elt.nom} className='suggestion' onClick={() => setNomTape(elt.nom)}>{elt.nom}</div>)
+                :null}
+                <input type='button' value='Envoyer' onClick={() => {
+                    const nom = nomTape.trim()
+                    if (nom !== '') {
+                        fetch_json({nom: nom}, 'POST', 'source/ajoutManuel').then((rep) => {
+                            dispatch(chargeSources(rep.liste))
+                            dispatch(changeDerniereSource(rep.auteur))
+                            setNomTape('')
+                        })
+                    }
+                }} /><br/>         
+                <input type='button' value='trier selon urgence' onClick={() => {
+                    dispatch(triSources("urgence"))
+                }} />
+                <input type='button' value='trier selon évaluation' onClick={() => {
+                    dispatch(triSources("evaluation"))
+                }} />
+                <div>    
+                    {(derniereSource !== null)?<div className='affSource'>
+                            <label>Dernier ajout:</label>
+                            <div className='nom'><span>{derniereSource.nom}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
+                                fetch_json({source: derniereSource._id},'PATCH','source/consulte/').then((rep) => {
+                                    dispatch(chargeSources(rep.liste))
+                                })
+                            }} /></div>
+                            <div>
+                            <div className='notes'>
+                                <span>graphisme {afficheNote(derniereSource.graphisme, 'graphisme', derniereSource.nom, infoGraphisme, (derniereSource.notesCalculees && derniereSource.notesCalculees.graphisme !== undefined))}
+                                    {(derniereSource.nom === infoNote.source && infoNote.critere === 'graphisme')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                                <span>animation {afficheNote(derniereSource.animation, 'animation', derniereSource.nom, infoAnimation, (derniereSource.notesCalculees && derniereSource.notesCalculees.animation !== undefined))}
+                                    {(derniereSource.nom === infoNote.source && infoNote.critere === 'animation')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                                <span>mise en scène {afficheNote(derniereSource.miseEnScene, 'miseEnScene', derniereSource.nom, infoMiseEnScene, (derniereSource.notesCalculees && derniereSource.notesCalculees.miseEnScene !== undefined))}
+                                    {(derniereSource.nom === infoNote.source && infoNote.critere === 'miseEnScene')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                                <span>son {afficheNote(derniereSource.son, 'son', derniereSource.nom, infoSon, (derniereSource.notesCalculees && derniereSource.notesCalculees.son !== undefined))}
+                                    {(derniereSource.nom === infoNote.source && infoNote.critere === 'son')?<span className='infoNote'>{infoNote.texte}</span>:null}
+                                </span>
+                            </div>
+                            </div>
+                            <div className='bilan'>
+                                <span>Evaluation {derniereSource.evaluation.toFixed(2)}%</span>
+                                <span>A surveiller {(derniereSource.urgence*100/meilleureUrgence).toFixed(2)}%</span>
+                            </div>
+                        </div>:null
+                    }
+                </div>
             </div>
-            <div>
+            <div className='zoneListe'>
                 {sources.map((source) => {
                     const urgence = source.urgence * 100 / meilleureUrgence
                     let origine = source.origines[0]

@@ -72,3 +72,9 @@ span .clicable {
 .appli {
     padding-top: 56px;
 }
+
+.fondSombre {
+    background-color: #15171c;
+    color: #e8e9ec;
+    min-height: calc(100vh - 56px);
+}

@@ -67,9 +67,9 @@ function App() {
         <Menu id='menu' />
         {(progBarDisplay)?<AffProgression/>:null}
         {(princDisplay.comparateur)?<Comparateur />:null}
-        <div className={(princDisplay.gallerie)?null:'none'}><Gallerie /></div>
+        <div className={(princDisplay.gallerie)?'fondSombre':'none'}><Gallerie /></div>
         <div className={(princDisplay.gestionTags)?null:'none'}><GestionTags /></div>
-        <div className={(princDisplay.sources)?null:'none'}><GestionSources /></div>
+        <div className={(princDisplay.sources)?'fondSombre':'none'}><GestionSources /></div>
         <div className={(loading)?'loading':'loading none'} ><img src={patienter} /></div>
         {(diaporama)?<div className='diaporama'><Diaporama working={true} /></div>:<div className='none'><Diaporama working={false} /></div>}
         {(favori !== null)?<div className='favori'><AffichFavori favori={favori} /></div>:null}
