@@ -275,12 +275,12 @@ function Gallerie(props) {
                         }} />:null}
                     </div>
                     <div className='zoneBouton'>
-                        {(page > 0)?<img src={iconeDebut} className='icone clicable' onClick={() => {
+                        {(page > 0)?<img src={iconeDebut} className='icone clicable inv' onClick={() => {
                             setPage(0)
                         }} />:<img src={iconeDebut} className='icone'/>}
-                        {(page > 0)?<img src={iconeRecule} className='icone clicable' onClick={() => {
+                        {(page > 0)?<img src={iconeRecule} className='icone clicable inv' onClick={() => {
                             setPage(page-1)
-                        }} />:<img src={iconeRecule} className='icone'/>}
+                        }} />:<img src={iconeRecule} className='icone inv'/>}
                     </div>
                     <span>
                         {(page > 0)?<span><span className='clicable' onClick={() => {setPage(0)}}>1</span> ... </span>:null}
@@ -290,10 +290,10 @@ function Gallerie(props) {
                         {(page < maxPage)?<span> ... <span className='clicable' onClick={() => setPage(maxPage)}>{maxPage+1}</span></span>:null}
                     </span>
                     <div className='zoneBouton'>
-                        {(page < maxPage)?<img src={iconeAvance} className='icone clicable' onClick={() => {
+                        {(page < maxPage)?<img src={iconeAvance} className='icone clicable inv' onClick={() => {
                             setPage(page+1)
                         }} />:<img src={iconeAvance} className='icone'/>}
-                        {(page < maxPage)?<img src={iconeFin} className='icone clicable' onClick={() => {
+                        {(page < maxPage)?<img src={iconeFin} className='icone clicable inv' onClick={() => {
                             setPage(maxPage)
                         }} />:<img src={iconeFin} className='icone'/>}
                     </div>
@@ -500,7 +500,7 @@ function Gallerie(props) {
                             }} />
                             <span>{liste[mediaSelec].name}</span>
                         </div>
-                        <img src={boutonPoubelle} alt="supprimer le média" className="icone clicable" onClick={() => {
+                        <img src={boutonPoubelle} alt="supprimer le média" className="icone clicable inv" onClick={() => {
                             setMediaSelec(null)
                             fetch_json({name: liste[mediaSelec].name}, 'delete', liste[mediaSelec].type).then(rep => {
                                 if (rep) {

@@ -39,7 +39,7 @@ function AffichageTagsMedia(props) {
         return <div className='colonne' key={data.categorie}>
             <div className="ligne">
                 <span  className="categorie">{data.categorie}</span>
-                {(mode === 'complet')?<img src={boutonAjout} className="icone" onClick={() => {
+                {(mode === 'complet')?<img src={boutonAjout} className="icone inv" onClick={() => {
                     let sol = []
                     sol[data.categorie] = !saisieTag[data.categorie]
                     setSaisieTag(sol)
@@ -85,7 +85,7 @@ function AffichageTagsMedia(props) {
                     <div className="conteneurTags">
                         <div className="ligne">
                             <h1>Tags</h1>
-                            <img src={boutonAjout} className="icone" onClick={() => {
+                            <img src={boutonAjout} className="icone inv" onClick={() => {
                                 setSaisieCategorie(!saisieCategorie)
                             }} />
                             {(saisieCategorie)?<div className="ligne"><input type="text" id="saisieCategorie" /><input type="button" value='Valider' onClick={() => {

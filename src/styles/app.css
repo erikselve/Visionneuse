@@ -40,13 +40,14 @@
     position: absolute;
     bottom: 20px;
     left: 5vw;
-    background-color: white;
+    background-color: #1b1e24;
     width: 40vw;
+    color: #e8e9ec;
 }
 
 .tag {
     border-width: 1px;
-    border-color: black;
+    border-color: rgba(255,255,255,0.25);
     border-radius: 10px;
     border-style: solid;
     padding: 2px;
@@ -71,10 +72,34 @@ span .clicable {
 
 .appli {
     padding-top: 56px;
-}
-
-.fondSombre {
     background-color: #15171c;
     color: #e8e9ec;
     min-height: calc(100vh - 56px);
+}
+
+.contenu input[type='button'] {
+    background-color: #2a3244;
+    color: #e8e9ec;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.contenu input[type='button']:hover {
+    background-color: #3a4254;
+}
+
+.contenu input[type='text'], .contenu select {
+    background-color: #1b1e24;
+    color: #e8e9ec;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    padding: 6px 8px;
+    box-sizing: border-box;
+}
+
+.inv {
+    filter: invert(1);
 }
