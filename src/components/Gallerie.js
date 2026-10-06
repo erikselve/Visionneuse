@@ -239,7 +239,7 @@ function Gallerie(props) {
         }
         else
             setPage(0)
-    }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec])
+    }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec])
 
     if (mediaSelec === null) {
 //on affiche la gallerie de miniatures de média
@@ -396,49 +396,67 @@ function Gallerie(props) {
 
                 {/*zone de sélection des filtres d'affichage des médias */}
                 {(affFiltre)?<div className='zoneFiltre'>
-                    <div className='menu'>
-                        <input type='button' value='médias avec tags' onClick={() => {
-                            setfiltreSelec('avecTag')
-                        }} />
-                        <input type='button' value='médias sans tag' onClick={() => {
-                            setfiltreSelec('sansTag')
-                        }} />
-                        <input type='button' value='médias jamais vu' onClick={() => {
-                            setfiltreSelec('nonVu')
-                        }} />
-                        <input type='button' value='tout les médias' onClick={() => {
-                            setfiltreSelec('sans')
-                        }} />
-                        <input type='button' value='filtrer' onClick={() => {
-                            setfiltreSelec('filtre')
-                        }} />
-                        <input type='button' value='réinitialiser les filtres' onClick={() => {
+                    <div className='enteteFiltre'>
+                        <span className='titreFiltre'>Filtres d'affichage</span>
+                        <input type='button' value='effacer les tags' onClick={() => {
                             setTagsSelec(listeCategoriesTags.map(elt => {
                                 return {categorie: elt.categorie, liste: elt.liste.map(tag => false)}
                             }))
                         }} />
-                        <input type='checkbox' checked={(triSelec === 'date')?true:false} onClick={() => {
-                            setTriSelec('date')
-                        }} /><label>selon l'ordre d'arrivée</label>
-                        <input type='checkbox' checked={(triSelec === 'name')?true:false} onClick={() => {
-                            setTriSelec('name')
-                        }} /><label>sans tri</label>
-                        <input type='checkbox' checked={(triTypeVideo)?true:false} onClick={() => {
-                            setTriTypeVideo(!triTypeVideo)
-                        }} /><label>videos</label>
-                        <input type='checkbox' checked={(triTypeImage)?true:false} onClick={() => {
-                            setTriTypeImage(!triTypeImage)
-                        }} /><label>images</label>                        
-                        <input type='checkbox' checked={(triTypeAlbum)?true:false} onClick={() => {
-                            setTriTypeAlbum(!triTypeAlbum)
-                        }} /><label>albums</label>
-                        <input type='checkbox' checked={(triFavori)?true:false} onClick={() => {
-                            setTriFavori(!triFavori)
-                        }} /><label>favoris</label>
-                        <br/>
+                        <input type='button' value='✕ cacher' onClick={() => {
+                            setaffFiltre(false)
+                        }} />
+                    </div>
+                    <div className='groupesFiltre'>
+                        <div className='groupe'>
+                            <span className='titreGroupe'>Quels médias ?</span>
+                            <div className='pilules'>
+                                <input type='button' className={(filtreSelec === 'avecTag' || filtreSelec === 'filtre')?'pilule actif':'pilule'} value='avec tags' onClick={() => {
+                                    setfiltreSelec('avecTag')
+                                }} />
+                                <input type='button' className={(filtreSelec === 'sansTag')?'pilule actif':'pilule'} value='sans tag' onClick={() => {
+                                    setfiltreSelec('sansTag')
+                                }} />
+                                <input type='button' className={(filtreSelec === 'nonVu')?'pilule actif':'pilule'} value='jamais vus' onClick={() => {
+                                    setfiltreSelec('nonVu')
+                                }} />
+                                <input type='button' className={(filtreSelec === 'sans')?'pilule actif':'pilule'} value='tous' onClick={() => {
+                                    setfiltreSelec('sans')
+                                }} />
+                            </div>
+                        </div>
+                        <div className='groupe'>
+                            <span className='titreGroupe'>Tri</span>
+                            <div className='pilules'>
+                                <input type='button' className={(triSelec === 'date')?'pilule actif':'pilule'} value="ordre d'arrivée" onClick={() => {
+                                    setTriSelec('date')
+                                }} />
+                                <input type='button' className={(triSelec === 'name')?'pilule actif':'pilule'} value='sans tri' onClick={() => {
+                                    setTriSelec('name')
+                                }} />
+                            </div>
+                        </div>
+                        <div className='groupe'>
+                            <span className='titreGroupe'>Types</span>
+                            <div className='pilules'>
+                                <input type='button' className={(triTypeVideo)?'pilule actif':'pilule'} value='vidéos' onClick={() => {
+                                    setTriTypeVideo(!triTypeVideo)
+                                }} />
+                                <input type='button' className={(triTypeImage)?'pilule actif':'pilule'} value='images' onClick={() => {
+                                    setTriTypeImage(!triTypeImage)
+                                }} />
+                                <input type='button' className={(triTypeAlbum)?'pilule actif':'pilule'} value='albums' onClick={() => {
+                                    setTriTypeAlbum(!triTypeAlbum)
+                                }} />
+                                <input type='button' className={(triFavori)?'pilule actif':'pilule'} value='favoris' onClick={() => {
+                                    setTriFavori(!triFavori)
+                                }} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className='catsFiltre'>
                         {listeCategoriesTags.map((elt, index) => <span className={(categorieSelec === index)?'clicable selec':'menu clicable'} key={elt.categorie} onClick={() => {
                             setCategorieSelec(index)
-                            // setTagSelec(null)
                         }}>{elt.categorie}</span>)}
                     </div>
                     <div className='listeTags'>
@@ -446,13 +464,10 @@ function Gallerie(props) {
                             let res = [...tagsSelec]
                             res[categorieSelec].liste[index] = !res[categorieSelec].liste[index]
                             setTagsSelec(res)
+                            setfiltreSelec('filtre')
                         }}>{elt}</label></div>)}
                     </div>
-                    <input type='button' value='cacher' onClick={() => {
-                        setaffFiltre(false)
-                    }} />
                 </div>: null}
-
                 {(colonnes[0].length > 0)?colonnes.map((elt, index) => {
                     return (<div className='column' id={'col'+index} style={{width: largeurColonne}} key={'col'+index}>
                         {elt}
