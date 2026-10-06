@@ -421,6 +421,12 @@ function Gallerie(props) {
                                 <input type='button' className={(filtreSelec === 'nonVu')?'pilule actif':'pilule'} value='jamais vus' onClick={() => {
                                     setfiltreSelec('nonVu')
                                 }} />
+                                <input type='button' className={(filtreSelec === 'sourceInconnue')?'pilule actif':'pilule'} value='source inconnue' onClick={() => {
+                                    setfiltreSelec('sourceInconnue')
+                                }} />
+                                <input type='button' className={(filtreSelec === 'sansNote')?'pilule actif':'pilule'} value='sans note' onClick={() => {
+                                    setfiltreSelec('sansNote')
+                                }} />
                                 <input type='button' className={(filtreSelec === 'sans')?'pilule actif':'pilule'} value='tous' onClick={() => {
                                     setfiltreSelec('sans')
                                 }} />
