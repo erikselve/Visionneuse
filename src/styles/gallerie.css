@@ -5,6 +5,12 @@
     margin-right: 0.5%;
 }
 
+.conteneur::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
 .conteneur .gestionPage {
     display: flex;
     justify-content: right;
