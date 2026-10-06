@@ -4,7 +4,7 @@ import { fetch_get, fetch_form, fetch_json } from '../modules/com'
 import { changeTache, agir, augmenteObjectif } from '../store/slices/indiceProgressionSlice'
 import { ajoute, changeEtat} from '../store/slices/mediasCompSlice'
 import { selectionneMedia, annuleSelection, changeBarreProgression, changePrinc, changeLoading } from '../store/slices/displaySlice'
-import { infoGraphisme, infoAnimation, infoMiseEnScene, infoSon } from '../data/source'
+import { infoGraphisme, infoAnimation, infoMiseEnScene, infoSon, criteresParType } from '../data/source'
 
 import Image from './Image'
 import Album from './Album'
@@ -559,7 +559,7 @@ function Gallerie(props) {
                         </select>
                     </div>
                     <div className='info'>
-                        {criteres.map(critere => (
+                    {criteres.filter((critere) => criteresParType[liste[mediaSelec].type].includes(critere.nom)).map(critere => (
                             <div key={critere.nom}>
                                 <label>{critere.libelle} :</label>
                                 {afficheNote((liste[mediaSelec].notes && liste[mediaSelec].notes[critere.nom] !== null)?liste[mediaSelec].notes[critere.nom]:-1, critere, critere.echelle)}

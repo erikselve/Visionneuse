@@ -25,3 +25,9 @@ export const infoSon = [{msg: 'Pas de son', valeur: 0.1},
     {msg: 'Pas de soucis en soi mais potentiellement incomplet (pas de doublage par exemple)', valeur: 1},
     {msg: 'Scène doublée, ambiance sonore, pas de défaut particulier à signaler', valeur: 1.05}
 ]
+
+export const criteresParType = {
+    video: ['graphisme', 'animation', 'miseEnScene', 'son'],
+    image: ['graphisme', 'miseEnScene'],
+    album: ['graphisme', 'miseEnScene']
+}
