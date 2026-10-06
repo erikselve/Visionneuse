@@ -402,6 +402,7 @@ function Gallerie(props) {
                             setTagsSelec(listeCategoriesTags.map(elt => {
                                 return {categorie: elt.categorie, liste: elt.liste.map(tag => false)}
                             }))
+                            setfiltreSelec('sans')
                         }} />
                         <input type='button' value='✕ cacher' onClick={() => {
                             setaffFiltre(false)

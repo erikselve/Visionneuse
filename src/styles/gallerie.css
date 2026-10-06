@@ -194,18 +194,21 @@
     flex-grow: 1;
 }
 
-.enteteFiltre input {
+.contenu .enteteFiltre input[type='button'] {
     background: none;
     border: none;
     color: #6b7280;
     font-size: 13px;
     padding: 2px 6px;
+    border-radius: 0px;
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
-.enteteFiltre input:hover {
+.contenu .enteteFiltre input[type='button']:hover {
+    background: none;
+    border: none;
     color: #5b8def;
 }
 
