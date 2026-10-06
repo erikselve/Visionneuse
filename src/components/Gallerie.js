@@ -4,6 +4,7 @@ import { fetch_get, fetch_form, fetch_json } from '../modules/com'
 import { changeTache, agir, augmenteObjectif } from '../store/slices/indiceProgressionSlice'
 import { ajoute, changeEtat} from '../store/slices/mediasCompSlice'
 import { selectionneMedia, annuleSelection, changeBarreProgression, changePrinc, changeLoading } from '../store/slices/displaySlice'
+import { changeDerniereSource } from '../store/slices/sourceSlice'
 import { infoGraphisme, infoAnimation, infoMiseEnScene, infoSon, criteresParType } from '../data/source'
 
 import Image from './Image'
@@ -549,10 +550,13 @@ function Gallerie(props) {
                         <select id='source' value={liste[mediaSelec].source ?? 'Inconnu'} onChange={(e) => {
                             const source = e.target.value
                             fetch_json({media: liste[mediaSelec].name, source: source}, 'put', 'media/source').then(rep => {
-                                if (rep) setListe(liste.map((elt, index) => {
-                                    if (index === mediaSelec) elt.source = source
-                                    return elt
-                                }))
+                                if (rep) {
+                                    setListe(liste.map((elt, index) => {
+                                        if (index === mediaSelec) elt.source = source
+                                        return elt
+                                    }))
+                                    dispatch(changeDerniereSource(source))
+                                }
                             })
                         }}>
                             {listeSource.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nom}</option>)}
