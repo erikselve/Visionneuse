@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { infoAnimation, infoGraphisme, infoMiseEnScene, infoSon } from '../../data/source'
 
+const COEF_FAVORI = 0.1   // bonus max +10% : une source dont tous les médias sont favoris
+
 function tri(liste, critere, sens) {
     let action = true
     while (action) {
@@ -28,7 +30,9 @@ function tri(liste, critere, sens) {
 }
 
 function calculeEval(source, max) {
-    return (infoGraphisme[source.graphisme].valeur + infoAnimation[source.animation].valeur) * infoMiseEnScene[source.miseEnScene].valeur * infoSon[source.son].valeur * 100 / max
+    const base = (infoGraphisme[source.graphisme].valeur + infoAnimation[source.animation].valeur)
+        * infoMiseEnScene[source.miseEnScene].valeur * infoSon[source.son].valeur * 100 / max
+    return base * (1 + COEF_FAVORI * (source.partFavoris || 0))
 }
 
 function calculeUrgence(source) {
