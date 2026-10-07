@@ -525,9 +525,9 @@ function Gallerie(props) {
                         </div>
                         <img src={boutonPoubelle} alt="supprimer le média" className="icone clicable inv" onClick={() => {
                             setMediaSelec(null)
+                            dispatch(changeLoading())
                             fetch_json({name: liste[mediaSelec].name}, 'delete', liste[mediaSelec].type).then(rep => {
                                 if (rep) {
-                                    dispatch(changeLoading())
                                     chargeListe().then(nouvListe => {
                                         if (nouvListe.length > 0) {
                                             const result = nouvListe.map(((elt, index) => {
@@ -540,6 +540,7 @@ function Gallerie(props) {
                                         dispatch(changeLoading())
                                     })
                                 }
+                                else dispatch(changeLoading())   // requête échouée : on ne reste pas bloqués en attente
                             })
                         }} />
                     </div>
