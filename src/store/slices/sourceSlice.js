@@ -3,33 +3,8 @@ import { infoAnimation, infoGraphisme, infoMiseEnScene, infoSon } from '../../da
 
 const COEF_FAVORI = 0.1   // bonus max +10% : une source dont tous les médias sont favoris
 
-function tri(liste, critere, sens) {
-    let action = true
-    while (action) {
-        action = false
-        for (let index = 0; index < liste.length-1; index++) {
-            if (sens > 0) {
-                if (liste[index][critere] < liste[index+1][critere] ) {
-                    let tampon = liste[index]
-                    liste[index] = liste[index+1]
-                    liste[index+1] = tampon
-                    action = true
-                }
-            }
-            else {
-                if (liste[index][critere] > liste[index+1][critere] ) {
-                    let tampon = liste[index]
-                    liste[index] = liste[index+1]
-                    liste[index+1] = tampon
-                    action = true
-                }
-            }
-        }                        
-    }
-    return liste
-}
-
 function calculeEval(source, max) {
+    if (source.graphisme === null || source.animation === null || source.miseEnScene === null || source.son === null) return 0
     const base = (infoGraphisme[source.graphisme].valeur + infoAnimation[source.animation].valeur)
         * infoMiseEnScene[source.miseEnScene].valeur * infoSon[source.son].valeur * 100 / max
     return base * (1 + COEF_FAVORI * (source.partFavoris || 0))
@@ -46,7 +21,7 @@ export const sourcesSlice = createSlice({
         chargeSources: (state, action) => {
             const max = (infoGraphisme[infoGraphisme.length-1].valeur + infoAnimation[infoAnimation.length-1].valeur) * infoMiseEnScene[infoMiseEnScene.length-1].valeur * infoSon[infoSon.length-1].valeur
             let liste = [...action.payload]
-            liste = tri(liste, 'nom', -1)
+            liste.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'))
             let listeNom = []
             listeNom.push({nom: 'Inconnu', manuel: false})
             state.plusGrandeUrgence = 0
@@ -70,7 +45,7 @@ export const sourcesSlice = createSlice({
             }
         },
         triSources: (state, action) => {
-            state.sources = tri(state.sources, action.payload, state.sensTri)
+            state.sources = [...state.sources].sort((a, b) => state.sensTri * (b[action.payload] - a[action.payload])) //tri de la liste
             state.sensTri = state.sensTri * -1
         },
         changeDerniereSource: (state, action) => {
