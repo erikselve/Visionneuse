@@ -557,7 +557,7 @@ function Gallerie(props) {
                                         if (index === mediaSelec) elt.source = source
                                         return elt
                                     }))
-                                    dispatch(changeDerniereSource(source))
+                                    if (source !== 'Inconnu') dispatch(changeDerniereSource(source))
                                 }
                             })
                         }}>

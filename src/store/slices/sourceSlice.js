@@ -49,7 +49,8 @@ export const sourcesSlice = createSlice({
             state.sensTri = state.sensTri * -1
         },
         changeDerniereSource: (state, action) => {
-            state.derniereSourceUtilisee = state.sources[state.sources.findIndex((elt) => elt.nom === action.payload)]
+            const index = state.sources.findIndex((elt) => elt.nom === action.payload)
+            state.derniereSourceUtilisee = (index >= 0)?state.sources[index]:null
         }
     }
 })
