@@ -60,8 +60,10 @@ export const sourcesSlice = createSlice({
             });
             state.listeNomAlphab = listeNom
             state.sources = action.payload
-            if (state.derniereSourceUtilisee !== null)
-                state.derniereSourceUtilisee = state.sources[state.sources.findIndex((elt) => elt.nom === state.derniereSourceUtilisee.nom)]
+            if (state.derniereSourceUtilisee !== null) {
+                const index = state.sources.findIndex((elt) => elt.nom === state.derniereSourceUtilisee.nom)
+                state.derniereSourceUtilisee = (index >= 0)?state.sources[index]:null
+            }
         },
         triSources: (state, action) => {
             state.sources = tri(state.sources, action.payload, state.sensTri)
