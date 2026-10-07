@@ -171,6 +171,7 @@ function Gallerie(props) {
                         else dispatch(ajoute({liste: res.listeVerif, taille: res.taille}))
                     }
                 }
+                else dispatch(changeEtat())
             })
         }
         else if (etat === 'ended') {
@@ -184,12 +185,12 @@ function Gallerie(props) {
         else if (etat === 'idle' && listeSelec.length > 0) {
             console.log('uploads terminés')
             dispatch(changeBarreProgression())
-            dispatch(changeLoading())
             chargeListe().then(nouvListe => {
                 if (nouvListe.length > 0) {
                     setListe(nouvListe)
                 }
             })
+            dispatch(changeLoading())
         }
     }, [etat])
 
