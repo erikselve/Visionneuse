@@ -4,6 +4,7 @@ import '../styles/gestionSources.css'
 import etoileVide from '../assets/etoileVide.png'
 import etoile from '../assets/etoile.png'
 import oeil from '../assets/voir.png'
+import crayon from '../assets/crayon.png'
 import { infoAnimation, infoGraphisme, infoMiseEnScene, infoSon } from '../data/source'
 import { chargeSources, triSources, changeDerniereSource } from '../store/slices/sourceSlice'
 import { useSelector, useDispatch } from 'react-redux'
@@ -18,6 +19,7 @@ function GestionSources() {
     const [infoNote, setInfoNote] = useState({texte: '', source: '', critere: ''})
     const listeNomManuel = useSelector((state) => state.sources.listeNomAlphab.filter((elt) => elt.manuel))
     const [nomTape, setNomTape] = useState('')
+    const [sourceRenommee, setSourceRenommee] = useState(null)
 
     function afficheNote(note, type, auteur, infos, calcul) {
         let suiteNotes = []
@@ -116,11 +118,31 @@ function GestionSources() {
                     })
 
                     return(<div key={source._id} className='affSource'>
-                        <div className='nom'><span>{source.nom}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
-                            fetch_json({source: source._id},'PATCH','source/consulte/').then((rep) => {
-                                dispatch(chargeSources(rep.liste))
-                            })
-                        }} /></div>
+                        <div className='nom'>
+                            <span>{source.nom}</span>
+                            <img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
+                                fetch_json({source: source._id},'PATCH','source/consulte/').then((rep) => {
+                                    dispatch(chargeSources(rep.liste))
+                                })
+                            }} />
+                            <img src={crayon} className='icone clicable' alt='renommer' onClick={() => {
+                                setSourceRenommee((sourceRenommee === source.nom)?null:source.nom)
+                            }} />
+                        </div>
+                        {(sourceRenommee === source.nom)? <div className='saisieRenomme'>
+                            <input type='text' defaultValue={source.nom} id={'renomme_'+source._id} />
+                            <input type='button' value='valider' onClick={() => {
+                                const nouvNom = document.getElementById('renomme_'+source._id).value
+                                fetch_json({ancienNom: source.nom, nouvNom: nouvNom}, 'put', 'source/rename').then(rep => {
+                                    if (rep) {
+                                        dispatch(chargeSources(rep.liste))
+                                        dispatch(changeDerniereSource(rep.auteur))
+                                        setSourceRenommee(null)
+                                    }
+                                })
+                            }} />
+                            <input type='button' value='annuler' onClick={() => setSourceRenommee(null)} />
+                        </div>: null}
                         <div>
                             <div className='notes'>
                                 <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, infoGraphisme, (source.notesCalculees && source.notesCalculees.graphisme !== undefined))}
