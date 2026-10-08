@@ -1,4 +1,4 @@
-import './filtres.css'
+import '../../styles/filtres.css'
 
 // Panneau de sélection des filtres d'affichage de la galerie.
 // Composant de pure présentation : tout l'état vit dans Galerie.js,
