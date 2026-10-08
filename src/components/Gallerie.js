@@ -5,7 +5,6 @@ import { changeTache, agir, augmenteObjectif } from '../store/slices/indiceProgr
 import { ajoute, changeEtat} from '../store/slices/mediasCompSlice'
 import { selectionneMedia, annuleSelection, changeBarreProgression, changePrinc, changeLoading } from '../store/slices/displaySlice'
 import { changeDerniereSource } from '../store/slices/sourceSlice'
-import { infoGraphisme, infoAnimation, infoMiseEnScene, infoSon, criteresParType } from '../data/source'
 
 import Image from './Image'
 import Album from './Album'
@@ -61,16 +60,17 @@ function Gallerie(props) {
     const [assocSource, setAssocSource] = useState(true)
     //tout pour les notation de médias
     const [infoNote, setInfoNote] = useState({texte: '', critere: ''})
+    const notation = useSelector((state) => state.sources.notation)
     const criteres = [
-        {nom: 'graphisme', libelle: 'Graphisme', echelle: infoGraphisme},
-        {nom: 'animation', libelle: 'Animation', echelle: infoAnimation},
-        {nom: 'miseEnScene', libelle: 'Mise en scène', echelle: infoMiseEnScene},
-        {nom: 'son', libelle: 'Son', echelle: infoSon}
+        {nom: 'graphisme', libelle: 'Graphisme', echelle: notation.echelles['graphisme']},
+        {nom: 'animation', libelle: 'Animation', echelle: notation.echelles['animation']},
+        {nom: 'miseEnScene', libelle: 'Mise en scène', echelle: notation.echelles['miseEnScene']},
+        {nom: 'son', libelle: 'Son', echelle: notation.echelles['son']}
     ]
 
-    function afficheNote(note, critere, echelle) {
+    function afficheNote(note, critere) {
         let suiteNotes = []
-        for (let pos = 0; pos < echelle.length; pos++) {
+        for (let pos = 0; pos < notation.echelles[critere.nom].length; pos++) {
             suiteNotes = [...suiteNotes, <img key={critere.nom+'_'+pos} src={(pos <= note)?etoile:etoileVide} className='icone clicable' alt='etoile' onClick={() => {
                 const notes = {...(liste[mediaSelec].notes ?? {})}
                 notes[critere.nom] = (pos === note)?null:pos
@@ -80,7 +80,7 @@ function Gallerie(props) {
                         return elt
                     }))
                 })
-            }} onMouseOver={() => setInfoNote({texte: echelle[pos].msg, critere: critere.nom})} onMouseLeave={() => setInfoNote({texte: '', critere: ''})} />]
+            }} onMouseOver={() => setInfoNote({texte: notation.echelles[critere.nom][pos].msg, critere: critere.nom})} onMouseLeave={() => setInfoNote({texte: '', critere: ''})} />]
         }
         return(<span>{suiteNotes}</span>)
     }
@@ -565,10 +565,10 @@ function Gallerie(props) {
                         </select>
                     </div>
                     <div className='info'>
-                    {criteres.filter((critere) => criteresParType[liste[mediaSelec].type].includes(critere.nom)).map(critere => (
+                    {criteres.filter((critere) => notation.criteresParType[liste[mediaSelec].type].includes(critere.nom)).map(critere => (
                             <div key={critere.nom}>
                                 <label>{critere.libelle} :</label>
-                                {afficheNote((liste[mediaSelec].notes && liste[mediaSelec].notes[critere.nom] !== null)?liste[mediaSelec].notes[critere.nom]:-1, critere, critere.echelle)}
+                                {afficheNote((liste[mediaSelec].notes && liste[mediaSelec].notes[critere.nom] !== null)?liste[mediaSelec].notes[critere.nom]:-1, critere)}
                                 {(infoNote.critere === critere.nom)?<span className='infoNote'>{infoNote.texte}</span>:null}
                             </div>
                         ))}

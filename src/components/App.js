@@ -10,6 +10,7 @@ import AffichFavori from './AffichFavori'
 import GestionSources from './GestionSources'
 import { fetch_get } from '../modules/com'
 import { initialise } from '../store/slices/listeTagsSlice'
+import { chargeNotation } from '../store/slices/sourceSlice'
 import '../styles/app.css'
 import patienter from '../assets/chronometre.gif'
 import { useCookies } from 'react-cookie';
@@ -59,6 +60,7 @@ function App() {
       dispatch(initialise(rep.res))
       setchargement(false)
     })
+    fetch_get('source/notation').then((rep) => dispatch(chargeNotation(rep)))
   }, [])
 
   if (!chargement)
