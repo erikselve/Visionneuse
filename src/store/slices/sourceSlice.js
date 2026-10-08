@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const COEF_FAVORI = 0.1   // bonus max +10% : une source dont tous les médias sont favoris
-
 export const sourcesSlice = createSlice({
     name: 'sources',
     initialState: {plusGrandeUrgence: 0, sensTri: 1, derniereSourceUtilisee: null, listeNomAlphab:[], sources: [], notation: null}, 
