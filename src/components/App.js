@@ -1,7 +1,7 @@
 import { useSelector, useDispatch, } from 'react-redux'
 import { useState, useEffect } from 'react'
 import Menu from "./Menu"
-import Gallerie from "./Gallerie"
+import Galerie from "./Galerie"
 import AffProgression from './BarreProgression'
 import GestionTags from './GestionTags'
 import Comparateur from './Comparateur'
@@ -69,7 +69,7 @@ function App() {
         <Menu id='menu' />
         {(progBarDisplay)?<AffProgression/>:null}
         {(princDisplay.comparateur)?<Comparateur />:null}
-        <div className={(princDisplay.gallerie)?'contenu':'contenu none'}><Gallerie /></div>
+        <div className={(princDisplay.gallerie)?'contenu':'contenu none'}><Galerie /></div>
         <div className={(princDisplay.gestionTags)?'contenu':'contenu none'}><GestionTags /></div>
         <div className={(princDisplay.sources)?'contenu':'contenu none'}><GestionSources /></div>
         <div className={(loading)?'loading':'loading none'} ><img src={patienter} /></div>

@@ -1,0 +1,135 @@
+.zoneFiltre {
+    background-color: #1b1e24;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+}
+
+.zoneFiltre .tag {
+    border-width: 1px;
+    border-color: rgba(255,255,255,0.25);
+    border-radius: 10px;
+    border-style: solid;
+    padding: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+}
+
+.zoneFiltre .listeTags {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.zoneFiltre .case {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.zoneFiltre .menu {
+    margin-bottom: 20px;
+}
+
+.zoneFiltre .menu span {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.zoneFiltre .selec {
+    background-color: rgba(255,255,255,0.12);
+}
+
+.zoneFiltre .listeTags .selec {
+    background-color: #5b8def;
+}
+
+.enteteFiltre {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.titreFiltre {
+    font-weight: bold;
+    font-size: 15px;
+    flex-grow: 1;
+}
+
+.contenu .enteteFiltre input[type='button'] {
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 0px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.contenu .enteteFiltre input[type='button']:hover {
+    background: none;
+    border: none;
+    color: #5b8def;
+}
+
+.groupesFiltre {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.groupe {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.titreGroupe {
+    font-size: 11px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.pilules {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.zoneFiltre .pilule {
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #c9ced8;
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    cursor: pointer;
+}
+
+.zoneFiltre .pilule:hover {
+    border-color: #5b8def;
+    color: #e8e9ec;
+}
+
+.zoneFiltre .pilule.actif {
+    background-color: rgba(91,141,239,0.2);
+    border-color: #5b8def;
+    color: #5b8def;
+    font-weight: bold;
+}
+
+.zoneFiltre .menu {
+    margin-bottom: 0px;
+}
