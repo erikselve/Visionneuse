@@ -60,10 +60,14 @@ export const mediasCompSlice = createSlice({
                     state.etat = 'idle'
                 }
             }
+        },
+        desarme: (state) => {
+            //vide la sélection résiduelle une fois les uploads terminés — la machine ne rejoue pas la branche idle au remontage du composant
+            if (state.etat === 'idle') state.listeSelec = []
         }
     }
 })
 
-export const {ajoute, retire, termine, avance, changeEtat} = mediasCompSlice.actions
+export const {ajoute, retire, termine, avance, changeEtat, desarme} = mediasCompSlice.actions
 
 export default mediasCompSlice.reducer
