@@ -6,7 +6,7 @@ import '../../styles/filtres.css'
 function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, setTriSelec,
         triTypeVideo, setTriTypeVideo, triTypeImage, setTriTypeImage, triTypeAlbum, setTriTypeAlbum,
         triFavori, setTriFavori, tagsSelec, setTagsSelec, categorieSelec, setCategorieSelec,
-        listeCategoriesTags}) {
+        listeCategoriesTags, sourceSelec, setSourceSelec, listeSources}) {
 
     if (!affiche) return null
 
@@ -25,17 +25,11 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
             <div className='groupe'>
                 <span className='titreGroupe'>Quels médias ?</span>
                 <div className='pilules'>
-                    <input type='button' className={(filtreSelec === 'avecTag' || filtreSelec === 'filtre')?'pilule actif':'pilule'} value='avec tags' onClick={() => {
-                        setfiltreSelec('avecTag')
-                    }} />
                     <input type='button' className={(filtreSelec === 'sansTag')?'pilule actif':'pilule'} value='sans tag' onClick={() => {
                         setfiltreSelec('sansTag')
                     }} />
                     <input type='button' className={(filtreSelec === 'nonVu')?'pilule actif':'pilule'} value='jamais vus' onClick={() => {
                         setfiltreSelec('nonVu')
-                    }} />
-                    <input type='button' className={(filtreSelec === 'sourceInconnue')?'pilule actif':'pilule'} value='source inconnue' onClick={() => {
-                        setfiltreSelec('sourceInconnue')
                     }} />
                     <input type='button' className={(filtreSelec === 'sansNote')?'pilule actif':'pilule'} value='sans note' onClick={() => {
                         setfiltreSelec('sansNote')
@@ -44,6 +38,14 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
                         setfiltreSelec('sans')
                     }} />
                 </div>
+            </div>
+            <div className='groupe'>
+                <span className='titreGroupe'>Source</span>
+                <select value={sourceSelec} onChange={(e) => setSourceSelec(e.target.value)}>
+                    <option value='toutes'>toutes les sources</option>
+                    <option value='inconnue'>source inconnue</option>
+                    {listeSources.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nom}</option>)}
+                </select>
             </div>
             <div className='groupe'>
                 <span className='titreGroupe'>Tri</span>

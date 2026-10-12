@@ -35,6 +35,7 @@ function Galerie(props) {
     const [triTypeImage, setTriTypeImage] = useState(true)
     const [triTypeAlbum, setTriTypeAlbum] = useState(true)
     const [triFavori, setTriFavori] = useState(false)
+    const [sourceSelec, setSourceSelec] = useState('toutes')
     const [tagsSelec, setTagsSelec] = useState(listeCategoriesTags.map(elt => {
         return {categorie: elt.categorie, liste: elt.liste.map(tag => false)}
     }))
@@ -48,7 +49,7 @@ function Galerie(props) {
                 if (tag) filtre.push(listeCategoriesTags[indexElt].liste[indexTag])
             })
         });
-        const rep = await fetch_json({filtre: filtreSelec, tagsFiltres: filtre, typeFiltres: {image: triTypeImage, album: triTypeAlbum, video: triTypeVideo}, favoriFiltre: triFavori, nbImages: NB_IMAGE_PAR_PAGE, page: page, tri: triSelec}, 'post', 'media')
+        const rep = await fetch_json({filtre: filtreSelec, sourceSelec: sourceSelec, tagsFiltres: filtre, typeFiltres: {image: triTypeImage, album: triTypeAlbum, video: triTypeVideo}, favoriFiltre: triFavori, nbImages: NB_IMAGE_PAR_PAGE, page: page, tri: triSelec}, 'post', 'media')
         if (rep) {
             if (rep.max % NB_IMAGE_PAR_PAGE === 0)
                 setMaxPage(Math.floor(rep.max / NB_IMAGE_PAR_PAGE)-1)
@@ -106,7 +107,7 @@ function Galerie(props) {
         }
         else
             setPage(0)
-    }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec])
+    }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec, sourceSelec])
 
     if (mediaSelec === null) {
 //affichage de la gallerie (menus + colonnes de médias)
@@ -156,8 +157,8 @@ function Galerie(props) {
                     triSelec={triSelec} setTriSelec={setTriSelec} triTypeVideo={triTypeVideo} setTriTypeVideo={setTriTypeVideo}
                     triTypeImage={triTypeImage} setTriTypeImage={setTriTypeImage} triTypeAlbum={triTypeAlbum} setTriTypeAlbum={setTriTypeAlbum}
                     triFavori={triFavori} setTriFavori={setTriFavori} tagsSelec={tagsSelec} setTagsSelec={setTagsSelec}
-                    categorieSelec={categorieSelec} setCategorieSelec={setCategorieSelec}
-                    listeCategoriesTags={listeCategoriesTags} />
+                    categorieSelec={categorieSelec} sourceSelec={sourceSelec} setSourceSelec={setSourceSelec} listeSources={listeSource} 
+                    setCategorieSelec={setCategorieSelec} listeCategoriesTags={listeCategoriesTags} />
 
                 <Miniatures liste={liste} onSelectMedia={(index) => {
                     setScroll(window.scrollY)
