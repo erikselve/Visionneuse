@@ -6,6 +6,7 @@ import { changeLoading } from '../store/slices/displaySlice'
 import Filtres from './galerie/Filtres'
 import VueMedia from './galerie/VueMedia'
 import ZoneAjout from './galerie/ZoneAjout'
+import Miniatures from './galerie/Miniatures'
 
 import Image from './Image'
 import Album from './Album'
@@ -40,14 +41,6 @@ function Galerie(props) {
     const [scroll, setScroll] = useState(0)
     const listeSource = useSelector((state) => state.sources.listeNomAlphab)
 
-    function colonnePlusPetite(tailleColonnes) {
-        let res = 0
-        for (let index = 1; index < tailleColonnes.length; index++) {
-            if (tailleColonnes[index] < tailleColonnes[res]) res = index            
-        }
-        return res
-    }
-
     async function chargeListe() {
         let filtre = []
         tagsSelec.forEach((element, indexElt) => {
@@ -63,25 +56,7 @@ function Galerie(props) {
                 setMaxPage(Math.floor(rep.max / NB_IMAGE_PAR_PAGE))
             return rep.res
         }
-        else return []
-    }
-
-    function determineMedia(media, display) {
-        switch (media.type) {
-            case 'image':
-                return(<Image nom={media.name} display={display} />)
-                break;
-            case 'album':
-                return(<Album nom={media.name} display={display} />)
-                break;
-            case 'video':
-                return(<Video nom={media.name} display={display} />)
-                break;
-            default:
-                console.log('type de média inconnu pour afficher '+media.name);
-                return null
-                break;
-        }
+        else return null
     }
 
     useEffect(() => {
@@ -97,7 +72,7 @@ function Galerie(props) {
     useEffect(() => {
         dispatch(changeLoading())
         chargeListe().then(nouvListe => {
-            if (nouvListe.length > 0) {
+            if (nouvListe !== null) {
                 const result = nouvListe.map(((elt, index) => {
                     if (index > 0) elt.prec = index-1
                     if (index < nouvListe.length-1) elt.suiv = index+1
@@ -118,7 +93,7 @@ function Galerie(props) {
         if (page === 0) {
             dispatch(changeLoading())
             chargeListe().then(nouvListe => {
-                if (nouvListe.length > 0) {
+                if (nouvListe !== null) {
                     const result = nouvListe.map(((elt, index) => {
                         if (index > 0) elt.prec = index-1
                         if (index < nouvListe.length-1) elt.suiv = index+1
@@ -134,24 +109,6 @@ function Galerie(props) {
     }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec])
 
     if (mediaSelec === null) {
-//on affiche la gallerie de miniatures de média
-//construction des colonnes de médias
-        let tailleColonnes = []
-        let colonnes = []
-        for (let index = 0; index < NB_COLONNE_GALLERIE; index++) {
-            tailleColonnes.push(0)
-            colonnes.push([])
-        }
-        liste.map((media, index) => {
-            const colonne = colonnePlusPetite(tailleColonnes)
-            const rapportTaille = media.taille.height / media.taille.width
-            tailleColonnes[colonne] = tailleColonnes[colonne] + rapportTaille
-            colonnes[colonne].push(<div className='media' key={media.name} onClick={() => {
-                setScroll(window.scrollY)
-                setMediaSelec(index)
-            }}>{determineMedia(media, 'mini')}</div>)
-        })
-        const largeurColonne = Math.floor(100/NB_COLONNE_GALLERIE - 1)+'%'
 //affichage de la gallerie (menus + colonnes de médias)
         return(
             <div className='conteneur'>
@@ -202,11 +159,10 @@ function Galerie(props) {
                     categorieSelec={categorieSelec} setCategorieSelec={setCategorieSelec}
                     listeCategoriesTags={listeCategoriesTags} />
 
-                {(colonnes[0].length > 0)?colonnes.map((elt, index) => {
-                    return (<div className='column' id={'col'+index} style={{width: largeurColonne}} key={'col'+index}>
-                        {elt}
-                    </div>)
-                }):<span>Aucun média dans la liste</span>}
+                <Miniatures liste={liste} onSelectMedia={(index) => {
+                    setScroll(window.scrollY)
+                    setMediaSelec(index)
+                }} />
             </div>
         )
     }

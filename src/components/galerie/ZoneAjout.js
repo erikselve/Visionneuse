@@ -74,8 +74,13 @@ function ZoneAjout(props) {
             console.log('uploads terminés')
             dispatch(changeBarreProgression())
             props.chargeListe().then(nouvListe => {
-                if (nouvListe.length > 0) {
-                    props.setListe(nouvListe)
+                if (nouvListe !== null) {
+                    const result = nouvListe.map(((elt, index) => {
+                        if (index > 0) elt.prec = index-1
+                        if (index < nouvListe.length-1) elt.suiv = index+1
+                        return elt
+                    }))
+                    props.setListe(result)
                 }
                 dispatch(changeLoading())
                 dispatch(desarme())

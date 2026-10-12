@@ -94,7 +94,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                         fetch_json({name: liste[mediaSelec].name}, 'delete', liste[mediaSelec].type).then(rep => {
                             if (rep) {
                                 chargeListe().then(nouvListe => {
-                                    if (nouvListe.length > 0) {
+                                    if (nouvListe !== null) {
                                         const result = nouvListe.map(((elt, index) => {
                                             if (index > 0) elt.prec = index-1
                                             if (index < nouvListe.length-1) elt.suiv = index+1
