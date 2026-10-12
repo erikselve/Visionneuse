@@ -34,6 +34,9 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
                     <input type='button' className={(filtreSelec === 'sansNote')?'pilule actif':'pilule'} value='sans note' onClick={() => {
                         setfiltreSelec('sansNote')
                     }} />
+                    <input type='button' className={(filtreSelec === 'modifieRecent')?'pilule actif':'pilule'} value='récemment modifiés' onClick={() => {
+                        setfiltreSelec('modifieRecent')
+                    }} />
                     <input type='button' className={(filtreSelec === 'sans')?'pilule actif':'pilule'} value='tous' onClick={() => {
                         setfiltreSelec('sans')
                     }} />
