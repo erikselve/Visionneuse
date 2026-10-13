@@ -8,6 +8,11 @@
     display: block;
 }
 
+.media img {
+    width: 100%;    /* largeur = colonne */
+    height: auto;   /* hauteur dérivée du ratio des attributs — espace réservé avant chargement */
+}
+
 .media:hover {
     border: 4px solid #5b8def;
     cursor: pointer;

@@ -1,13 +1,6 @@
 import { URL_server, PATH_ALBUM } from "../data/config"
 import { fetch_json } from '../modules/com'
-import { useDispatch, useSelector } from 'react-redux'
-import { changePrinc, annuleSelection, selectionneMedia } from "../store/slices/displaySlice"
-import boutonRetour from '../assets/flecheHaut.png'
-import boutonPrec from '../assets/flecheGauche.png'
-import boutonSuiv from '../assets/flecheDroite.png'
-import boutonPrecGrise from '../assets/flecheGaucheGrise.png'
-import boutonSuivGrise from '../assets/flecheDroiteGrise.png'
-import boutonPoubelle from '../assets/poubelle2.png'
+import Vignette from "./Vignette"
 import logo from '../assets/bulle.png'
 import '../styles/album.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
@@ -18,7 +11,6 @@ import { useState, useEffect } from "react"
 //  - nom: nom de l'album / chemin vers l'image de couverture
 //  - display: mini=affichage d'une miniature, complet=affichage détaillé
 function Album(props) {
-    const dispatch = useDispatch()
     const [tomes, setTomes] = useState([])
     const [tomeSelec, setTomeSelec] = useState(-1)
     const [pageSelec, setPageSelec] = useState(-1)
@@ -49,7 +41,9 @@ function Album(props) {
     if (props.display === 'mini') {
         return(
             <div>
-                <div className="conteneurAlbum"><img className="couv" src={URL_server+PATH_ALBUM+props.nom+'/00001/00001.jpg'} /><div className="logo"><img src={logo} /></div></div>
+                <div className="conteneurAlbum">
+                    <Vignette src={URL_server+PATH_ALBUM+props.nom+'/00001/00001.jpg'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
+                <div className="logo"><img src={logo} /></div></div>
             </div>
         )
     }

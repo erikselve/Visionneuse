@@ -1,11 +1,9 @@
 import { URL_server, PATH_VIDEO } from "../data/config"
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import '../styles/video.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
-import bordureHaut from '../assets/bordure_video_haut.png'
-import bordureBas from '../assets/bordure_video_bas.png'
-import bordure from '../assets/bordure_video_centre.png'
 import { useState } from "react"
+import Vignette from "./Vignette"
 import { animated, useSpring } from '@react-spring/web'
 
 //props obligatoires
@@ -27,7 +25,7 @@ function Video(props) {
                     <video autoPlay><source src={URL_server+PATH_VIDEO+props.nom} type="video/mp4" /></video>:
                     <div>
                         {/* <div className="barre"><animated.div style={{...springs}} className='barreRemplie'></animated.div></div> */}
-                        <img src={URL_server+PATH_VIDEO+'couvertures/'+couverture} className='couverture' alt="présentation de la vidéo" />
+                        <Vignette src={URL_server+PATH_VIDEO+'couvertures/'+couverture} alt="présentation de la vidéo" className="couverture" largeur={props.taille?.width} hauteur={props.taille?.height} />
                     </div>
                 }
                 </div>

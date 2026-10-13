@@ -1,6 +1,7 @@
 import { URL_server, PATH_IMAGE } from "../data/config"
 import '../styles/image.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
+import Vignette from "./Vignette"
 
 
 //props obligatoires
@@ -12,7 +13,7 @@ function Image(props) {
     if (props.display === 'mini') {
         return(
             <div>
-                <div className="conteneurIm"><img src={URL_server+PATH_IMAGE+props.nom} /></div>
+                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+props.nom} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
             </div>
         )
     }

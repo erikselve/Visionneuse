@@ -19,11 +19,11 @@ function Miniatures({liste, onSelectMedia}) {
     function determineMedia(media, display) {
         switch (media.type) {
             case 'image':
-                return(<Image nom={media.name} display={display} />)
+                return(<Image nom={media.name} display={display} taille={media.taille} />)
             case 'album':
-                return(<Album nom={media.name} display={display} />)
+                return(<Album nom={media.name} display={display} taille={media.taille} />)
             case 'video':
-                return(<Video nom={media.name} display={display} />)
+                return(<Video nom={media.name} display={display} taille={media.taille} />)
             default:
                 console.log('type de média inconnu pour afficher '+media.name);
                 return null
