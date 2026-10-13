@@ -64,3 +64,8 @@
     gap: 16px;
     padding: 10px 0px;
 }
+
+.sentinelScroll {
+    clear: both;    /* passe SOUS les colonnes flottantes : la vraie fin de la galerie */
+    height: 10px;
+}

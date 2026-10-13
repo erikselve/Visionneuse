@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { fetch_json } from '../modules/com'
 import { changeLoading } from '../store/slices/displaySlice'
 
@@ -10,16 +10,14 @@ import Miniatures from './galerie/Miniatures'
 
 import '../styles/galerie.css'
 import { NB_IMAGE_PAR_PAGE } from "../data/config"
-import iconeDebut from '../assets/debut.png'
-import iconeFin from '../assets/fin.png'
-import iconeAvance from '../assets/avance.png'
-import iconeRecule from '../assets/recule.png'
 
 function Galerie(props) {
     const dispatch = useDispatch()
     const [page, setPage] = useState(0)
     const [liste, setListe] = useState([])
     const [maxPage, setMaxPage] = useState(0)
+    const enCours = useRef(false)   //garde : une seule charge de page à la fois
+    const sentinelRef = useRef(null)
     const [affFiltre, setaffFiltre] = useState(false)
     const [affAjoutData, setAffAjoutData] = useState(false)
     const [mediaSelec, setMediaSelec] = useState(null)
@@ -39,14 +37,21 @@ function Galerie(props) {
     const [scroll, setScroll] = useState(0)
     const listeSource = useSelector((state) => state.sources.listeNomAlphab)
 
-    async function chargeListe() {
+    //chargePage = requête d'une page précise (append du scroll infini) ;
+    //sans argument = recharge de TOUT le préfixe affiché (pages 0..page en une requête) après
+    //suppression ou fin d'uploads : les index de l'accumulé doivent être renumérotés en place.
+    async function chargeListe(chargePage = null) {
         let filtre = []
-        tagsSelec.forEach((element, indexElt) => {
+        tagsSelec.forEach((element, indexElt) => {          // construction du filtre : inchangée
             element.liste.forEach((tag, indexTag) => {
                 if (tag) filtre.push(listeCategoriesTags[indexElt].liste[indexTag])
             })
         });
-        const rep = await fetch_json({filtre: filtreSelec, sourceSelec: sourceSelec, tagsFiltres: filtre, typeFiltres: {image: triTypeImage, album: triTypeAlbum, video: triTypeVideo}, favoriFiltre: triFavori, nbImages: NB_IMAGE_PAR_PAGE, page: page, tri: triSelec}, 'post', 'media')
+        const nbImages = (chargePage === null)?NB_IMAGE_PAR_PAGE*(page+1):NB_IMAGE_PAR_PAGE
+        const pageDemandee = (chargePage === null)?0:chargePage
+        const rep = await fetch_json({filtre: filtreSelec, sourceSelec: sourceSelec, tagsFiltres: filtre,
+            typeFiltres: {image: triTypeImage, album: triTypeAlbum, video: triTypeVideo},
+            favoriFiltre: triFavori, nbImages: nbImages, page: pageDemandee, tri: triSelec}, 'post', 'media')
         if (rep) {
             if (rep.max % NB_IMAGE_PAR_PAGE === 0)
                 setMaxPage(Math.floor(rep.max / NB_IMAGE_PAR_PAGE)-1)
@@ -66,18 +71,21 @@ function Galerie(props) {
             window.scroll(0, 0)
     })
 
-    //met à jour la liste des médias de la gallerie
+    //met à jour l'affichage : page 0 = remplacement (montage, reset de filtre), pages suivantes = accumulation
     useEffect(() => {
-        dispatch(changeLoading())
-        chargeListe().then(nouvListe => {
-            if (nouvListe !== null) {
-                setListe(nouvListe)
+        const avecAttente = (page === 0 || futurMediaSelec !== null)   //attente visible seulement si elle bloque
+        if (avecAttente) dispatch(changeLoading())
+        chargeListe(page).then(nouvPage => {
+            if (nouvPage !== null) {
+                if (page === 0) setListe(nouvPage)
+                else setListe([...liste, ...nouvPage])
             }
             if (futurMediaSelec !== null) {
                 setMediaSelec(futurMediaSelec)
                 setfuturMediaSelec(null)
             }
-            dispatch(changeLoading())
+            enCours.current = false // sentinelle de nouveau autorisée à déclencher
+            if (avecAttente) dispatch(changeLoading())
         })
     }, [page])
 
@@ -96,6 +104,20 @@ function Galerie(props) {
             setPage(0)
     }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec, sourceSelec])
 
+    //scroll infini : la sentinelle sous la galerie déclenche le chargement de la page suivante
+    //à l'approche du viewport (600px d'avance, en accord avec les vignettes lazy)
+    useEffect(() => {
+        if (sentinelRef.current === null) return   //liste vide : la sentinelle n'est pas montée
+        const observateur = new IntersectionObserver(([entree]) => {
+            if (entree.isIntersecting && page < maxPage && !enCours.current) {
+                enCours.current = true
+                setPage(page+1)
+            }
+        }, {rootMargin: '600px'})
+        observateur.observe(sentinelRef.current)
+        return () => observateur.disconnect()
+    }, [page, maxPage, liste])
+
     if (mediaSelec === null) {
 //affichage de la gallerie (menus + colonnes de médias)
         return(
@@ -110,29 +132,6 @@ function Galerie(props) {
                         {(!affFiltre)?<input type='button' value='définir les filtres' onClick={() => {
                             setaffFiltre(true)
                         }} />:null}
-                    </div>
-                    <div className='zoneBouton'>
-                        {(page > 0)?<img src={iconeDebut} className='icone clicable inv' onClick={() => {
-                            setPage(0)
-                        }} />:<img src={iconeDebut} className='icone'/>}
-                        {(page > 0)?<img src={iconeRecule} className='icone clicable inv' onClick={() => {
-                            setPage(page-1)
-                        }} />:<img src={iconeRecule} className='icone inv'/>}
-                    </div>
-                    <span>
-                        {(page > 0)?<span><span className='clicable' onClick={() => {setPage(0)}}>1</span> ... </span>:null}
-                        {((page+1)/2 > 5)?<span><span className='clicable' onClick={() => {setPage(Math.round((page+1)/2)-1)}}>{Math.round((page+1)/2)}</span> ... </span>:null}
-                        {page+1}
-                        {((maxPage-page)/2 > 5)?<span> ... <span className='clicable' onClick={() => {setPage(maxPage - Math.round((maxPage-page)/2)-1)}}>{maxPage - Math.round((maxPage-page)/2)}</span></span>:null}
-                        {(page < maxPage)?<span> ... <span className='clicable' onClick={() => setPage(maxPage)}>{maxPage+1}</span></span>:null}
-                    </span>
-                    <div className='zoneBouton'>
-                        {(page < maxPage)?<img src={iconeAvance} className='icone clicable inv' onClick={() => {
-                            setPage(page+1)
-                        }} />:<img src={iconeAvance} className='icone'/>}
-                        {(page < maxPage)?<img src={iconeFin} className='icone clicable inv' onClick={() => {
-                            setPage(maxPage)
-                        }} />:<img src={iconeFin} className='icone'/>}
                     </div>
                 </div>
 
@@ -151,6 +150,7 @@ function Galerie(props) {
                     setScroll(window.scrollY)
                     setMediaSelec(index)
                 }} />
+                {(liste.length > 0)?<div ref={sentinelRef} className='sentinelScroll'></div>:null}
             </div>
         )
     }

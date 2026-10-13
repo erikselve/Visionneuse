@@ -22,7 +22,7 @@ import '../../styles/vueMedia.css'   // si des règles dédiées existent, sinon
 // Reçoit le média et les mécanismes de pagination de Galerie ;
 
 function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, setfuturMediaSelec,
-        setListe, chargeListe, listeSource, NB_IMAGE_PAR_PAGE}) {
+        setListe, chargeListe, listeSource}) {
 
     const [infoNote, setInfoNote] = useState({texte: '', critere: ''})   // déménagé de Galerie
     const notation = useSelector((state) => state.sources.notation)
@@ -56,24 +56,15 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
         <div className='conteneurComplet'>
             <div className="conteneurInfo">
                 <div className="navigation">
-                    {(mediaSelec > 0 || page > 0)?<img src={boutonPrec} alt="média précédent" className="icone clicable" onClick={() => {
-                        if (mediaSelec > 0)
-                            setMediaSelec(mediaSelec-1)
-                        else {
-                            setPage(page-1)
-                            setfuturMediaSelec(NB_IMAGE_PAR_PAGE-1)
-                        }
-                    }} />:<img src={boutonPrecGrise} alt="média précédent indisponible" className="icone" />}
+                    {(mediaSelec > 0)?<img src={boutonPrec} alt="média précédent" className="icone clicable"
+                        onClick={() => { setMediaSelec(mediaSelec-1) }} />:<img src={boutonPrecGrise} alt="média précédent indisponible" className="icone" />}
                     <img src={boutonRetour} alt="retour à la gallerie" className="icone clicable" onClick={() => {
                         setMediaSelec(null)
                     }} />
-                    {(mediaSelec < NB_IMAGE_PAR_PAGE || page < maxPage)?<img src={boutonSuiv} alt="média suivant" className="icone clicable" onClick={() => {
-                        if (mediaSelec < NB_IMAGE_PAR_PAGE-1)
-                            setMediaSelec(mediaSelec+1)
-                        else {
-                            setPage(page+1)
-                            setfuturMediaSelec(0)
-                        }
+                    {(mediaSelec < liste.length-1 || page < maxPage)?<img src={boutonSuiv} alt="média suivant"
+                        className="icone clicable" onClick={() => {
+                        if (mediaSelec < liste.length-1) setMediaSelec(mediaSelec+1)
+                        else { setPage(page+1); setfuturMediaSelec(liste.length) }   //charger la suite et atterrir dessus
                     }} />:<img src={boutonSuivGrise} alt="média suivant indisponible" className="icone" />}
                 </div>
                 <div className="info">
