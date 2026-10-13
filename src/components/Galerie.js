@@ -34,7 +34,7 @@ function Galerie(props) {
     const [tagsSelec, setTagsSelec] = useState(listeCategoriesTags.map(elt => {
         return {categorie: elt.categorie, liste: elt.liste.map(tag => false)}
     }))
-    const [scroll, setScroll] = useState(0)
+    const [dernierVu, setDernierVu] = useState(null)   //index du dernier média visité en vue média
     const listeSource = useSelector((state) => state.sources.listeNomAlphab)
 
     //chargePage = requête d'une page précise (append du scroll infini) ;
@@ -63,12 +63,16 @@ function Galerie(props) {
     }
 
     useEffect(() => {
-        if (mediaSelec === null && scroll > 0) {
-            window.scroll(0, scroll)
-            setScroll(0)
+        if (mediaSelec === null) {
+            if (dernierVu !== null) {
+                document.getElementById('media_'+dernierVu)?.scrollIntoView()
+                setDernierVu(null)
+            }
         }
-        else if (mediaSelec !== null)
+        else {
+            setDernierVu(mediaSelec)
             window.scroll(0, 0)
+        }
     })
 
     //met à jour l'affichage : page 0 = remplacement (montage, reset de filtre), pages suivantes = accumulation
@@ -116,7 +120,7 @@ function Galerie(props) {
         }, {rootMargin: '600px'})
         observateur.observe(sentinelRef.current)
         return () => observateur.disconnect()
-    }, [page, maxPage, liste])
+    }, [page, maxPage, liste, mediaSelec])
 
     if (mediaSelec === null) {
 //affichage de la gallerie (menus + colonnes de médias)
@@ -135,8 +139,15 @@ function Galerie(props) {
                     </div>
                 </div>
 
+                {(affFiltre || affAjoutData)?<div className='fondPanneau' onClick={() => {
+                    setaffFiltre(false)
+                    setAffAjoutData(false)
+                }}></div>:null}
+                
                 {/*zone de saisie pour ajouter de nouveaux médias */}
-                <ZoneAjout affiche={affAjoutData} setAffiche={setAffAjoutData} chargeListe={chargeListe} setListe={setListe} />
+                {(affAjoutData)?<div className='panneauFixe'>
+                    <ZoneAjout affiche={affAjoutData} setAffiche={setAffAjoutData} chargeListe={chargeListe} setListe={setListe} />
+                </div>:null}
 
                 {/*zone de sélection des filtres d'affichage des médias */}
                 <Filtres affiche={affFiltre} setAffiche={setaffFiltre} filtreSelec={filtreSelec} setfiltreSelec={setfiltreSelec}
@@ -147,7 +158,6 @@ function Galerie(props) {
                     setCategorieSelec={setCategorieSelec} listeCategoriesTags={listeCategoriesTags} />
 
                 <Miniatures liste={liste} onSelectMedia={(index) => {
-                    setScroll(window.scrollY)
                     setMediaSelec(index)
                 }} />
                 {(liste.length > 0)?<div ref={sentinelRef} className='sentinelScroll'></div>:null}

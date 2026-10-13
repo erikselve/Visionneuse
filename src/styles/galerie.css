@@ -69,3 +69,32 @@
     clear: both;    /* passe SOUS les colonnes flottantes : la vraie fin de la galerie */
     height: 10px;
 }
+
+.gestionPage {
+    position: sticky;
+    top: 56px;              /* s'accroche juste sous la barre de menu (recette .zoneCtrl) */
+    z-index: 90;            /* au-dessus des miniatures, sous le menu (100) */
+    background-color: #15171c;   /* opaque */
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.panneauFixe {
+    position: fixed;
+    top: 110px;              /* sous la barre de menu (56px) + la barre figée — à ajuster à la hauteur réelle */
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 130px);
+    overflow-y: auto;        /* la liste de tags défile DANS le panneau, pas la page */
+    background-color: #15171c;   /* opaque : la galerie ne transparaît pas */
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    z-index: 95;              /* au-dessus des miniatures, sous le menu (100) */
+}
+
+css
+Copier
+
+.fondPanneau {
+    position: fixed;
+    inset: 0;                 /* tout l'écran */
+    z-index: 94;              /* sous les panneaux (95) */
+}

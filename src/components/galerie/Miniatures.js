@@ -41,7 +41,7 @@ function Miniatures({liste, onSelectMedia}) {
         const colonne = colonnePlusPetite(tailleColonnes)
         const rapportTaille = media.taille.height / media.taille.width
         tailleColonnes[colonne] = tailleColonnes[colonne] + rapportTaille
-        colonnes[colonne].push(<div className='media' key={media.name} onClick={() => {
+            colonnes[colonne].push(<div className='media' id={'media_'+index} key={media.name} onClick={() => {
             onSelectMedia(index)
         }}>{determineMedia(media, 'mini')}</div>)
     })

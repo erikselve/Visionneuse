@@ -10,7 +10,7 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
 
     if (!affiche) return null
 
-    return (<div className='zoneFiltre'>
+    return (<div className='zoneFiltre panneauFixe'>
         <div className='enteteFiltre'>
             <span className='titreFiltre'>Filtres d'affichage</span>
             <input type='button' value='effacer les tags' onClick={() => {
@@ -39,6 +39,9 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
                     }} />
                     <input type='button' className={(filtreSelec === 'sans')?'pilule actif':'pilule'} value='tous' onClick={() => {
                         setfiltreSelec('sans')
+                    }} />
+                    <input type='button' className={(filtreSelec === 'ajouteRecent')?'pilule actif':'pilule'} value='récemment ajoutés' onClick={() => {
+                        setfiltreSelec('ajouteRecent')
                     }} />
                 </div>
             </div>
