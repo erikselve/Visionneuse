@@ -8,11 +8,8 @@ import VueMedia from './galerie/VueMedia'
 import ZoneAjout from './galerie/ZoneAjout'
 import Miniatures from './galerie/Miniatures'
 
-import Image from './Image'
-import Album from './Album'
-import Video from './Video'
 import '../styles/galerie.css'
-import { NB_IMAGE_PAR_PAGE, NB_COLONNE_GALLERIE } from "../data/config"
+import { NB_IMAGE_PAR_PAGE } from "../data/config"
 import iconeDebut from '../assets/debut.png'
 import iconeFin from '../assets/fin.png'
 import iconeAvance from '../assets/avance.png'
@@ -74,12 +71,7 @@ function Galerie(props) {
         dispatch(changeLoading())
         chargeListe().then(nouvListe => {
             if (nouvListe !== null) {
-                const result = nouvListe.map(((elt, index) => {
-                    if (index > 0) elt.prec = index-1
-                    if (index < nouvListe.length-1) elt.suiv = index+1
-                    return elt
-                }))
-                setListe(result)
+                setListe(nouvListe)
             }
             if (futurMediaSelec !== null) {
                 setMediaSelec(futurMediaSelec)
@@ -95,12 +87,7 @@ function Galerie(props) {
             dispatch(changeLoading())
             chargeListe().then(nouvListe => {
                 if (nouvListe !== null) {
-                    const result = nouvListe.map(((elt, index) => {
-                        if (index > 0) elt.prec = index-1
-                        if (index < nouvListe.length-1) elt.suiv = index+1
-                        return elt
-                    }))
-                    setListe(result)
+                    setListe(nouvListe)
                 }
                 dispatch(changeLoading())
             })

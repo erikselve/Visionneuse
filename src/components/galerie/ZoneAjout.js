@@ -75,12 +75,7 @@ function ZoneAjout(props) {
             dispatch(changeBarreProgression())
             props.chargeListe().then(nouvListe => {
                 if (nouvListe !== null) {
-                    const result = nouvListe.map(((elt, index) => {
-                        if (index > 0) elt.prec = index-1
-                        if (index < nouvListe.length-1) elt.suiv = index+1
-                        return elt
-                    }))
-                    props.setListe(result)
+                    props.setListe(nouvListe)
                 }
                 dispatch(changeLoading())
                 dispatch(desarme())
