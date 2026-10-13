@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetch_form, fetch_json } from '../../modules/com'
 import { changeTache, agir } from '../../store/slices/indiceProgressionSlice'
-import { ajoute, changeEtat, desarme } from '../../store/slices/mediasCompSlice'
+import { ajoute, changeEtat, desarme, envoieSuppressions } from '../../store/slices/mediasCompSlice'
 import { changeBarreProgression, changePrinc, changeLoading } from '../../store/slices/displaySlice'
 
 function ZoneAjout(props) {
@@ -13,6 +13,7 @@ function ZoneAjout(props) {
     const listeSelec = useSelector((state) => state.mediasComp.listeSelec)
     const indexMediaEnCours = useSelector((state) => state.mediasComp.indexMediaActuel)
     const type = useSelector((state) => state.mediasComp.typeMedia)
+    const suppPrete = useSelector((state) => state.mediasComp.suppPrete)
     const displayPrinc = useSelector((state) => state.display.princ)
     const [site8musesEnsemble, setsite8musesEnsemble] = useState(false)
     const [assocSource, setAssocSource] = useState(true)
@@ -82,6 +83,11 @@ function ZoneAjout(props) {
             })
         }
     }, [etat])
+
+    //c'est de moment du supprimer les fichiers
+    useEffect(() => {
+        if (suppPrete) dispatch(envoieSuppressions())
+    }, [suppPrete])
 
     if (!props.affiche) return null
 

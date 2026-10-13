@@ -1,21 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { fetch_json } from '../../modules/com'
 
-async function envoiSupp(data) {
-    let res = fetch_json(data, 'DELETE', 'media/upload')
-    if (res.ok) {
-        console.log(res.message);
-        return true
-    }
-    else {
-        console.log(res.message);
-        return false
-    }
-}
+// Envoi de la décision au back (retireDouble) : suppression des doublons cochés + sauvegarde
+// (ou destruction, si mediaBase) du média en attente. C'est aussi ce qui SAUVE le média en attente,
+// donc il part même avec une liste vide. fetch_json résout false en cas d'échec (et alerte déjà
+// l'utilisateur sur les erreurs HTTP) ; true = requête aboutie.
+export const envoieSuppressions = createAsyncThunk('mediasComp/envoieSuppressions', async (_, {getState}) => {
+    const etat = getState().mediasComp
+    const res = await fetch_json({liste: etat.listeSupp, mediaBase: etat.mediaASupp, typeMedia: etat.typeMedia, tags: etat.tagsHerites}, 'DELETE', 'media/upload')
+    return res !== false
+})
 
 export const mediasCompSlice = createSlice({
     name: 'imagesComp',
-    initialState: {listeVerif: [], listeSelec: [], etat: 'idle', listeSupp: [], mediaASupp: false, indexMediaActuel: 0, tailleMediaActuelle: {width: 0, height: 0}, typeMedia: null, nomMediaActuel: null, tagsHerites: []},
+    initialState: {listeVerif: [], listeSelec: [], etat: 'idle', listeSupp: [], mediaASupp: false, indexMediaActuel: 0, tailleMediaActuelle: {width: 0, height: 0}, typeMedia: null, nomMediaActuel: null, tagsHerites: [], suppPrete: false},
     reducers: {
         ajoute: (state, action) => {
             state.listeVerif = [...state.listeVerif, ...action.payload.liste]
@@ -30,17 +28,16 @@ export const mediasCompSlice = createSlice({
             if (action.payload !== undefined) state.tagsHerites = action.payload
             state.listeSupp = [...state.listeSupp, state.listeVerif[0].nom]
             state.listeVerif = state.listeVerif.filter((elt) => elt.nom !== state.listeVerif[0].nom)
-            if (state.listeVerif.length === 0) if (envoiSupp({liste: state.listeSupp, mediaBase: state.mediaASupp, typeMedia: state.typeMedia, tags: state.tagsHerites})) state.etat = 'ended'
-
+            if (state.listeVerif.length === 0) state.suppPrete = true
         },
         termine: (state) => {
             state.mediaASupp = true
             state.listeVerif = []
-            if (envoiSupp({liste: state.listeSupp, mediaBase: state.mediaASupp})) state.etat = 'ended'
+            state.suppPrete = true
         },
         avance: (state) => {
             state.listeVerif = state.listeVerif.filter((elt) => elt !== state.listeVerif[0])
-            if (state.listeVerif.length === 0) if (envoiSupp({liste: state.listeSupp, mediaBase: state.mediaASupp, typeMedia: state.typeMedia, tags: state.tagsHerites})) state.etat = 'ended'
+            if (state.listeVerif.length === 0) state.suppPrete = true
         },
         changeEtat: (state, action) => {
             if (state.etat === 'idle') {
@@ -65,6 +62,14 @@ export const mediasCompSlice = createSlice({
             //vide la sélection résiduelle une fois les uploads terminés — la machine ne rejoue pas la branche idle au remontage du composant
             if (state.etat === 'idle') state.listeSelec = []
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(envoieSuppressions.fulfilled, (state, action) => {
+            state.suppPrete = false
+            state.etat = 'ended'   //même en cas d'échec (action.payload false) : retireDouble consomme le média
+            //en attente DÈS le début de la requête, un retry tomberait sur « aucun média en attente » ;
+            //l'utilisateur a été alerté par fetch_json, la machine ne doit pas se suspendre.
+        })
     }
 })
 
