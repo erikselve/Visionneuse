@@ -8,7 +8,7 @@ import '../styles/affichageTagsMedia.css'
 
 
 //props obligatoires
-//  - media: nom du média
+//  - id: id du média
 function AffichageTagsMedia(props) {
     const dispatch = useDispatch()
     const [saisieCategorie, setSaisieCategorie] = useState(false)
@@ -17,7 +17,7 @@ function AffichageTagsMedia(props) {
     const [listeTag, setliststeTag] = useState([])
 
     function chargeTags() {
-        fetch_json({nom: props.media}, 'post', 'media/tags').then(rep => {
+        fetch_json({id: props.id}, 'post', 'media/tags').then(rep => {
             if (rep) {
                 setliststeTag(rep.res)
                 if (rep.res.find(elt => elt === 'boucle') !== undefined) dispatch(setBoucle(true))
@@ -64,12 +64,12 @@ function AffichageTagsMedia(props) {
                     else if (mode === 'complet' && saisieTag[data.categorie]) {
                         return <span key={elt} className={(selec)?'selec tag clicable':'tag clicable'} onClick={() => {
                             if (selec) {
-                                fetch_json({tag: elt, media: props.media}, 'delete', 'media/tags').then(rep => {
+                                fetch_json({tag: elt, id: props.id}, 'delete', 'media/tags').then(rep => {
                                     chargeTags()
                                 })
                             }
                             else {
-                                fetch_json({tag: elt, media: props.media}, 'put', 'media/tags').then(rep => {
+                                fetch_json({tag: elt, id: props.id}, 'put', 'media/tags').then(rep => {
                                     chargeTags()
                                 })
                             }

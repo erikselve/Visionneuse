@@ -40,7 +40,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
             suiteNotes = [...suiteNotes, <img key={critere.nom+'_'+pos} src={(pos <= note)?etoile:etoileVide} className='icone clicable' alt='etoile' onClick={() => {
                 const notes = {...(liste[mediaSelec].notes ?? {})}
                 notes[critere.nom] = (pos === note)?null:pos
-                fetch_json({media: liste[mediaSelec].name, notes: notes}, 'put', 'media/notes').then(rep => {
+                fetch_json({id: liste[mediaSelec].id, notes: notes}, 'put', 'media/notes').then(rep => {
                     if (rep) setListe(liste.map((elt, index) => {
                         if (index === mediaSelec) elt.notes = notes
                         return elt
@@ -70,7 +70,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                 <div className="info">
                     <div>
                         <img className='icone clicable' src={(liste[mediaSelec].favori)?favori_plein:favori_vide} onClick={() => {
-                            fetch_json({media: liste[mediaSelec].name}, 'put', 'media/favori').then(rep => {
+                            fetch_json({id: liste[mediaSelec].id}, 'put', 'media/favori').then(rep => {
                                 if (rep) setListe(liste.map((elt, index) => {
                                     if (index === mediaSelec) elt.favori = !elt.favori
                                     return elt
@@ -101,7 +101,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                     <label htmlFor ='source'>Auteur :</label>
                     <select id='source' value={liste[mediaSelec].source ?? 'Inconnu'} onChange={(e) => {
                         const source = e.target.value
-                        fetch_json({media: liste[mediaSelec].name, source: source}, 'put', 'media/source').then(rep => {
+                        fetch_json({id: liste[mediaSelec].id, source: source}, 'put', 'media/source').then(rep => {
                             if (rep) {
                                 setListe(liste.map((elt, index) => {
                                     if (index === mediaSelec) elt.source = source
@@ -124,9 +124,9 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                     ))}
                 </div>
             </div>
-            {(liste[mediaSelec].type === 'image')?<Image display='complet' nom={liste[mediaSelec].name} />:
-            (liste[mediaSelec].type === 'video')?<Video display='complet' orientation={orientation} nom={liste[mediaSelec].name} />:
-            <Album display='complet' nom={liste[mediaSelec].name} />}
+            {(liste[mediaSelec].type === 'image')?<Image display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} />:
+            (liste[mediaSelec].type === 'video')?<Video display='complet' orientation={orientation} nom={liste[mediaSelec].name} id={liste[mediaSelec].id} />:
+            <Album display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} />}
         </div>
     )
 }

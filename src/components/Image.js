@@ -20,7 +20,7 @@ function Image(props) {
     else if (props.display === 'complet') {
         return(
                 <div className="conteneurImage">
-                    <AffichageTagsMedia media={props.nom} />
+                    <AffichageTagsMedia id={props.id} media={props.nom} />
                     <div className="image"><img src={URL_server+PATH_IMAGE+props.nom} /></div>
                 </div>
         )

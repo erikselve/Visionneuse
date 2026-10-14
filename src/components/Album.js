@@ -73,7 +73,7 @@ function Album(props) {
         }
         return(
                 <div className="conteneurAlbum">
-                    <AffichageTagsMedia media={props.nom} />
+                    <AffichageTagsMedia id={props.id} media={props.nom} />
                     <div className="album">
                         {((tomeSelec !== -1 && tomes.length>1) || pageSelec !== -1)?<div><input type="button" value='retour' onClick={() => {
                             if (pageSelec !== -1)

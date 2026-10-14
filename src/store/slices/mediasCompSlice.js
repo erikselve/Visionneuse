@@ -26,8 +26,8 @@ export const mediasCompSlice = createSlice({
         },
         retire: (state, action) => {
             if (action.payload !== undefined) state.tagsHerites = action.payload
-            state.listeSupp = [...state.listeSupp, state.listeVerif[0].nom]
-            state.listeVerif = state.listeVerif.filter((elt) => elt.nom !== state.listeVerif[0].nom)
+            state.listeSupp = [...state.listeSupp, state.listeVerif[0].id]
+            state.listeVerif = state.listeVerif.filter((elt) => elt.nom !== state.listeVerif[0].id)
             if (state.listeVerif.length === 0) state.suppPrete = true
         },
         termine: (state) => {

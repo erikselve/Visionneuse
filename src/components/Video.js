@@ -35,7 +35,7 @@ function Video(props) {
     else if (props.display === 'complet') {
         return(
                 <div className="conteneurVideo">
-                    <AffichageTagsMedia media={props.nom} />
+                    <AffichageTagsMedia id={props.id} media={props.nom} />
                     <div className="video"><video className={props.orientation} preload="auto" loop={boucle} controls src={URL_server+PATH_VIDEO+props.nom}></video></div>
                 </div>
         )
