@@ -82,7 +82,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                     <img src={boutonPoubelle} alt="supprimer le média" className="icone clicable inv" onClick={() => {
                         setMediaSelec(null)
                         dispatch(changeLoading())
-                        fetch_json({name: liste[mediaSelec].name}, 'delete', liste[mediaSelec].type).then(rep => {
+                        fetch_json({id: liste[mediaSelec].id}, 'delete', liste[mediaSelec].type).then(rep => {
                             if (rep) {
                                 chargeListe().then(nouvListe => {
                                     if (nouvListe !== null) {
