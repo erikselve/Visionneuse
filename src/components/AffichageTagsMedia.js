@@ -29,7 +29,7 @@ function AffichageTagsMedia(props) {
 
     useEffect(() => {
         chargeTags()
-    }, [props])
+    }, [props.id])
 
     //paramètres :
     //  - data est la categorie et ses tags associés
