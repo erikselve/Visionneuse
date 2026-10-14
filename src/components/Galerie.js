@@ -130,11 +130,13 @@ function Galerie(props) {
                     <div>
                         {(!affAjoutData)?<input type='button' value='ajouter des médias' onClick={() => {
                             setAffAjoutData(true)
+                            setaffFiltre(false)   //les deux overlays partagent le même ancrage : l'un chasse l'autre
                         }} />:null}
                     </div>
                     <div className='filtre'>
                         {(!affFiltre)?<input type='button' value='définir les filtres' onClick={() => {
                             setaffFiltre(true)
+                            setAffAjoutData(false) 
                         }} />:null}
                     </div>
                 </div>
