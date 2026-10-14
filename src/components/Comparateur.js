@@ -6,14 +6,11 @@ import '../styles/comparateur.css'
 
 function Comparateur() {
     const dispatch = useDispatch()
-    // const nomMediaG = useSelector((state) => state.mediasComp.listeSelec[state.mediasComp.indexMediaActuel].name)
     const nomMediaG = useSelector((state) => state.mediasComp.nomMediaActuel)
     const tailleMediaG = useSelector((state) => state.mediasComp.tailleMediaActuelle)
     const infoMediaD = useSelector((state) => state.mediasComp.listeVerif[0])
     const type = useSelector((state) => state.mediasComp.typeMedia)
     const [transmissionTags, setTransmissionTags] = useState(false)
-
-console.log(infoMediaD);
 
     return(
         <div>
