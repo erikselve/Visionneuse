@@ -100,7 +100,7 @@ function Diaporama(props) {
         const image = listeImagesPreparees[0]
         return (
             <div id='conteneurDiaporama' className={(image.taille.width > image.taille.height)?'conteneurDiaporama paysage':'conteneurDiaporama portrait'}>
-                <img src={URL_server+PATH_IMAGE+image.name} onClick={() => {
+                <img src={URL_server+PATH_IMAGE+image.nomFichier} onClick={() => {
                     clearInterval(interval)
                     nettoyage().then(() => {
                         fetch_get('diaporama').then(rep => {

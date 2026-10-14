@@ -44,8 +44,8 @@ console.log(infoMediaD);
             </div>
             <div className='panneau'>
                 {(infoMediaD !== undefined)?<div className='media'>
-                    {(type === 'image')?<img id='mediaD' src={URL_server+PATH_IMAGE+infoMediaD.nom} alt='média à comparer droite' />:
-                    (type === 'video')?<video controls><source src={URL_server+PATH_VIDEO+infoMediaD.nom} type="video/mp4" /></video>:null}                    
+                    {(type === 'image')?<img id='mediaD' src={URL_server+PATH_IMAGE+infoMediaD.nomFichier} alt='média à comparer droite' />:
+                    (type === 'video')?<video controls><source src={URL_server+PATH_VIDEO+infoMediaD.nomFichier} type="video/mp4" /></video>:null}                    
                 </div>:null}
                 <div className='info'>
                     {(infoMediaD !== undefined)?<p>{infoMediaD.nom} ({infoMediaD.taille.width}x{infoMediaD.taille.height})</p>:null}

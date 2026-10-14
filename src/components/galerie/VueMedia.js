@@ -124,9 +124,9 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                     ))}
                 </div>
             </div>
-            {(liste[mediaSelec].type === 'image')?<Image display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} />:
-            (liste[mediaSelec].type === 'video')?<Video display='complet' orientation={orientation} nom={liste[mediaSelec].name} id={liste[mediaSelec].id} />:
-            <Album display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} />}
+            {(liste[mediaSelec].type === 'image')?<Image display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />:
+            (liste[mediaSelec].type === 'video')?<Video display='complet' orientation={orientation} nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />:
+            <Album display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />}
         </div>
     )
 }

@@ -42,7 +42,7 @@ function Album(props) {
         return(
             <div>
                 <div className="conteneurAlbum">
-                    <Vignette src={URL_server+PATH_ALBUM+props.nom+'/00001/00001.jpg'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
+                    <Vignette src={URL_server+PATH_ALBUM+props.nomFichier+'/00001/00001.jpg'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
                 <div className="logo"><img src={logo} /></div></div>
             </div>
         )
@@ -55,7 +55,7 @@ function Album(props) {
                 return (<div className="couverture clicable" onClick={() => {
                     setTomeSelec(index)
                 }}>
-                    <img src={URL_server+PATH_ALBUM+props.nom+'/'+formatNomFichier(index+1)+'/00001.jpg'} />
+                    <img src={URL_server+PATH_ALBUM+props.nomFichier+'/'+formatNomFichier(index+1)+'/00001.jpg'} />
                     <label>{index+1}</label>
                 </div>)
             })
@@ -66,7 +66,7 @@ function Album(props) {
                 liste.push(<div className="page clicable" onClick={() => {
                     setPageSelec(index)
                 }}>
-                    <img src={URL_server+PATH_ALBUM+props.nom+'/'+formatNomFichier(tomeSelec+1)+'/'+formatNomFichier(index)+'.jpg'} />
+                    <img src={URL_server+PATH_ALBUM+props.nomFichier+'/'+formatNomFichier(tomeSelec+1)+'/'+formatNomFichier(index)+'.jpg'} />
                     <label>{index}</label>
                 </div>)
             }
@@ -90,7 +90,7 @@ function Album(props) {
                             window.scroll(0,0)
                             if (pageSelec === tomes[tomeSelec]) setPageSelec(1)
                             else setPageSelec(pageSelec+1)
-                        }}><img src={URL_server+PATH_ALBUM+props.nom+'/'+formatNomFichier(tomeSelec+1)+'/'+formatNomFichier(pageSelec)+'.jpg'} /></div>}
+                        }}><img src={URL_server+PATH_ALBUM+props.nomFichier+'/'+formatNomFichier(tomeSelec+1)+'/'+formatNomFichier(pageSelec)+'.jpg'} /></div>}
                     </div>
                 </div>
         )

@@ -13,7 +13,7 @@ function Image(props) {
     if (props.display === 'mini') {
         return(
             <div>
-                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+props.nom} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
+                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+props.nomFichier} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
             </div>
         )
     }
@@ -21,7 +21,7 @@ function Image(props) {
         return(
                 <div className="conteneurImage">
                     <AffichageTagsMedia id={props.id} media={props.nom} />
-                    <div className="image"><img src={URL_server+PATH_IMAGE+props.nom} /></div>
+                    <div className="image"><img src={URL_server+PATH_IMAGE+props.nomFichier} /></div>
                 </div>
         )
     }
