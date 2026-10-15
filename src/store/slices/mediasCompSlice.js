@@ -7,13 +7,15 @@ import { fetch_json } from '../../modules/com'
 // l'utilisateur sur les erreurs HTTP) ; true = requête aboutie.
 export const envoieSuppressions = createAsyncThunk('mediasComp/envoieSuppressions', async (_, {getState}) => {
     const etat = getState().mediasComp
-    const res = await fetch_json({liste: etat.listeSupp, mediaBase: etat.mediaASupp, typeMedia: etat.typeMedia, tags: etat.tagsHerites}, 'DELETE', 'media/upload')
+    const res = await fetch_json({liste: etat.listeSupp, mediaBase: etat.mediaASupp, typeMedia: etat.typeMedia,
+        tags: etat.infosHeritees.tags, favori: etat.infosHeritees.favori,
+        notes: etat.infosHeritees.notes, source: etat.infosHeritees.source}, 'DELETE', 'media/upload')
     return res !== false
 })
 
 export const mediasCompSlice = createSlice({
     name: 'imagesComp',
-    initialState: {listeVerif: [], listeSelec: [], etat: 'idle', listeSupp: [], mediaASupp: false, indexMediaActuel: 0, tailleMediaActuelle: {width: 0, height: 0}, typeMedia: null, nomMediaActuel: null, tagsHerites: [], suppPrete: false},
+    initialState: {listeVerif: [], listeSelec: [], etat: 'idle', listeSupp: [], mediaASupp: false, indexMediaActuel: 0, tailleMediaActuelle: {width: 0, height: 0}, typeMedia: null, nomMediaActuel: null, infosHeritees: {}, sourceNouveau: null, suppPrete: false},
     reducers: {
         ajoute: (state, action) => {
             state.listeVerif = [...state.listeVerif, ...action.payload.liste]
@@ -23,9 +25,10 @@ export const mediasCompSlice = createSlice({
             state.etat = 'waitingUser'
             if (action.payload.nouveauNom !== undefined) state.nomMediaActuel = action.payload.nouveauNom
             else state.nomMediaActuel = state.listeSelec[state.indexMediaActuel].name
+            state.sourceNouveau = (action.payload.source !== undefined)?action.payload.source:null
         },
         retire: (state, action) => {
-            if (action.payload !== undefined) state.tagsHerites = action.payload
+            if (action.payload !== undefined) state.infosHeritees = action.payload
             state.listeSupp = [...state.listeSupp, state.listeVerif[0].id]
             state.listeVerif = state.listeVerif.filter((elt) => elt.id !== state.listeVerif[0].id)
             if (state.listeVerif.length === 0) state.suppPrete = true

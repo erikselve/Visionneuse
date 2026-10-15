@@ -1,27 +1,37 @@
 .princ {
     display: flex;
-    justify-content: space-around;
+    gap: 16px;
+    align-items: flex-start;     /* la carte la moins haute ne s'étire pas */
 }
 
-.action {
-    width: 100%;
+.panneau .media {
+    margin-bottom: 8px;         /* respire entre le média et ses infos */
 }
 
-.panneau {
-    width: 48vw;
-    float: left;
-}
-
-.panneau img {
-    width: 100%;
-    height: auto;
-}
-
+.panneau img,
 .panneau video {
     width: 100%;
-    height: auto;  
+    height: auto;
+    border-radius: 6px;         /* adoucit les coins du média dans sa carte */
 }
 
 .panneau .info {
-    position: relative;
+    position: relative;         /* conservé : ancre de l'infobulle .motcle */
+}
+
+.panneau img,
+.panneau video {
+    cursor: default;        /* le média n'est pas cliquable ici */
+}
+
+.note {
+    font-size: 11px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.conflitSource {
+    color: #e05c5c;
+    text-decoration: underline;
+    font-weight: bold;
 }

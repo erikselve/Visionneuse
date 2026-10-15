@@ -39,20 +39,6 @@
     background-color: #5b8def;
 }
 
-.entetePanneau {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.titrePanneau {
-    font-weight: bold;
-    font-size: 15px;
-    flex-grow: 1;
-}
-
 .contenu .entetePanneau input[type='button'] {
     background: none;
     border: none;
@@ -72,25 +58,7 @@
 }
 
 .groupes {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 16px 32px;
-    padding-bottom: 10px;
     border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.groupe {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.titreGroupe {
-    font-size: 11px;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
 .pilules {

@@ -58,8 +58,10 @@ function ZoneAjout(props) {
                     else {
                         dispatch(changeLoading())
                         dispatch(changePrinc({panneau: 'comparateur'}))
-                        if (res.nouveauNom !== undefined) dispatch(ajoute({liste: res.listeVerif, taille: res.taille, nouveauNom: res.nouveauNom}))
-                        else dispatch(ajoute({liste: res.listeVerif, taille: res.taille}))
+                        if (res.nouveauNom !== undefined) dispatch(ajoute({liste: res.listeVerif, taille: res.taille, nouveauNom: res.nouveauNom,
+                            source: (assocSource && derniereSource !== null)?derniereSource.nom:null}))
+                        else dispatch(ajoute({liste: res.listeVerif, taille: res.taille,
+                            source: (assocSource && derniereSource !== null)?derniereSource.nom:null}))
                     }
                 }
                 else dispatch(changeEtat())
@@ -99,7 +101,7 @@ function ZoneAjout(props) {
                 <span className='titrePanneau'>Ajouts de nouveaux médias</span>
                 <input type='button' value='✕ cacher' onClick={() => props.setAffiche(false)} />
             </div>
-            <div className='groupes'> {/*styles 'groupes colonnes' si on souhaite organiser les groupes en colonne */}
+            <div className='groupes'>
                 {(derniereSource !== null)?<div className='groupe'>
                     <span className='titreGroupe'>Associer à une source</span>
                     <div>
@@ -107,6 +109,8 @@ function ZoneAjout(props) {
                         <label>Associer ces médias à la source « {derniereSource.nom} »</label>
                     </div>
                 </div>:null}
+            </div>
+            <div className='groupes'> {/*styles 'groupes colonnes' si on souhaite organiser les groupes en colonne */}
                 <div className='groupe'>
                     <span className='titreGroupe'>Fichiers locaux</span>
                     <div className='ajoutImages'>
