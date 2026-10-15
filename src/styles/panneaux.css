@@ -1,0 +1,22 @@
+.panneauCarte {
+    background-color: #1b1e24;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.entetePanneau { display: flex; flex-direction: row; align-items: center; gap: 12px; margin-bottom: 10px; }
+.titrePanneau { font-weight: bold; font-size: 15px; flex-grow: 1; }      /* l'ex-.titreFiltre de filtres.css */
+.groupes { display: flex; flex-direction: row; flex-wrap: wrap; gap: 16px 32px; padding-bottom: 10px; }   /* l'ex-.groupesFiltre */
+
+.groupe {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    background-color: #1e2229;
+}
+
+.titreGroupe { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }

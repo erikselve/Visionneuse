@@ -4,6 +4,8 @@ import { fetch_form, fetch_json } from '../../modules/com'
 import { changeTache, agir } from '../../store/slices/indiceProgressionSlice'
 import { ajoute, changeEtat, desarme, envoieSuppressions } from '../../store/slices/mediasCompSlice'
 import { changeBarreProgression, changePrinc, changeLoading } from '../../store/slices/displaySlice'
+import '../../styles/panneaux.css'
+import '../../styles/zoneAjout.css'
 
 function ZoneAjout(props) {
     const dispatch = useDispatch()
@@ -92,97 +94,105 @@ function ZoneAjout(props) {
     if (!props.affiche) return null
 
     return (
-        <div>
-            {(derniereSource !== null)?<div>
-                <input type='checkbox' checked={assocSource} onClick={() => setAssocSource(!assocSource)} />
-                <label>Associer ces médias à la source « {derniereSource.nom} »</label>
-            </div>:null}
-            <div className='ajoutImages'>
-                <label>Sélectionner des images à ajouter:</label>
-                <input type='file' accept='image/*' id='selecFichiers' multiple onChange={async () => {
-                    const fichiersSelec = document.getElementById('selecFichiers').files
-                    dispatch(changeTache({nom: 'Traitement des images sélectionnées', objectif: fichiersSelec.length}))
-                    dispatch(changeBarreProgression())
-                    dispatch(changeLoading())
-                    dispatch(changeEtat({fichiers: fichiersSelec, type: 'image'}))
-                }} />
+        <div className='panneauCarte panneauFixe'>
+            <div className='entetePanneau'>
+                <span className='titrePanneau'>Ajouts de nouveaux médias</span>
+                <input type='button' value='✕ cacher' onClick={() => props.setAffiche(false)} />
             </div>
-            <div className='ajoutVideos'>
-                <label>Sélectionner des videos à ajouter:</label>
-                <input type='file' accept='video/*' id='selecVideos' onChange={async () => {
-                    const fichiersSelec = document.getElementById('selecVideos').files
-                    dispatch(changeTache({nom: 'Traitement des vidéos sélectionnées', objectif: fichiersSelec.length}))
-                    dispatch(changeBarreProgression())
-                    dispatch(changeLoading())
-                    dispatch(changeEtat({fichiers: fichiersSelec, type: 'video'}))
-                }} />
-            </div>
-            <div className='ajoutAlbums'>
-                <label>Sélectionner un album à ajouter:</label>
-                <input type='file' id='selecAlbum' webkitdirectory='' onChange={() => {
-                    const fichiersSelec = document.getElementById('selecAlbum').files
-                    dispatch(changeTache({nom: 'Traitement de l\'album sélectionné', objectif: 1}))
-                    dispatch(changeBarreProgression())
-                    dispatch(changeLoading())
-                    let format = []
-                    format[0] = fichiersSelec
-                    dispatch(changeEtat({fichiers: format, type: 'album'}))
-                }} />
-            </div>
-            <p>
-                <span>Récupération d'un album sur Erofus.com</span><br/>
-                <span>auteur/titre de l'album :</span><input type='text' id='info' />
-                <input type='button' value='Lancement' onClick={() => {
-                    const infos = document.getElementById('info').value
-                    fetch_json({info: infos}, 'PUT', 'album/parseWeb/erofus').then(res => {
-                        if (res) {
-                            document.getElementById('info').value = ''
-                        }
-                        else console.log('Erreur pour récupérer l\'album')
-                    })
-                }} />
-            </p>
-
-            <p>
-                <span>Récupération d'un album sur comics.8muses.com</span><br/>
-                <label>auteur/titre de l'album: </label><input type='text' id='info8muses' />
-                <input type='checkbox' checked={site8musesEnsemble} onClick={() => {
-                    setsite8musesEnsemble(!site8musesEnsemble)
-                }} /><label>ensemble d'albums</label>
-                <input type='button' value='Lancement' onClick={() => {
-                    const infos = document.getElementById('info8muses').value
-                    dispatch(changeLoading())
-                    fetch_json({info: infos, ensemble: site8musesEnsemble}, 'PUT', 'parseweb/8muses').then(res => {
-                        if (res) {
-                            document.getElementById('info8muses').value = ''
-                            if (res.listeVerif !== undefined) {
-                                //A FAIRE
-                            }
+            <div className='groupes'> {/*styles 'groupes colonnes' si on souhaite organiser les groupes en colonne */}
+                {(derniereSource !== null)?<div className='groupe'>
+                    <span className='titreGroupe'>Associer à une source</span>
+                    <div>
+                        <input type='checkbox' checked={assocSource} onClick={() => setAssocSource(!assocSource)} />
+                        <label>Associer ces médias à la source « {derniereSource.nom} »</label>
+                    </div>
+                </div>:null}
+                <div className='groupe'>
+                    <span className='titreGroupe'>Fichiers locaux</span>
+                    <div className='ajoutImages'>
+                        <label className='boutonFichier'>Uploader des images…<input type='file' accept='image/*' multiple hidden onChange={async (e) => {
+                            const fichiersSelec = e.target.files
+                            dispatch(changeTache({nom: 'Traitement des images sélectionnées', objectif: fichiersSelec.length}))
+                            dispatch(changeBarreProgression())
                             dispatch(changeLoading())
-                        }
-                        else {
-                            console.log('Erreur pour récupérer l\'album');
+                            dispatch(changeEtat({fichiers: fichiersSelec, type: 'image'}))
+                        }} /></label>
+                    </div>
+                    <div className='ajoutVideos'>
+                        <label className='boutonFichier'>Uploader des vidéos…<input type='file' accept='video/*' multiple hidden onChange={async (e) => {
+                            const fichiersSelec = e.target.files
+                            dispatch(changeTache({nom: 'Traitement des vidéos sélectionnées', objectif: fichiersSelec.length}))
+                            dispatch(changeBarreProgression())
                             dispatch(changeLoading())
-                        }
-                    })
-                }} />
-            </p>
+                            dispatch(changeEtat({fichiers: fichiersSelec, type: 'video'}))
+                        }} /></label>
+                    </div>
+                    <div className='ajoutAlbums'>
+                        <label className='boutonFichier'>Uploader un album…<input type='file' webkitdirectory='' multiple hidden onChange={async (e) => {
+                            const fichiersSelec = e.target.files
+                            dispatch(changeTache({nom: 'Traitement de l\'album sélectionné', objectif: 1}))
+                            dispatch(changeBarreProgression())
+                            dispatch(changeLoading())
+                            let format = []
+                            format[0] = fichiersSelec
+                            dispatch(changeEtat({fichiers: format, type: 'album'}))
+                        }} /></label>
+                    </div>
+                    <p>
+                        <span>Récupération d'une vidéo trop grosse (attention! pas de test d'unicité)</span><br/>
+                        <label>titre de la vidéo dans le répertoire temp du serveur: </label><input type='text' id='titreVideo' />
+                        <input type='button' value='Lancement' onClick={() => {
+                            const titre = document.getElementById('titreVideo').value
+                            dispatch(changeLoading())
+                            fetch_json({titre: titre}, 'PUT', 'video/upload/local').then(res => {
+                                document.getElementById('titreVideo').value = ''
+                                dispatch(changeLoading())
+                            })
+                        }} />
+                    </p>
+                </div>
+                <div className='groupe'>
+                    <span className='titreGroupe'>Récupération web</span>
+                    <p>
+                        <span>Récupération d'un album sur Erofus.com</span><br/>
+                        <span>auteur/titre de l'album :</span><input type='text' id='info' />
+                        <input type='button' value='Lancement' onClick={() => {
+                            const infos = document.getElementById('info').value
+                            fetch_json({info: infos}, 'PUT', 'album/parseWeb/erofus').then(res => {
+                                if (res) {
+                                    document.getElementById('info').value = ''
+                                }
+                                else console.log('Erreur pour récupérer l\'album')
+                            })
+                        }} />
+                    </p>
 
-            <p>
-                <span>Récupération d'une vidéo trop grosse (attention! pas de test d'unicité)</span><br/>
-                <label>titre de la vidéo dans le répertoire temp du serveur: </label><input type='text' id='titreVideo' />
-                <input type='button' value='Lancement' onClick={() => {
-                    const titre = document.getElementById('titreVideo').value
-                    dispatch(changeLoading())
-                    fetch_json({titre: titre}, 'PUT', 'video/upload/local').then(res => {
-                        document.getElementById('titreVideo').value = ''
-                        dispatch(changeLoading())
-                    })
-                }} />
-            </p>
-            <input type='button' value='cacher' onClick={() => {
-                props.setAffiche(false)
-            }} />
+                    <p>
+                        <span>Récupération d'un album sur comics.8muses.com</span><br/>
+                        <label>auteur/titre de l'album: </label><input type='text' id='info8muses' />
+                        <input type='checkbox' checked={site8musesEnsemble} onClick={() => {
+                            setsite8musesEnsemble(!site8musesEnsemble)
+                        }} /><label>ensemble d'albums</label>
+                        <input type='button' value='Lancement' onClick={() => {
+                            const infos = document.getElementById('info8muses').value
+                            dispatch(changeLoading())
+                            fetch_json({info: infos, ensemble: site8musesEnsemble}, 'PUT', 'parseweb/8muses').then(res => {
+                                if (res) {
+                                    document.getElementById('info8muses').value = ''
+                                    if (res.listeVerif !== undefined) {
+                                        //A FAIRE
+                                    }
+                                    dispatch(changeLoading())
+                                }
+                                else {
+                                    console.log('Erreur pour récupérer l\'album');
+                                    dispatch(changeLoading())
+                                }
+                            })
+                        }} />
+                    </p>
+                </div>
+            </div>
         </div>
     )
 }

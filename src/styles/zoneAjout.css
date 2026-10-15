@@ -1,0 +1,14 @@
+.boutonFichier {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    cursor: pointer;                     /* ← le curseur main que vous cherchez */
+    background-color: #2a2f38;
+}
+
+.boutonFichier:hover {
+    border-color: #5b8def;
+}
+
+.groupes.colonnes { flex-direction: column; gap: 20px; }

@@ -1,3 +1,4 @@
+import '../../styles/panneaux.css'
 import '../../styles/filtres.css'
 
 // Panneau de sélection des filtres d'affichage de la galerie.
@@ -10,9 +11,9 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
 
     if (!affiche) return null
 
-    return (<div className='zoneFiltre panneauFixe'>
-        <div className='enteteFiltre'>
-            <span className='titreFiltre'>Filtres d'affichage</span>
+    return (<div className='panneauCarte panneauFixe'>
+        <div className='entetePanneau'>
+            <span className='titrePanneau'>Filtres d'affichage</span>
             <input type='button' value='effacer les tags' onClick={() => {
                 setTagsSelec(listeCategoriesTags.map(elt => {
                     return {categorie: elt.categorie, liste: elt.liste.map(tag => false)}
@@ -21,7 +22,7 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
             }} />
             <input type='button' value='✕ cacher' onClick={() => setAffiche(false)} />
         </div>
-        <div className='groupesFiltre'>
+        <div className='groupes'>
             <div className='groupe'>
                 <span className='titreGroupe'>Quels médias ?</span>
                 <div className='pilules'>
