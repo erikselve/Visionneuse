@@ -56,11 +56,11 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
             <div className='groupe'>
                 <span className='titreGroupe'>Tri</span>
                 <div className='pilules'>
-                    <input type='button' className={(triSelec === 'date')?'pilule actif':'pilule'} value="ordre d'arrivée" onClick={() => {
-                        setTriSelec('date')
+                    <input type='button' className={(triSelec === 'arrivee')?'pilule actif':'pilule'} value="ordre d'arrivée" onClick={() => {
+                        setTriSelec('arrivee')
                     }} />
-                    <input type='button' className={(triSelec === 'name')?'pilule actif':'pilule'} value='sans tri' onClick={() => {
-                        setTriSelec('name')
+                    <input type='button' className={(triSelec === 'aleatoire')?'pilule actif':'pilule'} value='sans tri' onClick={() => {
+                        setTriSelec('aleatoire')
                     }} />
                 </div>
             </div>

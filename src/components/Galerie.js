@@ -25,7 +25,7 @@ function Galerie(props) {
     const listeCategoriesTags = useSelector((state) => state.listeTags.categories)
     const [categorieSelec, setCategorieSelec] = useState(0)
     const [filtreSelec, setfiltreSelec] = useState('sans')
-    const [triSelec, setTriSelec] = useState('name')
+    const [triSelec, setTriSelec] = useState('aleatoire')
     const [triTypeVideo, setTriTypeVideo] = useState(true)
     const [triTypeImage, setTriTypeImage] = useState(true)
     const [triTypeAlbum, setTriTypeAlbum] = useState(true)
@@ -36,11 +36,12 @@ function Galerie(props) {
     }))
     const [dernierVu, setDernierVu] = useState(null)   //index du dernier média visité en vue média
     const listeSource = useSelector((state) => state.sources.listeNomAlphab)
+    const [graine, setGraine] = useState('')
 
     //chargePage = requête d'une page précise (append du scroll infini) ;
     //sans argument = recharge de TOUT le préfixe affiché (pages 0..page en une requête) après
     //suppression ou fin d'uploads : les index de l'accumulé doivent être renumérotés en place.
-    async function chargeListe(chargePage = null) {
+    async function chargeListe(chargePage = null, graineForcee = null) {
         let filtre = []
         tagsSelec.forEach((element, indexElt) => {          // construction du filtre : inchangée
             element.liste.forEach((tag, indexTag) => {
@@ -51,7 +52,8 @@ function Galerie(props) {
         const pageDemandee = (chargePage === null)?0:chargePage
         const rep = await fetch_json({filtre: filtreSelec, sourceSelec: sourceSelec, tagsFiltres: filtre,
             typeFiltres: {image: triTypeImage, album: triTypeAlbum, video: triTypeVideo},
-            favoriFiltre: triFavori, nbImages: nbImages, page: pageDemandee, tri: triSelec}, 'post', 'media')
+            favoriFiltre: triFavori, nbImages: nbImages, page: pageDemandee, tri: triSelec,
+            graine: graineForcee ?? graine}, 'post', 'media')
         if (rep) {
             if (rep.max % NB_IMAGE_PAR_PAGE === 0)
                 setMaxPage(Math.floor(rep.max / NB_IMAGE_PAR_PAGE)-1)
@@ -97,7 +99,9 @@ function Galerie(props) {
     useEffect(() => {
         if (page === 0) {
             dispatch(changeLoading())
-            chargeListe().then(nouvListe => {
+            const nouvelleGraine = Math.random().toString(36).slice(2)
+            setGraine(nouvelleGraine)
+            chargeListe(null, nouvelleGraine).then(nouvListe => {
                 if (nouvListe !== null) {
                     setListe(nouvListe)
                 }
