@@ -82,3 +82,13 @@
 .zoneListe {
     padding: 0px 16px 16px 16px;
 }
+
+.affSourceDerniere {
+    border: 1px solid #5b8def;                              /* contour accent */
+    background-color: rgba(91,141,239,0.08);           /* voile bleu léger */
+}
+.affSourceDerniere > .nom span:first-child::after {    /* badge discret */
+    content: " — dernier ajout";
+    color: #5b8def;
+    font-weight: bold;
+}

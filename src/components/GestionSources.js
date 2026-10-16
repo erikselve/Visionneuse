@@ -79,8 +79,7 @@ function GestionSources() {
                     dispatch(triSources("evaluation"))
                 }} />
                 <div>    
-                    {(derniereSource !== null)?<div className='affSource'>
-                            <label>Dernier ajout:</label>
+                    {(derniereSource !== null)?<div className='affSource affSourceDerniere'>
                             <div className='nom'><span>{derniereSource.nom}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
                                 fetch_json({source: derniereSource._id},'PATCH','source/consulte/').then((rep) => {
                                     dispatch(chargeSources(rep.liste))
