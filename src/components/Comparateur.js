@@ -13,7 +13,7 @@ function Comparateur() {
     const type = useSelector((state) => state.mediasComp.typeMedia)
     const [transmissionInfos, setTransmissionInfos] = useState(false)
     const sourceNouveau = useSelector((state) => state.mediasComp.sourceNouveau)
-    const aDesNotes = infoMediaD.notes !== null && Object.values(infoMediaD.notes).some(v => v !== null)
+    const aDesNotes = (infoMediaD !== undefined) && infoMediaD.notes !== null && Object.values(infoMediaD.notes).some(v => v !== null)
 
     return(
         <div className='contenu'>
@@ -48,10 +48,10 @@ function Comparateur() {
                         <div>
                             <span>Ce média doit être </span>
                             <input type='button' value={'supprimée'} onClick={() => {
-                                if (transmissionInfos) dispatch(retire(infoMediaD.tagsID, infoMediaD.favori, infoMediaD.notes, infoMediaD.source))
+                                if (transmissionInfos) dispatch(retire({tags: infoMediaD.tagsID, favori: infoMediaD.favori, notes: infoMediaD.notes, source: infoMediaD.source}))
                                 else dispatch(retire())
                             }} />
-                            {(infoMediaD.tags.length > 0 || infoMediaD.favori || aDesNotes || infoMediaD.source !== null)?<div>
+                            {(infoMediaD !== undefined && (infoMediaD.tags.length > 0 || infoMediaD.favori || aDesNotes || infoMediaD.source !== null))?<div>
                                 <input type='checkbox' checked={transmissionInfos} onClick={() => setTransmissionInfos(!transmissionInfos)} />
                                 <label>transmettre ses <span className='motcle'>
                                     informations
@@ -62,7 +62,9 @@ function Comparateur() {
                                         {(infoMediaD.source !== null)?<div>source : {infoMediaD.source}</div>:null}
                                         {(infoMediaD.source !== null && sourceNouveau !== null && infoMediaD.source !== sourceNouveau)?
                                             <div className='conflitSource'>⚠ « {infoMediaD.source} » remplacera « {sourceNouveau} »</div>:null}
-                                        {infoMediaD.tags.map(elt => <div className='tag'>{elt}</div>)}
+                                            {(infoMediaD.tags.length > 0)?<div className='ligneTags'>
+                                                {infoMediaD.tags.map(elt => <div className='tag'>{elt}</div>)}
+                                            </div>:null}
                                     </div>
                                 </span> au nouveau média</label>
                             </div>:null}

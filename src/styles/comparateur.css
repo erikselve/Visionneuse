@@ -35,3 +35,10 @@
     text-decoration: underline;
     font-weight: bold;
 }
+
+.ligneTags {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+}

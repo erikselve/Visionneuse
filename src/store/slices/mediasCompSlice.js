@@ -8,7 +8,7 @@ import { fetch_json } from '../../modules/com'
 export const envoieSuppressions = createAsyncThunk('mediasComp/envoieSuppressions', async (_, {getState}) => {
     const etat = getState().mediasComp
     const res = await fetch_json({liste: etat.listeSupp, mediaBase: etat.mediaASupp, typeMedia: etat.typeMedia,
-        tags: etat.infosHeritees.tags, favori: etat.infosHeritees.favori,
+        tags: etat.infosHeritees.tags ?? [], favori: etat.infosHeritees.favori,
         notes: etat.infosHeritees.notes, source: etat.infosHeritees.source}, 'DELETE', 'media/upload')
     return res !== false
 })
