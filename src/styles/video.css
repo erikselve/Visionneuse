@@ -90,3 +90,12 @@ width: 100%;
     height: auto;
     background-color: whitesmoke;
 }
+
+.conteneurVideoMini { position: relative; }
+.clipApercu {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;        /* le clip recouvre exactement la couverture */
+}
