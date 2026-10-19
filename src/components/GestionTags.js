@@ -1,10 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useState, useEffect } from 'react'
 import { fetch_json } from '../modules/com'
-import editer from '../assets/editer.png'
+import croix from '../assets/croix.png'
 import '../styles/gestionTags.css'
 import { initialise } from '../store/slices/listeTagsSlice'
-import { changeLoading } from '../store/slices/displaySlice'
 
 
 function GestionTags() {
@@ -12,6 +11,9 @@ function GestionTags() {
     const listeCategoriesTags = useSelector((state) => state.listeTags.categories)
     const [categorieSelec, setCategorieSelec] = useState(0)
     const [tagSelec, setTagSelec] = useState(null)
+    const liens = useSelector((state) => state.listeTags.liens)
+    const nomTagSelec = (tagSelec !== null)?listeCategoriesTags[categorieSelec].liste[tagSelec]:null
+    const liensDuTag = liens[nomTagSelec] ?? []
 
     return (
         <div className='gestionTags'>
@@ -30,7 +32,7 @@ function GestionTags() {
                 {(tagSelec !== null)?<div>
                     <input type='text' id='saisie' /><input type='button' value='changer le nom' onClick={() => {
                         const saisie = document.getElementById('saisie')
-                        fetch_json({tag: listeCategoriesTags[categorieSelec].liste[tagSelec], nouvTag: saisie.value}, 'put', 'tags/rename').then(rep => {
+                        fetch_json({tag: nomTagSelec, nouvTag: saisie.value}, 'put', 'tags/rename').then(rep => {
                             if (rep) {
                                 dispatch(initialise(rep.res))
                             }
@@ -41,21 +43,19 @@ function GestionTags() {
                         if (index !== categorieSelec) return <option value={index} key={index}>{elt.categorie}</option>
                     })}</select><input type='button' value='valider' onClick={() => {
                         const selec = document.getElementById('listeCategorie').value
-                        fetch_json({categorieCible: listeCategoriesTags[selec].categorie, categorieInit: listeCategoriesTags[categorieSelec].categorie, tag: listeCategoriesTags[categorieSelec].liste[tagSelec]}, 'put', 'tags/move').then(rep => {
+                        fetch_json({categorieCible: listeCategoriesTags[selec].categorie, categorieInit: listeCategoriesTags[categorieSelec].categorie, tag: nomTagSelec}, 'put', 'tags/move').then(rep => {
                             if (rep) {
                                 dispatch(initialise(rep.res))
                             }
                         })
                     }} />
+                    <label>Ce tag entraîne : </label>
+                    {(liensDuTag.length > 0)?liensDuTag.map(nom => <span className='tag'>{nom}
+                        <img src={croix} className='icone clicable' onClick={() => fetch_json({source: nomTagSelec, cible: nom}, 'delete', 'tags/lien').then(rep => dispatch(initialise(rep.res)))} />
+                    </span>):<span className='note'>aucun</span>}
+                    <input type='text' id='saisieLien' />
+                    <input type='button' value='lier' onClick={() => fetch_json({source: nomTagSelec, cible: document.getElementById('saisieLien')}, 'post', 'tags/lien').then(rep => dispatch(initialise(rep.res)))} />
                 </div>:null}
-                {/* <input type='button' value='trier les tags' onClick={() => {
-                    dispatch(changeLoading())
-                    fetch_json({categorie: listeCategoriesTags[categorieSelec].categorie}, 'put', 'tags/categorie/tri').then(rep => {
-                        if (rep)
-                            dispatch(initialise(rep.res))
-                        dispatch(changeLoading())
-                    })
-                }} /> */}
             </div>
         </div>
     )

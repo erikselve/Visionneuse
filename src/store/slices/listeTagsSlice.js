@@ -2,10 +2,11 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const listeTagsSlice = createSlice({
     name: 'listeTagsComp',
-    initialState: {categories: []},
+    initialState: {categories: [], liens: {}},
     reducers: {
         initialise: (state, action) => {
             state.categories = action.payload
+            state.liens = action.payload[0]?.liens ?? {}   // embarqué dans chaque catégorie : on prend la première, fallback vide
         },
         ajouteCategorie: (state, action) => {
             state.categories = [...state.categories, {categorie: action.payload, liste: []}]
