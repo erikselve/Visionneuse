@@ -90,11 +90,32 @@
     z-index: 95;              /* au-dessus des miniatures, sous le menu (100) */
 }
 
-css
-Copier
-
 .fondPanneau {
     position: fixed;
     inset: 0;                 /* tout l'écran */
     z-index: 94;              /* sous les panneaux (95) */
+}
+
+.chargePage {
+    clear: both;       /* sous les colonnes flottantes, comme la sentinelle */
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 0;
+}
+
+.chargePage span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #5b8def;
+    animation: pointCharge 1s infinite ease-in-out;
+}
+
+.chargePage span:nth-child(2) { animation-delay: 0.15s; }
+.chargePage span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes pointCharge {
+    0%, 100% { opacity: 0.25; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.1); }
 }

@@ -18,6 +18,7 @@ function Galerie(props) {
     const [maxPage, setMaxPage] = useState(0)
     const enCours = useRef(false)   //garde : une seule charge de page à la fois
     const sentinelRef = useRef(null)
+    const [chargementPage, setChargementPage] = useState(false)   //append en cours : trois points en bas de galerie
     const [affFiltre, setaffFiltre] = useState(false)
     const [affAjoutData, setAffAjoutData] = useState(false)
     const [mediaSelec, setMediaSelec] = useState(null)
@@ -81,6 +82,7 @@ function Galerie(props) {
     useEffect(() => {
         const avecAttente = (page === 0 || futurMediaSelec !== null)   //attente visible seulement si elle bloque
         if (avecAttente) dispatch(changeLoading())
+        else setChargementPage(true)   //append du scroll infini : indicateur discret en bas de galerie
         chargeListe(page).then(nouvPage => {
             if (nouvPage !== null) {
                 if (page === 0) setListe(nouvPage)
@@ -92,6 +94,7 @@ function Galerie(props) {
             }
             enCours.current = false // sentinelle de nouveau autorisée à déclencher
             if (avecAttente) dispatch(changeLoading())
+            setChargementPage(false)
         })
     }, [page])
 
@@ -167,6 +170,7 @@ function Galerie(props) {
                     setMediaSelec(index)
                 }} />
                 {(liste.length > 0)?<div ref={sentinelRef} className='sentinelScroll'></div>:null}
+                {(chargementPage)?<div className='chargePage'><span></span><span></span><span></span></div>:null}
             </div>
         )
     }
