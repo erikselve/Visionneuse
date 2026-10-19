@@ -23,12 +23,28 @@ function GestionTags() {
                 {listeCategoriesTags.map((elt, index) => <span className={(categorieSelec === index)?'menu clicable selec':'menu clicable'} key={elt.categorie} onClick={() => {
                     setCategorieSelec(index)
                     setTagSelec(null)
-                }}>{elt.categorie}</span>)}
+                }}>{(categorieSelec === index && index > 0)?<span onClick={(e) => {
+                    e.stopPropagation()   // ne pas re-déclencher le onClick du parent
+                    fetch_json({categorie: elt.categorie, direction: -1}, 'put', 'tags/categorieOrdre').then(rep => {
+                        if (rep) {
+                            dispatch(initialise(rep.res))
+                            setCategorieSelec(index - 1)   // la sélection suit la catégorie déplacée
+                        }
+                    })
+                }}>◀ </span>:null}{elt.categorie}{(categorieSelec === index && index < listeCategoriesTags.length - 1)?<span onClick={(e) => {
+                    e.stopPropagation()
+                    fetch_json({categorie: elt.categorie, direction: 1}, 'put', 'tags/categorieOrdre').then(rep => {
+                        if (rep) {
+                            dispatch(initialise(rep.res))
+                            setCategorieSelec(index + 1)
+                        }
+                    })
+                }}> ▶</span>:null}</span>)}
             </div>
             <div className='listeTags'>
-                {listeCategoriesTags[categorieSelec].liste.map((elt, index) => <div className='case' key={elt}><span className='tag'><input type='radio' name='tag' onClick={() => {
-                    setTagSelec(index)
-                }} /> {elt}</span></div>)}
+                {listeCategoriesTags[categorieSelec].liste.map((elt, index) => <div className='case' key={elt}><span className={(tagSelec === index)?'tag selec clicable':'tag clicable'} onClick={() => {
+                    setTagSelec((tagSelec === index)?null:index)   // re-cliquer sur le tag sélectionné le désélectionne
+                }}>{elt}</span></div>)}
             </div>
             <div>
                 {(tagSelec !== null)?<div>
