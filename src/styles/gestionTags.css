@@ -43,3 +43,32 @@
 .gestionTags .selec {
     background-color: rgba(91,141,239,0.25);
 }
+
+/* la pilule devient flex : le texte et la croix s'alignent proprement */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+.tag .icone {
+    height: 14px;    /* ou 12px selon la hauteur du texte */
+    width: auto;
+    cursor: pointer;
+}
+
+.zoneSaisieLien { position: relative; }
+
+/* la liste s'ouvre AU-DESSUS de la saisie, ancrée à son conteneur */
+.suggestionsLien {
+    position: absolute;
+    bottom: 100%;          /* au-dessus, même recette que .infoNote */
+    left: 0;
+    min-width: 100%;
+    max-height: 200px;
+    overflow-y: auto;      /* longue liste : elle scrolle, ne pousse jamais rien */
+    background-color: #2a2f38;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    z-index: 10;
+    box-shadow: 0px -2px 8px rgba(0,0,0,0.3);   /* flotte au-dessus du contenu, même convention discrète */
+}

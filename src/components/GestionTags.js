@@ -14,6 +14,8 @@ function GestionTags() {
     const liens = useSelector((state) => state.listeTags.liens)
     const nomTagSelec = (tagSelec !== null)?listeCategoriesTags[categorieSelec].liste[tagSelec]:null
     const liensDuTag = liens[nomTagSelec] ?? []
+    const [nomTape, setNomTape] = useState('')
+    const tousLesTags = listeCategoriesTags.flatMap(elt => elt.liste)   // toutes catégories confondues
 
     return (
         <div className='gestionTags'>
@@ -48,13 +50,24 @@ function GestionTags() {
                                 dispatch(initialise(rep.res))
                             }
                         })
-                    }} />
+                    }} /><br/>
                     <label>Ce tag entraîne : </label>
                     {(liensDuTag.length > 0)?liensDuTag.map(nom => <span className='tag'>{nom}
-                        <img src={croix} className='icone clicable' onClick={() => fetch_json({source: nomTagSelec, cible: nom}, 'delete', 'tags/lien').then(rep => dispatch(initialise(rep.res)))} />
+                        <img src={croix} className='icone clicable inv' onClick={
+                            () => fetch_json({source: nomTagSelec, cible: nom}, 'delete', 'tags/lien').then(rep => { if (rep) dispatch(initialise(rep.res))})
+                        } />
                     </span>):<span className='note'>aucun</span>}
-                    <input type='text' id='saisieLien' />
-                    <input type='button' value='lier' onClick={() => fetch_json({source: nomTagSelec, cible: document.getElementById('saisieLien')}, 'post', 'tags/lien').then(rep => dispatch(initialise(rep.res)))} />
+                    <div className='zoneSaisieLien'>   {/* conteneur relatif = l'ancre */}
+                        {(nomTape.trim() !== '')?<div className='suggestionsLien'>
+                            {tousLesTags
+                                .filter(nom => nom.toLowerCase().startsWith(nomTape.trim().toLowerCase()) && nom !== nomTagSelec)
+                                .map(nom => <div className='suggestion' key={nom} onClick={() => setNomTape(nom)}>{nom}</div>)}
+                        </div>:null}
+                        <input type='text' id='saisieLien' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
+                    </div>
+                    <input type='button' value='lier' onClick={() => {
+                        fetch_json({source: nomTagSelec, cible: nomTape}, 'post', 'tags/lien').then(rep => { if (rep) { dispatch(initialise(rep.res)); setNomTape('') } })
+                    }} />
                 </div>:null}
             </div>
         </div>
