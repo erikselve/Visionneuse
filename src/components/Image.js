@@ -13,7 +13,7 @@ function Image(props) {
     if (props.display === 'mini') {
         return(
             <div>
-                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+props.nomFichier} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
+                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+'miniatures/'+props.nomFichier.split('.')[0]+'.webp'} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
             </div>
         )
     }

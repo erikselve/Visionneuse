@@ -42,7 +42,7 @@ function Album(props) {
         return(
             <div>
                 <div className="conteneurAlbum">
-                    <Vignette src={URL_server+PATH_ALBUM+props.nomFichier+'/00001/00001.jpg'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
+                    <Vignette src={URL_server+PATH_ALBUM+'couvertures/'+props.nomFichier.split('.')[0]+'.webp'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
                 <div className="logo"><img src={logo} /></div></div>
             </div>
         )

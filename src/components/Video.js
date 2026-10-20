@@ -15,7 +15,7 @@ function Video(props) {
     const boucle = useSelector((state) => state.display.boucle)
 
     if (props.display === 'mini') {
-        const couverture = props.nomFichier.split('.')[0]+'.jpg'
+        const couverture = props.nomFichier.split('.')[0]+'.webp'
         return(
             <div>
                 <div className="conteneurVideoMini" onMouseEnter={() => {timerSurvol.current = setTimeout(() => setAffMiniVideo(true), 400)}} onMouseLeave={() => {clearTimeout(timerSurvol.current); setAffMiniVideo(false)}}>
