@@ -171,7 +171,7 @@ function ZoneAjout(props) {
                         }} />
                     </p>
 
-                    <p>
+                    {/* <p>
                         <span>Récupération d'un album sur comics.8muses.com</span><br/>
                         <label>auteur/titre de l'album: </label><input type='text' id='info8muses' />
                         <input type='checkbox' checked={site8musesEnsemble} onClick={() => {
@@ -194,7 +194,7 @@ function ZoneAjout(props) {
                                 }
                             })
                         }} />
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </div>
