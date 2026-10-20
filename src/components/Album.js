@@ -5,6 +5,7 @@ import logo from '../assets/bulle.png'
 import '../styles/album.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
 import { useState, useEffect } from "react"
+import { sansExtension } from "../modules/sansExtension"
 
 
 //props obligatoires
@@ -42,7 +43,7 @@ function Album(props) {
         return(
             <div>
                 <div className="conteneurAlbum">
-                    <Vignette src={URL_server+PATH_ALBUM+'couvertures/'+props.nomFichier.split('.')[0]+'.webp'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
+                    <Vignette src={URL_server+PATH_ALBUM+'couvertures/'+sansExtension(props.nomFichier)+'.webp'} className="couv" largeur={props.taille?.width} hauteur={props.taille?.height} />
                 <div className="logo"><img src={logo} /></div></div>
             </div>
         )

@@ -2,6 +2,7 @@ import { URL_server, PATH_IMAGE } from "../data/config"
 import '../styles/image.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
 import Vignette from "./Vignette"
+import { sansExtension } from "../modules/sansExtension"
 
 
 //props obligatoires
@@ -13,7 +14,7 @@ function Image(props) {
     if (props.display === 'mini') {
         return(
             <div>
-                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+'miniatures/'+props.nomFichier.split('.')[0]+'.webp'} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
+                <div className="conteneurIm"><Vignette src={URL_server+PATH_IMAGE+'miniatures/'+sansExtension(props.nomFichier)+'.webp'} largeur={props.taille?.width} hauteur={props.taille?.height} /></div>
             </div>
         )
     }

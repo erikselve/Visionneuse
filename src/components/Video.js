@@ -4,6 +4,7 @@ import '../styles/video.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
 import { useState, useRef } from "react"
 import Vignette from "./Vignette"
+import { sansExtension } from "../modules/sansExtension"
 
 //props obligatoires
 //  - nom: nom de l'album / chemin vers l'image de couverture
@@ -15,13 +16,13 @@ function Video(props) {
     const boucle = useSelector((state) => state.display.boucle)
 
     if (props.display === 'mini') {
-        const couverture = props.nomFichier.split('.')[0]+'.webp'
+        const couverture = sansExtension(props.nomFichier)+'.webp'
         return(
             <div>
                 <div className="conteneurVideoMini" onMouseEnter={() => {timerSurvol.current = setTimeout(() => setAffMiniVideo(true), 400)}} onMouseLeave={() => {clearTimeout(timerSurvol.current); setAffMiniVideo(false)}}>
                     <Vignette src={URL_server+PATH_VIDEO+'couvertures/'+couverture} alt="présentation de la vidéo" className="couverture" largeur={props.taille?.width} hauteur={props.taille?.height} />
                     {(affMiniVideo)?
-                        <video autoPlay muted loop playsInline className='clipApercu' src={URL_server+PATH_VIDEO+'couvertures/clip_'+props.nomFichier.split('.')[0]+'.mp4'} />:null                }
+                        <video autoPlay muted loop playsInline className='clipApercu' src={URL_server+PATH_VIDEO+'couvertures/clip_'+sansExtension(props.nomFichier)+'.mp4'} />:null                }
                 </div>
             </div>
         )
