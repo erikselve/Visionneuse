@@ -13,11 +13,13 @@ import { NB_IMAGE_PAR_PAGE } from "../data/config"
 
 function Galerie(props) {
     const dispatch = useDispatch()
+    const premiereCharge = useRef(true)   //le montage est déjà couvert par l'effet des filtres
     const [page, setPage] = useState(0)
     const [liste, setListe] = useState([])
     const [maxPage, setMaxPage] = useState(0)
     const enCours = useRef(false)   //garde : une seule charge de page à la fois
     const sentinelRef = useRef(null)
+    const version = useRef(0)   //invalide les réponses d'append parties avec d'anciens filtres
     const [chargementPage, setChargementPage] = useState(false)   //append en cours : trois points en bas de galerie
     const [affFiltre, setaffFiltre] = useState(false)
     const [affAjoutData, setAffAjoutData] = useState(false)
@@ -80,13 +82,14 @@ function Galerie(props) {
 
     //met à jour l'affichage : page 0 = remplacement (montage, reset de filtre), pages suivantes = accumulation
     useEffect(() => {
+        if (premiereCharge.current) { premiereCharge.current = false; return }   //montage : l'effet des filtres charge déjà
         const avecAttente = (page === 0 || futurMediaSelec !== null)   //attente visible seulement si elle bloque
         if (avecAttente) dispatch(changeLoading())
         else setChargementPage(true)   //append du scroll infini : indicateur discret en bas de galerie
         chargeListe(page).then(nouvPage => {
             if (nouvPage !== null) {
                 if (page === 0) setListe(nouvPage)
-                else setListe([...liste, ...nouvPage])
+                else setListe(prev => [...prev, ...nouvPage])   //fonctionnel : toujours à jour, jamais de doublon de course
             }
             if (futurMediaSelec !== null) {
                 setMediaSelec(futurMediaSelec)
@@ -99,21 +102,26 @@ function Galerie(props) {
     }, [page])
 
 //définition du filtre d'affichage de la gallerie
-    useEffect(() => {
-        if (page === 0) {
-            dispatch(changeLoading())
-            const nouvelleGraine = Math.random().toString(36).slice(2)
-            setGraine(nouvelleGraine)
-            chargeListe(null, nouvelleGraine).then(nouvListe => {
-                if (nouvListe !== null) {
-                    setListe(nouvListe)
-                }
+useEffect(() => {
+    const maVersion = ++version.current   //incrément + capture en une ligne
+    if (page === 0) {
+        dispatch(changeLoading())
+        const nouvelleGraine = Math.random().toString(36).slice(2)
+        setGraine(nouvelleGraine)
+        chargeListe(null, nouvelleGraine).then(nouvListe => {
+            if (version.current !== maVersion) {   //un autre changement de filtre est repassé par là : réponse périmée
                 dispatch(changeLoading())
-            })
-        }
-        else
-            setPage(0)
-    }, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec, sourceSelec])
+                return
+            }
+            if (nouvListe !== null) {
+                setListe(nouvListe)
+            }
+            dispatch(changeLoading())
+        })
+    }
+    else
+        setPage(0)
+}, [filtreSelec, triFavori, triTypeAlbum, triTypeImage, triTypeVideo, triSelec, tagsSelec, sourceSelec])
 
     //scroll infini : la sentinelle sous la galerie déclenche le chargement de la page suivante
     //à l'approche du viewport (600px d'avance, en accord avec les vignettes lazy)
