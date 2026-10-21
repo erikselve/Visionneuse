@@ -8,6 +8,7 @@ import Comparateur from './Comparateur'
 import Diaporama from './Diaporama'
 import AffichFavori from './AffichFavori'
 import GestionSources from './GestionSources'
+import Statistiques from './Statistiques'
 import { fetch_get } from '../modules/com'
 import { initialise } from '../store/slices/listeTagsSlice'
 import { chargeNotation } from '../store/slices/sourceSlice'
@@ -72,6 +73,7 @@ function App() {
         <div className={(princDisplay.gallerie)?'contenu':'contenu none'}><Galerie /></div>
         <div className={(princDisplay.gestionTags)?'contenu':'contenu none'}><GestionTags /></div>
         <div className={(princDisplay.sources)?'contenu':'contenu none'}><GestionSources /></div>
+        <div className={(princDisplay.stats)?'contenu':'contenu none'}><Statistiques /></div>
         <div className={(loading)?'loading':'loading none'} ><img src={patienter} /></div>
         {(diaporama)?<div className='diaporama'><Diaporama working={true} /></div>:<div className='none'><Diaporama working={false} /></div>}
         {(favori !== null)?<div className='favori'><AffichFavori favori={favori} /></div>:null}

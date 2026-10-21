@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const displaySlice = createSlice({
     name: 'display',
-    initialState: {barreProgression: false, diaporama: false, favoriSelec: null, princ: {gallerie: true, comparateur: false, gestionTags: false, sources: false}, mediaSelec: null, loading: false, boucle: false}, 
+    initialState: {barreProgression: false, diaporama: false, favoriSelec: null, princ: {gallerie: true, comparateur: false, gestionTags: false, sources: false, stats: false}, mediaSelec: null, loading: false, boucle: false}, 
     reducers: {
         changeBarreProgression: (state) => {
             state.barreProgression = !state.barreProgression
@@ -20,30 +20,42 @@ export const displaySlice = createSlice({
                     state.princ.comparateur = false
                     state.princ.gestionTags = false
                     state.princ.sources = false
+                    state.princ.stats = false
                     break;
                 case 'comparateur':
                     state.princ.gallerie = false
                     state.princ.comparateur = true
                     state.princ.gestionTags = false
                     state.princ.sources = false
+                    state.princ.stats = false
                     break;
                 case 'gestionTags':
                     state.princ.gallerie = false
                     state.princ.comparateur = false
                     state.princ.gestionTags = true
                     state.princ.sources = false
+                    state.princ.stats = false
                     break;
                 case 'sources':
                     state.princ.gallerie = false
                     state.princ.comparateur = false
                     state.princ.gestionTags = false
                     state.princ.sources = true
+                    state.princ.stats = false
+                    break;
+                case 'stats':
+                    state.princ.gallerie = false
+                    state.princ.comparateur = false
+                    state.princ.gestionTags = false
+                    state.princ.sources = false
+                    state.princ.stats = true
                     break;
                 default:
                     state.princ.gallerie = true
                     state.princ.comparateur = false
                     state.princ.gestionTags = false
                     state.princ.sources = false
+                    state.princ.stats = false
                     break;
             }
         },

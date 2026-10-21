@@ -21,6 +21,7 @@ function Menu() {
             {navBouton('Diaporama', 'diaporama', princ.diaporama)}
             {navBouton('Tags', 'gestionTags', princ.gestionTags)}
             {navBouton('Sources', 'sources', princ.sources)}
+            {navBouton('Stats', 'stats', princ.stats)}
             <div className='actionsMenu'>
                 <input type='button' className='actionBouton' value='Favori court' onClick={() => {
                     fetch_json({}, 'post', 'media/favori/court').then(rep => {

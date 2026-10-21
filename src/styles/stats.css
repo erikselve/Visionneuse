@@ -1,0 +1,57 @@
+.pageStats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 1400px;
+    margin: auto;
+    padding: 16px;
+}
+
+.ligneStat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.nomStat {
+    width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;   /* les noms très longs sont coupés proprement, pas étalés */
+    white-space: nowrap;
+}
+
+.barreProp {
+    flex: 1;
+    height: 8px;
+    background-color: #2a2f38;
+    border-radius: 4px;
+}
+
+.barreProp > div {
+    height: 100%;
+    background-color: #5b8def;
+    border-radius: 4px;
+}
+
+.nombreStat {
+    width: 6ch;    
+    text-align: right;
+}
+
+.poidsTags {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 24px;
+}
+
+.selectAnnees { display: flex; gap: 10px; }
+
+.graphCroissance { width: 100%; height: auto; }
+.valeurMois { fill: #c9ced8; font-size: 10px; }
+.etiquetteMois { fill: #6b7280; font-size: 10px; }
+
+.selectTags { margin-bottom: 12px; }
+.pilulesTags { display: flex; flex-wrap: wrap; gap: 4px; }
+.piluleStat { cursor: pointer; border: 1px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 2px 8px; }
+.piluleStat.choisi { background-color: #5b8def; }
