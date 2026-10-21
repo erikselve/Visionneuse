@@ -30,18 +30,23 @@ function GraphiqueBarres({donnees, etiquette}) {
 
 function Statistiques() {
     const [stats, setStats] = useState(null)
+    //départ : dérivations protégées en un seul endroit, le reste du composant suppose stats chargé
+    const croissance = (stats !== null)?stats.croissance:[]
+    const tags = (stats !== null)?stats.tags:[]
+
     const [selection, setSelection] = useState(new Set())   //noms des tags choisis
     const [affSelect, setAffSelect] = useState(false)
     const [categorieSelec, setCategorieSelec] = useState(0)
-    const tousLesTags = (stats !== null)?stats.tags.flatMap(cat => cat.tags):null
+    const tousLesTags = tags.flatMap(cat => cat.tags)
     const [vueCroissance, setVueCroissance] = useState('mois')
-    const annees = (stats !== null)?[...new Set(stats.croissance.map(elt => elt._id.slice(0, 4)))].map(Number):[]   //années ayant des données, ordre chronologique (l'agrégat est déjà trié)
+    const annees = [...new Set(croissance.map(elt => elt._id.slice(0, 4)))].map(Number)  //années ayant des données, ordre chronologique (l'agrégat est déjà trié)
     const [anneeSelecBrute, setAnneeSelec] = useState(null)
     const anneeSelec = anneeSelecBrute ?? annees[annees.length-1]   //dernière année tant qu'on n'a pas choisi
 
+
     //vue annuelle : fenêtre complète (contexte inclus), mois vides posés à 0
     const moisAnnee = (() => {
-        const parMois = new Map(stats.croissance.map(elt => [elt._id, elt.nb]))
+        const parMois = new Map(croissance.map(elt => [elt._id, elt.nb]))
         const sortie = []
         const debut = new Date(Date.UTC(anneeSelec, 0, 1))
         debut.setUTCMonth(debut.getUTCMonth() - 4)   //4 mois de contexte avant
@@ -103,12 +108,12 @@ function Statistiques() {
                 </div>
                 {(affSelect)?<div className='selectTags'>
                     <div className='menu'>
-                        {stats.tags.map((cat, index) => <span key={cat.categorie}
+                        {tags.map((cat, index) => <span key={cat.categorie}
                             className={(categorieSelec === index)?'clicable selec':'clicable'}
                             onClick={() => setCategorieSelec(index)}>{cat.categorie}</span>)}
                     </div>
                     <div className='pilulesTags'>
-                        {stats.tags[categorieSelec].tags.map(tag => <span key={tag.nom}
+                        {tags[categorieSelec].tags.map(tag => <span key={tag.nom}
                             className={(selection.has(tag.nom))?'piluleStat choisi':'piluleStat'}
                             onClick={() => choisisTag(tag.nom)}>{tag.nom}</span>)}
                     </div>
@@ -130,7 +135,7 @@ function Statistiques() {
                     </div>
                 :
                     <div className='poidsTags'>
-                        {stats.tags.map(cat => <div className='groupe' key={cat.categorie}>
+                        {tags.map(cat => <div className='groupe' key={cat.categorie}>
                             <span className='titreGroupe'>{cat.categorie} — {cat.nbTags} tags, {cat.somme} usages</span>
                             {cat.tags.slice(0, 15).map(tag => <div className='ligneStat' key={tag.nom}>
                                 <span className='nomStat'>{tag.nom}</span>
@@ -153,7 +158,7 @@ function Statistiques() {
                         <input type='button' value={(vueCroissance === 'mois')?'par année':'par mois'} onClick={() => setVueCroissance((vueCroissance === 'mois')?'annee':'mois')} />
                     </div>
                     {(vueCroissance === 'mois')?
-                        <GraphiqueBarres donnees={etiquettesMois(stats.croissance)} etiquette={(id) => id.slice(5)} />
+                        <GraphiqueBarres donnees={etiquettesMois(croissance)} etiquette={(id) => id.slice(5)} />
                     :
                         <GraphiqueBarres donnees={moisAnnee} etiquette={(id) => id.slice(5)} />
                     }
