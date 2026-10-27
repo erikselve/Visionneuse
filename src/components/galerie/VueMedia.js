@@ -51,7 +51,6 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
         return(<span>{suiteNotes}</span>)
     }
 
-    let orientation = (liste[mediaSelec].taille.width > liste[mediaSelec].taille.height)?'paysage':'portrait'
     return(
         <div className='conteneurComplet'>
             <div className="conteneurInfo">
@@ -125,7 +124,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                 </div>
             </div>
             {(liste[mediaSelec].type === 'image')?<Image display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />:
-            (liste[mediaSelec].type === 'video')?<Video display='complet' orientation={orientation} nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />:
+            (liste[mediaSelec].type === 'video')?<Video display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />:
             <Album display='complet' nom={liste[mediaSelec].name} id={liste[mediaSelec].id} nomFichier={liste[mediaSelec].nomFichier} />}
         </div>
     )
