@@ -1,6 +1,30 @@
 .conteneurComplet {
     display: flex;
     flex-direction: column;
+    height: calc(100vh - 56px);     /* la barre de menu, seule valeur réelle à connaître */
+    overflow: hidden;               /* rien ne déborde : la page ne scrolle plus du tout */
+}
+
+/* le bloc média (Image/Video) prend TOUT ce qui reste après les deux barres d'info */
+.conteneurImage, .conteneurVideo {
+    flex: 1;
+    min-height: 0;                  /* le piège flex classique : sans ça, le bloc refuse de rétrécir */
+}
+
+.conteneurComplet .image {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 0;
+}
+
+.conteneurComplet .image img,
+.conteneurComplet .video video {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
 }
 
 .conteneurInfo {

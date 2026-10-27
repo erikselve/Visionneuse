@@ -13,10 +13,6 @@
     flex-direction: column;
 }
 
-/* .conteneurTags .clicable:hover {
-    cursor: pointer;
-} */
-
 .conteneurTags .categorie {
     font-weight: bold;
 }
@@ -40,10 +36,6 @@
     padding-bottom: 3px;
     margin-bottom: 3px;
 }
-
-/* .conteneurTags .clicable:hover {
-    cursor: pointer;
-} */
 
 .conteneurTags .selec {
     background-color: dodgerblue;

@@ -9,14 +9,8 @@
     justify-content: right;
 }
 
-/* .conteneurComplet {
-    display: flex;
-    flex-direction: column;
-} */
-
 .conteneurComplet .conteneurTags {
     width: 20%;
-    max-height: calc(100vh - 130px);   /* sous les deux barres d'info — à ajuster à l'œil */
     overflow-y: auto;
 }
 

@@ -4,18 +4,6 @@
     align-items: center;
 }
 
-.conteneurVideo video.portrait {
-    width: max-content;
-    height: max-content;
-    max-height: 100vh;
-}
-
-.conteneurVideo video.paysage {
-    width: max-content;
-    height: max-content;
-    max-width: 100%;
-}
-
 .conteneurVideo .couverture {
     width: 100%;
     height: auto;
