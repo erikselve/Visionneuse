@@ -74,6 +74,19 @@
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
+.gestionPage .compteMedias {
+    margin-left: 16px;
+    margin-right: 16px;      /* ta marge à droite */
+    align-self: center;
+    color: #6b7380;
+    white-space: nowrap;
+}
+
+.gestionPage .compteMedias::before {
+    content: '—';
+    margin-right: 16px;
+}
+
 .panneauFixe {
     position: fixed;
     top: 110px;              /* sous la barre de menu (56px) + la barre figée — à ajuster à la hauteur réelle */

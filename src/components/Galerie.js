@@ -17,6 +17,7 @@ function Galerie(props) {
     const [page, setPage] = useState(0)
     const [liste, setListe] = useState([])
     const [maxPage, setMaxPage] = useState(0)
+    const [nbMedias, setNbMedias] = useState(null)   //total selon les filtres, fourni par chaque réponse
     const enCours = useRef(false)   //garde : une seule charge de page à la fois
     const sentinelRef = useRef(null)
     const version = useRef(0)   //invalide les réponses d'append parties avec d'anciens filtres
@@ -62,6 +63,7 @@ function Galerie(props) {
                 setMaxPage(Math.floor(rep.max / NB_IMAGE_PAR_PAGE)-1)
             else
                 setMaxPage(Math.floor(rep.max / NB_IMAGE_PAR_PAGE))
+            setNbMedias(rep.max)
             return rep.res
         }
         else return null
@@ -154,6 +156,9 @@ useEffect(() => {
                             setAffAjoutData(false) 
                         }} />:null}
                     </div>
+                    {(nbMedias !== null)?<div className='compteMedias'>
+                        {nbMedias+' média'+((nbMedias>1)?'s':'')}
+                    </div>:null}
                 </div>
 
                 {(affFiltre || affAjoutData)?<div className='fondPanneau' onClick={() => {

@@ -35,7 +35,7 @@ export const sourcesSlice = createSlice({
             const index = state.sources.findIndex((elt) => elt.nom === action.payload)
             state.derniereSourceUtilisee = (index >= 0)?state.sources[index]:null
         },
-        chargeNotation: (state, action) => { 
+        chargeNotation: (state, action) => {
             state.notation = action.payload
         }
     }

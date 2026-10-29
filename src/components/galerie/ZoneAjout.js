@@ -105,7 +105,7 @@ function ZoneAjout(props) {
                 {(derniereSource !== null)?<div className='groupe'>
                     <span className='titreGroupe'>Associer à une source</span>
                     <div>
-                        <input type='checkbox' checked={assocSource} onClick={() => setAssocSource(!assocSource)} />
+                        <input type='checkbox' checked={assocSource} onChange={() => setAssocSource(!assocSource)} />
                         <label>Associer ces médias à la source « {derniereSource.nom} »</label>
                     </div>
                 </div>:null}
