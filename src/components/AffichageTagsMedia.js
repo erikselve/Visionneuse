@@ -64,7 +64,6 @@ function AffichageTagsMedia(props) {
                         return <span key={elt} className='selec tag'>{elt}</span>
                     }
                     else if (mode === 'complet' && saisieTag[data.categorie]) {
-                        const mc = motsCles[elt]
                         return <span key={elt} className={(selec)?'selec tag motcle clicable':'tag clicable motcle'} onClick={() => {
                             if (selec) {
                                 fetch_json({tag: elt, id: props.id}, 'delete', 'media/tags').then(rep => {

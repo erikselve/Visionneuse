@@ -58,8 +58,10 @@ function App() {
 
   useEffect(() => {
     fetch_get('tags').then(async rep => {
-      dispatch(initialise(rep.res))
-      setchargement(false)
+        if (rep) {
+            dispatch(initialise(rep.res))
+            setchargement(false)
+        }   // échec : on reste sur « En chargement » — recharger la page retentera
     })
     fetch_get('source/notation').then((rep) => dispatch(chargeNotation(rep)))
   }, [])
