@@ -14,6 +14,8 @@ function GestionTags() {
     const liens = useSelector((state) => state.listeTags.liens)
     const nomTagSelec = (tagSelec !== null)?listeCategoriesTags[categorieSelec].liste[tagSelec]:null
     const liensDuTag = liens[nomTagSelec] ?? []
+    const motsCles = useSelector((state) => state.listeTags.motsCles)
+    const motsClesDuTag = motsCles[nomTagSelec] ?? []
     const [nomTape, setNomTape] = useState('')
     const tousLesTags = listeCategoriesTags.flatMap(elt => elt.liste)   // toutes catégories confondues
 
@@ -83,6 +85,18 @@ function GestionTags() {
                     </div>
                     <input type='button' value='lier' onClick={() => {
                         fetch_json({source: nomTagSelec, cible: nomTape}, 'post', 'tags/lien').then(rep => { if (rep) { dispatch(initialise(rep.res)); setNomTape('') } })
+                    }} />
+                    <label>Mots-clés : </label>
+                    {(motsClesDuTag.length > 0)?motsClesDuTag.map(mc => <span className='tag' key={mc}>{mc}
+                        <img src={croix} className='icone clicable inv' onClick={
+                            () => fetch_json({tag: nomTagSelec, motCle: mc}, 'delete', 'tags/motcle').then(rep => { if (rep) dispatch(initialise(rep.res))})
+                        } />
+                    </span>):<span className='note'>aucun</span>}
+                    <input type='text' id='saisieMotCle' /><input type='button' value='ajouter' onClick={() => {
+                        const saisie = document.getElementById('saisieMotCle')
+                        if (saisie.value.trim() !== '') fetch_json({tag: nomTagSelec, motCle: saisie.value}, 'post', 'tags/motcle').then(rep => {
+                            if (rep) { dispatch(initialise(rep.res)); saisie.value = "" }
+                        })
                     }} />
                 </div>:null}
             </div>

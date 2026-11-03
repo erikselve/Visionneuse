@@ -15,6 +15,8 @@ function AffichageTagsMedia(props) {
     const listeCategoriesTags = useSelector((state) => state.listeTags.categories)  
     const [saisieTag, setSaisieTag] = useState([])
     const [listeTag, setliststeTag] = useState([])
+    const motsCles = useSelector((state) => state.listeTags.motsCles)
+    const [bulle, setBulle] = useState(null)   // {texte, x, y} du tag survolé
 
     function chargeTags() {
         fetch_json({id: props.id}, 'post', 'media/tags').then(rep => {
@@ -62,7 +64,8 @@ function AffichageTagsMedia(props) {
                         return <span key={elt} className='selec tag'>{elt}</span>
                     }
                     else if (mode === 'complet' && saisieTag[data.categorie]) {
-                        return <span key={elt} className={(selec)?'selec tag clicable':'tag clicable'} onClick={() => {
+                        const mc = motsCles[elt]
+                        return <span key={elt} className={(selec)?'selec tag motcle clicable':'tag clicable motcle'} onClick={() => {
                             if (selec) {
                                 fetch_json({tag: elt, id: props.id}, 'delete', 'media/tags').then(rep => {
                                     chargeTags()
@@ -73,7 +76,14 @@ function AffichageTagsMedia(props) {
                                     chargeTags()
                                 })
                             }
-                        }}>{elt}</span>                        
+                        }} onMouseEnter={(e) => {
+                            const mc = motsCles[elt]
+                            if (mc !== undefined) {
+                                const rect = e.currentTarget.getBoundingClientRect()
+                                setBulle({texte: mc.join(', '), x: rect.left, y: rect.top})
+                            }
+                        }}
+                        onMouseLeave={() => setBulle(null)}>{elt}</span>             
                     }
                 })}
             </div>
@@ -111,6 +121,7 @@ function AffichageTagsMedia(props) {
                                 }
                             })}
                         </div>
+                        {(bulle !== null)?<div className='bulleMotsCles' style={{left: bulle.x, top: bulle.y}}>{bulle.texte}</div>:null}
                     </div>
 
 

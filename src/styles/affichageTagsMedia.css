@@ -40,3 +40,18 @@
 .conteneurTags .selec {
     background-color: dodgerblue;
 }
+
+.bulleMotsCles {
+    position: fixed;            /* échappe au rognage de la colonne : coordonnées viewport */
+    transform: translateY(-105%);   /* s'ouvre au-dessus du tag survolé */
+    max-width: 280px;
+    padding: 4px 8px;
+    background-color: #2a2f38;
+    color: #c9ced8;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: normal;
+    z-index: 90;                /* au-dessus du média et des panneaux, sous le menu (100) */
+    pointer-events: none;      /* la bulle ne vole pas le survol du tag */
+}

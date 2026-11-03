@@ -29,8 +29,8 @@
     height: 100%;
 }
 
-.motcle {
-    text-decoration: underline;
+.tooltip {
+    display: none;
 }
 
 .motcle:hover .tooltip {
