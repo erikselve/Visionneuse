@@ -17,6 +17,7 @@ function AffichageTagsMedia(props) {
     const [listeTag, setliststeTag] = useState([])
     const motsCles = useSelector((state) => state.listeTags.motsCles)
     const [bulle, setBulle] = useState(null)   // {texte, x, y} du tag survolé
+    const [filtreSaisie, setFiltreSaisie] = useState('')
 
     function chargeTags() {
         fetch_json({id: props.id}, 'post', 'media/tags').then(rep => {
@@ -33,6 +34,16 @@ function AffichageTagsMedia(props) {
         chargeTags()
     }, [props.id])
 
+    function filtreTags(liste, filtreSaisie) {
+        const filtre = filtreSaisie.trim().toLowerCase()
+        if (filtre === '') return liste
+        return liste.filter(elt => {
+            if (elt.toLowerCase().startsWith(filtre)) return true
+            const mc = motsCles[elt]
+            return mc !== undefined && mc.some(m => m.toLowerCase().startsWith(filtre))
+        })
+    }
+
     //paramètres :
     //  - data est la categorie et ses tags associés
     //  - mode=simple n'affiche que les tags surbrillants, mode=complet affiche tout les tags dont les surbrillants
@@ -42,23 +53,26 @@ function AffichageTagsMedia(props) {
             <div className="ligne">
                 <span  className="categorie">{data.categorie}</span>
                 {(mode === 'complet')?<img src={boutonAjout} className="icone inv" onClick={() => {
+                    setFiltreSaisie('')
                     let sol = []
                     sol[data.categorie] = !saisieTag[data.categorie]
                     setSaisieTag(sol)
                 }}/>:null}                
                 {(saisieTag[data.categorie] && mode === 'complet')?<div>
-                    <input type="text" id={"saisieTag"+data.categorie} />
+                    <input type="text" id={"saisieTag"+data.categorie} value={filtreSaisie}
+                        onChange={(e) => setFiltreSaisie(e.target.value)} />
                     <input type="button" value='Valider' onClick={() => {
                         let saisie = document.getElementById('saisieTag'+data.categorie)
                         if (saisie.value !== "") fetch_json({nom: saisie.value, categorie: data.categorie}, 'put', 'tags').then(rep => {
                             if (rep) dispatch(majCategorie({categorie: data.categorie, tags: rep.res}))
                             saisie.value = ""
+                            setFiltreSaisie('')
                         })
                     }}  />
                 </div>:null}
             </div>
             <div className="tags">
-                {data.liste.map((elt) => {
+                {filtreTags(data.liste, filtreSaisie).map((elt) => {
                     const selec = (listeTagsSurbrillants.find((element) => element === elt) !== undefined)?true:false
                     if (mode === 'simple' && selec) {
                         return <span key={elt} className='selec tag'>{elt}</span>
@@ -90,42 +104,38 @@ function AffichageTagsMedia(props) {
     }
 
         return(
-
-                    <div className="conteneurTags">
-                        <div className="ligne">
-                            <h1>Tags</h1>
-                            <img src={boutonAjout} className="icone inv" onClick={() => {
-                                setSaisieCategorie(!saisieCategorie)
-                            }} />
-                            {(saisieCategorie)?<div className="ligne"><input type="text" id="saisieCategorie" /><input type="button" value='Valider' onClick={() => {
-                                let saisie = document.getElementById('saisieCategorie')
-                                if (saisie.value !== "") {
-                                    fetch_json({nom: saisie.value}, 'put', 'tags/categorie').then(rep => {
-                                        if (rep) dispatch(ajouteCategorie(saisie.value))
-                                        saisie.value=""
-                                    })
-                                }
-                            }} /></div>:null}
-                        </div>
-                        <div className="colonne">
-                            {listeCategoriesTags.map((elt) => {
-                                if (saisieCategorie) return affCategorieTag(elt, 'complet', listeTag)
-                                else {
-                                    let verif = false
-                                    for (let index = 0; index < listeTag.length && !verif; index++) {
-                                        const tag = listeTag[index];
-                                        if (elt.liste.find(element => element === tag) !== undefined) verif = true
-                                    }
-                                    if (verif) return affCategorieTag(elt, 'simple', listeTag)
-                                }
-                            })}
-                        </div>
-                        {(bulle !== null)?<div className='bulleMotsCles' style={{left: bulle.x, top: bulle.y}}>{bulle.texte}</div>:null}
+                <div className="conteneurTags">
+                    <div className="ligne">
+                        <h1>Tags</h1>
+                        <img src={boutonAjout} className="icone inv" onClick={() => {
+                            setSaisieCategorie(!saisieCategorie)
+                        }} />
+                        {(saisieCategorie)?<div className="ligne"><input type="text" id="saisieCategorie" /><input type="button" value='Valider' onClick={() => {
+                            let saisie = document.getElementById('saisieCategorie')
+                            if (saisie.value !== "") {
+                                fetch_json({nom: saisie.value}, 'put', 'tags/categorie').then(rep => {
+                                    if (rep) dispatch(ajouteCategorie(saisie.value))
+                                    saisie.value=""
+                                })
+                            }
+                        }} /></div>:null}
                     </div>
-
-
+                    <div className="colonne">
+                        {listeCategoriesTags.map((elt) => {
+                            if (saisieCategorie) return affCategorieTag(elt, 'complet', listeTag)
+                            else {
+                                let verif = false
+                                for (let index = 0; index < listeTag.length && !verif; index++) {
+                                    const tag = listeTag[index];
+                                    if (elt.liste.find(element => element === tag) !== undefined) verif = true
+                                }
+                                if (verif) return affCategorieTag(elt, 'simple', listeTag)
+                            }
+                        })}
+                    </div>
+                    {(bulle !== null)?<div className='bulleMotsCles' style={{left: bulle.x, top: bulle.y}}>{bulle.texte}</div>:null}
+                </div>
         )
-    
 }
 
 export default AffichageTagsMedia
