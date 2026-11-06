@@ -5,6 +5,7 @@ import etoileVide from '../assets/etoileVide.png'
 import etoile from '../assets/etoile.png'
 import oeil from '../assets/voir.png'
 import crayon from '../assets/crayon.png'
+import boutonAjout from '../assets/ajout.png'
 import { chargeSources, triSources, changeDerniereSource } from '../store/slices/sourceSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -16,9 +17,10 @@ function GestionSources() {
     const meilleureUrgence = useSelector((state) => state.sources.plusGrandeUrgence)
     const [chargement, setChargement] = useState(true)
     const [infoNote, setInfoNote] = useState({texte: '', source: '', critere: ''})
-    const listeNomManuel = useSelector((state) => state.sources.listeNomAlphab.filter((elt) => elt.manuel))
+    const listeNom = useSelector((state) => state.sources.listeNomAlphab)
     const [nomTape, setNomTape] = useState('')
     const [sourceRenommee, setSourceRenommee] = useState(null)
+    const [sourceAlias, setSourceAlias] = useState(null)
     const notation = useSelector((state) => state.sources.notation)
 
     function afficheNote(note, type, auteur, calcul) {
@@ -58,9 +60,17 @@ function GestionSources() {
                 }} /><br/>
                 <label>Saisir le nom d'une source:</label><br/>
                 <input type='text' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
-                {(nomTape.trim() !== '')?listeNomManuel
-                    .filter((elt) => elt.nom.toLowerCase().startsWith(nomTape.toLowerCase()) && elt.nom.toLowerCase() !== nomTape.toLowerCase())
-                    .map((elt) => <div key={elt.nom} className='suggestion' onClick={() => setNomTape(elt.nom)}>{elt.nom}</div>)
+                {(nomTape.trim() !== '')?listeNom
+                    .filter((elt) => {
+                        const t = nomTape.trim().toLowerCase()
+                        const dejaExact = (elt.nom.toLowerCase() === t || elt.nomUsage.toLowerCase() === t || elt.alias.some(a => a.toLowerCase() === t))
+                        return !dejaExact && (
+                            elt.nom.toLowerCase().startsWith(t) ||            // ← la ligne manquante
+                            elt.nomUsage.toLowerCase().startsWith(t) ||
+                            elt.alias.some(a => a.toLowerCase().startsWith(t))
+                        )
+                    })
+                    .map((elt) => <div key={elt.nom} className='suggestion' onClick={() => setNomTape(elt.nomUsage)}>{elt.nomUsage}</div>)
                 :null}
                 <input type='button' value='Envoyer' onClick={() => {
                     const nom = nomTape.trim()
@@ -80,7 +90,7 @@ function GestionSources() {
                 }} />
                 <div>    
                     {(derniereSource !== null)?<div className='affSource affSourceDerniere'>
-                            <div className='nom'><span>{derniereSource.nom}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
+                            <div className='nom'><span>{derniereSource.nomUsage}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
                                 fetch_json({source: derniereSource._id},'PATCH','source/consulte/').then((rep) => {
                                     dispatch(chargeSources(rep.liste))
                                 })
@@ -119,7 +129,7 @@ function GestionSources() {
 
                     return(<div key={source._id} className='affSource'>
                         <div className='nom'>
-                            <span>{source.nom}</span>
+                            <span>{source.nomUsage}</span>
                             <img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
                                 fetch_json({source: source._id},'PATCH','source/consulte/').then((rep) => {
                                     dispatch(chargeSources(rep.liste))
@@ -128,9 +138,12 @@ function GestionSources() {
                             <img src={crayon} className='icone clicable' alt='renommer' onClick={() => {
                                 setSourceRenommee((sourceRenommee === source.nom)?null:source.nom)
                             }} />
+                            <img src={boutonAjout} className='icone clicable' alt='alias' onClick={() => {
+                                setSourceAlias((sourceAlias === source.nom)?null:source.nom)
+                            }} />
                         </div>
                         {(sourceRenommee === source.nom)? <div className='saisieRenomme'>
-                            <input type='text' defaultValue={source.nom} id={'renomme_'+source._id} />
+                            <input type='text' defaultValue={source.nomUsage} id={'renomme_'+source._id} />
                             <input type='button' value='valider' onClick={() => {
                                 const nouvNom = document.getElementById('renomme_'+source._id).value
                                 fetch_json({ancienNom: source.nom, nouvNom: nouvNom}, 'put', 'source/rename').then(rep => {
@@ -143,6 +156,15 @@ function GestionSources() {
                             }} />
                             <input type='button' value='annuler' onClick={() => setSourceRenommee(null)} />
                         </div>: null}
+                        {(sourceAlias === source.nom)?<div className='saisieRenomme'>
+                            <input type='text' id={'alias_'+source._id} />
+                            <input type='button' value='valider' onClick={() => {
+                                fetch_json({nom: source.nom, alias: document.getElementById('alias_'+source._id).value}, 'put', 'source/alias').then(rep => {
+                                    if (rep) { dispatch(chargeSources(rep.liste)); setSourceAlias(null) }
+                                })
+                            }} />
+                            <input type='button' value='annuler' onClick={() => setSourceAlias(null)} />
+                        </div>:null}                        
                         <div>
                             <div className='notes'>
                                 <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, (source.notesCalculees && source.notesCalculees.graphisme !== undefined))}

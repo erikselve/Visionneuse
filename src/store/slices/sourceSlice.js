@@ -8,7 +8,7 @@ export const sourcesSlice = createSlice({
             let liste = [...action.payload]
             liste.sort((a, b) => a.nom.localeCompare(b.nom, 'fr'))
             let listeNom = []
-            listeNom.push({nom: 'Inconnu', manuel: false})
+            listeNom.push({nom: 'Inconnu', nomUsage: 'Inconnu', alias: []})
             state.plusGrandeUrgence = 0
 
             liste.forEach(element => {
@@ -18,7 +18,7 @@ export const sourcesSlice = createSlice({
                     })
                 }
                 if (element.urgence > state.plusGrandeUrgence) state.plusGrandeUrgence = element.urgence
-                listeNom.push({nom: element.nom, manuel: element.origines.find((origine) => origine.nom === 'manuel') !== undefined})
+                listeNom.push({nom: element.nom, nomUsage: element.nomUsage ?? element.nom, alias:element.alias ?? []})
             });
             state.listeNomAlphab = listeNom
             state.sources = action.payload

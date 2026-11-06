@@ -51,7 +51,7 @@ function Filtres({affiche, setAffiche, filtreSelec, setfiltreSelec, triSelec, se
                 <select value={sourceSelec} onChange={(e) => setSourceSelec(e.target.value)}>
                     <option value='toutes'>toutes les sources</option>
                     <option value='inconnue'>source inconnue</option>
-                    {listeSources.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nom}</option>)}
+                    {listeSources.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nomUsage}</option>)}
                 </select>
             </div>
             <div className='groupe'>

@@ -85,7 +85,7 @@ function GestionTags() {
                     </div>
                     <input type='button' value='lier' onClick={() => {
                         fetch_json({source: nomTagSelec, cible: nomTape}, 'post', 'tags/lien').then(rep => { if (rep) { dispatch(initialise(rep.res)); setNomTape('') } })
-                    }} />
+                    }} /><br/>
                     <label>Mots-clés : </label>
                     {(motsClesDuTag.length > 0)?motsClesDuTag.map(mc => <span className='tag' key={mc}>{mc}
                         <img src={croix} className='icone clicable inv' onClick={

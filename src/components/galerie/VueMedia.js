@@ -110,7 +110,7 @@ function VueMedia({liste, mediaSelec, setMediaSelec, page, maxPage, setPage, set
                             }
                         })
                     }}>
-                        {listeSource.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nom}</option>)}
+                        {listeSource.map((elt) => <option key={elt.nom} value={elt.nom}>{elt.nomUsage}</option>)}
                     </select>
                 </div>
                 <div className='info'>
