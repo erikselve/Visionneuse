@@ -5,7 +5,7 @@ import etoileVide from '../assets/etoileVide.png'
 import etoile from '../assets/etoile.png'
 import oeil from '../assets/voir.png'
 import crayon from '../assets/crayon.png'
-import boutonAjout from '../assets/ajout.png'
+import boutonAjout from '../assets/alias.png'
 import { chargeSources, triSources, changeDerniereSource } from '../store/slices/sourceSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -53,9 +53,11 @@ function GestionSources() {
                 <label>Saisir l'url de la source F95 ici:</label><br/>
                 <input type='text' id='F95URL' /><input type='button' value='Envoyer' onClick={() => {
                     fetch_json({url: document.getElementById('F95URL').value}, 'POST', 'source/ajout/f95').then((rep) => {
-                        dispatch(chargeSources(rep.liste))
-                        dispatch(changeDerniereSource(rep.auteur))
-                        document.getElementById('F95URL').value = ''
+                        if (rep) {
+                            dispatch(chargeSources(rep.liste))
+                            dispatch(changeDerniereSource(rep.auteur))
+                            document.getElementById('F95URL').value = ''
+                        }
                     })
                 }} /><br/>
                 <label>Saisir le nom d'une source:</label><br/>
