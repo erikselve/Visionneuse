@@ -70,15 +70,6 @@
     color: white;
 }
 
-.zoneCtrl {
-    position: sticky;
-    top: 56px;              /* s'accroche juste sous la barre de menu */
-    z-index: 90;            /* au-dessus des cartes qui défilent, sous le menu (100) */
-    background-color: #15171c;   /* opaque */
-    padding: 10px 16px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
 .zoneListe {
     padding: 0px 16px 16px 16px;
 }
@@ -91,4 +82,41 @@
     content: " — dernier ajout";
     color: #5b8def;
     font-weight: bold;
+}
+
+.zoneCtrl {
+    position: sticky;
+    top: 56px;              /* s'accroche juste sous la barre de menu */
+    z-index: 90;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));   /* remplit la largeur, replie en fenêtre étroite */
+    gap: 12px;
+    background-color: #15171c;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* la dernière source vit dans la grille, pleine largeur */
+.zoneCtrl .affSourceDerniere {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+/* suggestions de l'ajout manuel : ancrées à la saisie, s'ouvrent EN DESSOUS —
+   la barre est en haut de page, au-dessus serait hors écran (GestionTags, en bas de page, ouvre au-dessus) */
+.zoneCtrl .zoneSaisieLien { position: relative; }
+.zoneCtrl .zoneSaisieLien input[type='text'] { width: 100%; }
+.zoneCtrl .suggestionsLien {
+    position: absolute;
+    top: 100%;
+    bottom: auto;
+    left: 0;
+    min-width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #2a2f38;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    z-index: 10;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.3);
 }

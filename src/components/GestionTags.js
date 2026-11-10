@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { fetch_json } from '../modules/com'
 import croix from '../assets/croix.png'
 import '../styles/gestionTags.css'
+import '../styles/panneaux.css'
 import { initialise } from '../store/slices/listeTagsSlice'
 
 
@@ -49,55 +50,80 @@ function GestionTags() {
                 }}>{elt}</span></div>)}
             </div>
             <div>
-                {(tagSelec !== null)?<div>
-                    <input type='text' id='saisie' /><input type='button' value='changer le nom' onClick={() => {
-                        const saisie = document.getElementById('saisie')
-                        fetch_json({tag: nomTagSelec, nouvTag: saisie.value}, 'put', 'tags/rename').then(rep => {
-                            if (rep) {
-                                dispatch(initialise(rep.res))
-                            }
-                            saisie.value = ""
-                        })
-                    }} /><br/>
-                    <label>Déplacer vers </label><select id='listeCategorie'>{listeCategoriesTags.map((elt, index)=> {
-                        if (index !== categorieSelec) return <option value={index} key={index}>{elt.categorie}</option>
-                    })}</select><input type='button' value='valider' onClick={() => {
-                        const selec = document.getElementById('listeCategorie').value
-                        fetch_json({categorieCible: listeCategoriesTags[selec].categorie, categorieInit: listeCategoriesTags[categorieSelec].categorie, tag: nomTagSelec}, 'put', 'tags/move').then(rep => {
-                            if (rep) {
-                                dispatch(initialise(rep.res))
-                            }
-                        })
-                    }} /><br/>
-                    <label>Ce tag entraîne : </label>
-                    {(liensDuTag.length > 0)?liensDuTag.map(nom => <span className='tag'>{nom}
-                        <img src={croix} className='icone clicable inv' onClick={
-                            () => fetch_json({source: nomTagSelec, cible: nom}, 'delete', 'tags/lien').then(rep => { if (rep) dispatch(initialise(rep.res))})
-                        } />
-                    </span>):<span className='note'>aucun</span>}
-                    <div className='zoneSaisieLien'>   {/* conteneur relatif = l'ancre */}
-                        {(nomTape.trim() !== '')?<div className='suggestionsLien'>
-                            {tousLesTags
-                                .filter(nom => nom.toLowerCase().startsWith(nomTape.trim().toLowerCase()) && nom !== nomTagSelec)
-                                .map(nom => <div className='suggestion' key={nom} onClick={() => setNomTape(nom)}>{nom}</div>)}
-                        </div>:null}
-                        <input type='text' id='saisieLien' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
+                {(tagSelec !== null)?<div className='zoneCtrlTags'>
+                    <div className='carteAction'>
+                        <h4>Renommer le tag</h4>
+                        <div className='ligneSaisie'>
+                            <input type='text' id='saisie' />
+                            <input type='button' value='changer le nom' onClick={() => {
+                                const saisie = document.getElementById('saisie')
+                                fetch_json({tag: nomTagSelec, nouvTag: saisie.value}, 'put', 'tags/rename').then(rep => {
+                                    if (rep) {
+                                        dispatch(initialise(rep.res))
+                                    }
+                                    saisie.value = ""
+                                })
+                            }} />
+                        </div>
                     </div>
-                    <input type='button' value='lier' onClick={() => {
-                        fetch_json({source: nomTagSelec, cible: nomTape}, 'post', 'tags/lien').then(rep => { if (rep) { dispatch(initialise(rep.res)); setNomTape('') } })
-                    }} /><br/>
-                    <label>Mots-clés : </label>
-                    {(motsClesDuTag.length > 0)?motsClesDuTag.map(mc => <span className='tag' key={mc}>{mc}
-                        <img src={croix} className='icone clicable inv' onClick={
-                            () => fetch_json({tag: nomTagSelec, motCle: mc}, 'delete', 'tags/motcle').then(rep => { if (rep) dispatch(initialise(rep.res))})
-                        } />
-                    </span>):<span className='note'>aucun</span>}
-                    <input type='text' id='saisieMotCle' /><input type='button' value='ajouter' onClick={() => {
-                        const saisie = document.getElementById('saisieMotCle')
-                        if (saisie.value.trim() !== '') fetch_json({tag: nomTagSelec, motCle: saisie.value}, 'post', 'tags/motcle').then(rep => {
-                            if (rep) { dispatch(initialise(rep.res)); saisie.value = "" }
-                        })
-                    }} />
+                    <div className='carteAction'>
+                        <h4>Déplacer vers</h4>
+                        <div className='ligneSaisie'>
+                            <select id='listeCategorie'>{listeCategoriesTags.map((elt, index)=> {
+                                if (index !== categorieSelec) return <option value={index} key={index}>{elt.categorie}</option>
+                            })}</select>
+                            <input type='button' value='valider' onClick={() => {
+                                const selec = document.getElementById('listeCategorie').value
+                                fetch_json({categorieCible: listeCategoriesTags[selec].categorie, categorieInit: listeCategoriesTags[categorieSelec].categorie, tag: nomTagSelec}, 'put', 'tags/move').then(rep => {
+                                    if (rep) {
+                                        dispatch(initialise(rep.res))
+                                    }
+                                })
+                            }} />
+                        </div>
+                    </div>
+                    <div className='carteAction'>
+                        <h4>Ce tag entraîne</h4>
+                        <div className='rangPilules'>
+                            {(liensDuTag.length > 0)?liensDuTag.map(nom => <span className='tag' key={nom}>{nom}
+                                <img src={croix} className='icone clicable inv' onClick={
+                                    () => fetch_json({source: nomTagSelec, cible: nom}, 'delete', 'tags/lien').then(rep => { if (rep) dispatch(initialise(rep.res))})
+                                } />
+                            </span>):<span className='note'>aucun</span>}
+                        </div>
+                        <div className='ligneSaisie'>
+                            <div className='zoneSaisieLien'>   {/* conteneur relatif = l'ancre */}
+                                {(nomTape.trim() !== '')?<div className='suggestionsLien'>
+                                    {tousLesTags
+                                        .filter(nom => nom.toLowerCase().startsWith(nomTape.trim().toLowerCase()) && nom !== nomTagSelec)
+                                        .map(nom => <div className='suggestion' key={nom} onClick={() => setNomTape(nom)}>{nom}</div>)}
+                                </div>:null}
+                                <input type='text' id='saisieLien' value={nomTape} onChange={(e) => setNomTape(e.target.value)} />
+                            </div>
+                            <input type='button' value='lier' onClick={() => {
+                                fetch_json({source: nomTagSelec, cible: nomTape}, 'post', 'tags/lien').then(rep => { if (rep) { dispatch(initialise(rep.res)); setNomTape('') } })
+                            }} />
+                        </div>
+                    </div>
+                    <div className='carteAction'>
+                        <h4>Mots-clés</h4>
+                        <div className='rangPilules'>
+                            {(motsClesDuTag.length > 0)?motsClesDuTag.map(mc => <span className='tag' key={mc}>{mc}
+                                <img src={croix} className='icone clicable inv' onClick={
+                                    () => fetch_json({tag: nomTagSelec, motCle: mc}, 'delete', 'tags/motcle').then(rep => { if (rep) dispatch(initialise(rep.res))})
+                                } />
+                            </span>):<span className='note'>aucun</span>}
+                        </div>
+                        <div className='ligneSaisie'>
+                            <input type='text' id='saisieMotCle' />
+                            <input type='button' value='ajouter' onClick={() => {
+                                const saisie = document.getElementById('saisieMotCle')
+                                if (saisie.value.trim() !== '') fetch_json({tag: nomTagSelec, motCle: saisie.value}, 'post', 'tags/motcle').then(rep => {
+                                    if (rep) { dispatch(initialise(rep.res)); saisie.value = "" }
+                                })
+                            }} />
+                        </div>
+                    </div>
                 </div>:null}
             </div>
         </div>

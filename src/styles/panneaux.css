@@ -20,3 +20,48 @@
 }
 
 .titreGroupe { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; }
+
+.carteAction {
+    background-color: #1b1e24;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.carteAction h4 {
+    margin: 0;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #8fa3b8;
+}
+
+.ligneSaisie {
+    display: flex;
+    gap: 8px;
+}
+
+.ligneSaisie input[type='text'], .ligneSaisie select, .ligneSaisie .zoneSaisieLien {
+    flex: 1;          /* l'élément de saisie absorbe la largeur offerte par sa carte */
+    min-width: 0;     /* et accepte de rétrécir, même en contenu long */
+}
+
+.partage {
+    display: flex;
+    gap: 8px;
+}
+
+.partage input[type='button'] {
+    flex: 1;
+}
+
+.rangPilules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+}
