@@ -89,6 +89,7 @@ function AffichageTagsMedia(props) {
                                     chargeTags()
                                 })
                             }
+                            setFiltreSaisie('')
                         }} onMouseEnter={(e) => {
                             const mc = motsCles[elt]
                             if (mc !== undefined) {
