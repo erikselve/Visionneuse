@@ -83,3 +83,25 @@
 }
 
 .zoneCtrlTags .rangPilules .tag { margin-bottom: 0; }   /* le gap de la rangée remplace la marge */
+
+/* le dialogue de suppression : un voile, une carte au centre, rien d'autre */
+.voileDialogue {
+    position: fixed;
+    inset: 0;                    /* tout l'écran */
+    z-index: 200;                /* au-dessus de tout */
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialogueSuppression {
+    width: min(420px, 90vw);
+    gap: 10px;
+}
+
+.dialogueSuppression p {
+    margin: 0;
+    color: #b8c2cf;
+    font-size: 0.9em;
+}

@@ -19,6 +19,18 @@ function GestionTags() {
     const motsClesDuTag = motsCles[nomTagSelec] ?? []
     const [nomTape, setNomTape] = useState('')
     const tousLesTags = listeCategoriesTags.flatMap(elt => elt.liste)   // toutes catégories confondues
+    const [suppressionEnCours, setSuppressionEnCours] = useState(null)   // {tag, nombre} tant que le dialogue est ouvert
+
+function demandeSuppression(nom) {
+    fetch_json({tag: nom}, 'delete', 'tags/tag').then((rep) => {
+        if (rep === null) return
+        dispatch(initialise(rep.res))
+        if (!rep.supprime)
+            setSuppressionEnCours({tag: nom, nombre: rep.nombre})   // utilisé : le dialogue décide
+        else if (nomTagSelec === nom)
+            setTagSelec(null)   // la sélection meurt avec le tag
+    })
+}
 
     return (
         <div className='gestionTags'>
@@ -46,8 +58,13 @@ function GestionTags() {
             </div>
             <div className='listeTags'>
                 {listeCategoriesTags[categorieSelec].liste.map((elt, index) => <div className='case' key={elt}><span className={(tagSelec === index)?'tag selec clicable':'tag clicable'} onClick={() => {
-                    setTagSelec((tagSelec === index)?null:index)   // re-cliquer sur le tag sélectionné le désélectionne
-                }}>{elt}</span></div>)}
+                    setTagSelec((tagSelec === index)?null:index)
+                }}>{elt}
+                    <img src={croix} className='icone clicable inv' alt='supprimer' onClick={(e) => {
+                        e.stopPropagation()
+                        demandeSuppression(elt)
+                    }} />
+                </span></div>)}
             </div>
             <div>
                 {(tagSelec !== null)?<div className='zoneCtrlTags'>
@@ -126,6 +143,25 @@ function GestionTags() {
                     </div>
                 </div>:null}
             </div>
+            {(suppressionEnCours !== null)?<div className='voileDialogue' onClick={() => setSuppressionEnCours(null)}>
+                <div className='carteAction dialogueSuppression' onClick={(e) => e.stopPropagation()}>
+                    <h4>Supprimer « {suppressionEnCours.tag} » ?</h4>
+                    <p>Ce tag est utilisé par {suppressionEnCours.nombre} média{(suppressionEnCours.nombre > 1)?'s':''}.</p>
+                    <p>Le supprimer malgré tout le retirera proprement de tous les médias concernés.</p>
+                    <div className='partage'>
+                        <input type='button' value='supprimer partout' onClick={() => {
+                            fetch_json({tag: suppressionEnCours.tag, force: true}, 'delete', 'tags/tag').then((rep) => {
+                                if (rep) {
+                                    dispatch(initialise(rep.res))
+                                    if (nomTagSelec === suppressionEnCours.tag) setTagSelec(null)
+                                    setSuppressionEnCours(null)
+                                }
+                            })
+                        }} />
+                        <input type='button' value='annuler' onClick={() => setSuppressionEnCours(null)} />
+                    </div>
+                </div>
+            </div>:null}
         </div>
     )
 }
