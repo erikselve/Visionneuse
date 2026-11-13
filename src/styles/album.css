@@ -1,14 +1,6 @@
 .conteneurAlbum {
-    /* border: 4px solid grey;
-    border-radius: 10px; */
     display: inline-flex;
-    /* margin-top: 4px; */
 }
-/* 
-.conteneurAlbum:hover {
-    border: 4px solid black;
-    cursor: pointer;
-} */
 
 .conteneurAlbum img {
     width: 100%;
@@ -63,8 +55,15 @@
 }
 
 .conteneurAlbum .logo img {
-    width: 50%;
+    width: 30%;        /* la bulle signe, elle n'occulte plus : de la moitié au tiers */
     height: auto;
+    opacity: 0.75;     /* discrète au repos… */
+    transition: opacity 0.15s;
+}
+
+/* …affirmée quand l'œil (et le curseur) s'arrête sur la carte */
+.media:hover .conteneurAlbum .logo img {
+    opacity: 1;
 }
 
 .conteneurAlbum .couv {

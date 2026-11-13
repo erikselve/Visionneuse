@@ -1,4 +1,5 @@
 .media {
+    position: relative;      /* le point d'ancrage du badge vidéo */
     scroll-margin-top: 70px;   /* la barre haute figée ne recouvre pas le média cible */
     border: 4px solid #3a3f4b;
     border-radius: 10px;
@@ -24,4 +25,22 @@
     /* width: 19%; */
     margin-left: 0.5%;
     margin-right: 0.5%;
+}
+
+/* le badge play : les vidéos se repèrent d'un coup d'oeil dans la galerie */
+.media.video::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.65);
+    border: 1px solid rgba(255,255,255,0.35);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='white'/%3E%3C/svg%3E");
+    background-size: 13px;
+    background-position: 55% center;   /* le triangle se centre optiquement dans le cercle */
+    background-repeat: no-repeat;
+    pointer-events: none;   /* cliquer le badge = cliquer la carte */
 }
