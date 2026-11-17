@@ -111,7 +111,7 @@ function GestionSources() {
                     </div>
                 </div>
                 {(derniereSource !== null)?<div className='affSource affSourceDerniere'>
-                    <div className='nom'><span>{derniereSource.nomUsage}</span><img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
+                    <div className='nom'><span>{derniereSource.nomUsage}</span><img src={oeil} className='icone clicable' alt='consulte' title='marquer comme consulté' onClick={() => {
                         fetch_json({source: derniereSource._id},'PATCH','source/consulte/').then((rep) => {
                             dispatch(chargeSources(rep.liste))
                         })
@@ -149,15 +149,15 @@ function GestionSources() {
                     return(<div key={source._id} className='affSource'>
                         <div className='nom'>
                             <span>{source.nomUsage}</span>
-                            <img src={oeil} className='icone clicable' alt='consulte' onClick={() => {
+                            <img src={oeil} className='icone clicable' alt='consulte' title='marquer comme consulté' onClick={() => {
                                 fetch_json({source: source._id},'PATCH','source/consulte/').then((rep) => {
                                     dispatch(chargeSources(rep.liste))
                                 })
                             }} />
-                            <img src={crayon} className='icone clicable' alt='renommer' onClick={() => {
+                            <img src={crayon} className='icone clicable' alt='renommer' title="renommer le nom d\'usage" onClick={() => {
                                 setSourceRenommee((sourceRenommee === source.nom)?null:source.nom)
                             }} />
-                            <img src={boutonAjout} className='icone clicable' alt='alias' onClick={() => {
+                            <img src={boutonAjout} className='icone clicable' alt='alias' title='ajouter un alias' onClick={() => {
                                 setSourceAlias((sourceAlias === source.nom)?null:source.nom)
                             }} />
                         </div>
