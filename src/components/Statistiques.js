@@ -113,9 +113,11 @@ function Statistiques() {
                             onClick={() => setCategorieSelec(index)}>{cat.categorie}</span>)}
                     </div>
                     <div className='pilulesTags'>
-                        {tags[categorieSelec].tags.map(tag => <span key={tag.nom}
-                            className={(selection.has(tag.nom))?'piluleStat choisi':'piluleStat'}
-                            onClick={() => choisisTag(tag.nom)}>{tag.nom}</span>)}
+                        {[...tags[categorieSelec].tags]   // copie d'abord : sort muterait le state
+                            .sort((a, b) => a.nomFormate.localeCompare(b.nomFormate))
+                            .map(tag => <span key={tag.nom}
+                                className={(selection.has(tag.nom))?'piluleStat choisi':'piluleStat'}
+                                onClick={() => choisisTag(tag.nom)}>{tag.nom}</span>)}
                     </div>
                 </div>:null}
                 {(selection.size > 0)?
