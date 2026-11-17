@@ -154,7 +154,7 @@ function GestionSources() {
                                     dispatch(chargeSources(rep.liste))
                                 })
                             }} />
-                            <img src={crayon} className='icone clicable' alt='renommer' title="renommer le nom d\'usage" onClick={() => {
+                            <img src={crayon} className='icone clicable' alt='renommer' title="renommer le nom d'usage" onClick={() => {
                                 setSourceRenommee((sourceRenommee === source.nom)?null:source.nom)
                             }} />
                             <img src={boutonAjout} className='icone clicable' alt='alias' title='ajouter un alias' onClick={() => {
@@ -168,7 +168,6 @@ function GestionSources() {
                                 fetch_json({ancienNom: source.nom, nouvNom: nouvNom}, 'put', 'source/rename').then(rep => {
                                     if (rep) {
                                         dispatch(chargeSources(rep.liste))
-                                        dispatch(changeDerniereSource(rep.auteur))
                                         setSourceRenommee(null)
                                     }
                                 })
