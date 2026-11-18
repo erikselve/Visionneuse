@@ -4,6 +4,7 @@ import { fetch_form, fetch_json } from '../../modules/com'
 import { changeTache, agir } from '../../store/slices/indiceProgressionSlice'
 import { ajoute, changeEtat, desarme, envoieSuppressions } from '../../store/slices/mediasCompSlice'
 import { changeBarreProgression, changePrinc, changeLoading } from '../../store/slices/displaySlice'
+import { changeAssocSource } from '../../store/slices/sourceSlice'
 import '../../styles/panneaux.css'
 import '../../styles/zoneAjout.css'
 
@@ -18,7 +19,7 @@ function ZoneAjout(props) {
     const suppPrete = useSelector((state) => state.mediasComp.suppPrete)
     const displayPrinc = useSelector((state) => state.display.princ)
     const [site8musesEnsemble, setsite8musesEnsemble] = useState(false)
-    const [assocSource, setAssocSource] = useState(true)
+    const assocSource = useSelector((state) => state.sources.assocSource)
 
     //gère l'uploads de nouveaux médias
     useEffect(() => {
@@ -105,7 +106,7 @@ function ZoneAjout(props) {
                 {(derniereSource !== null)?<div className='groupe'>
                     <span className='titreGroupe'>Associer à une source</span>
                     <div>
-                        <input type='checkbox' checked={assocSource} onChange={() => setAssocSource(!assocSource)} />
+                        <input type='checkbox' checked={assocSource} onChange={() => dispatch(changeAssocSource(!assocSource))} />
                         <label>Associer ces médias à la source « {derniereSource.nom} »</label>
                     </div>
                 </div>:null}

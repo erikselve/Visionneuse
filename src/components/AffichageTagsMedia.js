@@ -30,10 +30,6 @@ function AffichageTagsMedia(props) {
         })
     }
 
-    useEffect(() => {
-        chargeTags()
-    }, [props.id])
-
     function filtreTags(liste, filtreSaisie) {
         const filtre = filtreSaisie.trim().toLowerCase()
         if (filtre === '') return liste
@@ -43,6 +39,19 @@ function AffichageTagsMedia(props) {
             return mc !== undefined && mc.some(m => m.toLowerCase().startsWith(filtre))
         })
     }
+
+    useEffect(() => {
+        chargeTags()
+    }, [props.id])
+
+    useEffect(() => {
+        if (saisieCategorie) document.getElementById('saisieCategorie')?.focus()
+    }, [saisieCategorie])
+
+    useEffect(() => {
+        const categorieOuverte = Object.keys(saisieTag).find(cat => saisieTag[cat])
+        if (categorieOuverte !== undefined) document.getElementById('saisieTag'+categorieOuverte)?.focus()
+    }, [saisieTag])
 
     //paramètres :
     //  - data est la categorie et ses tags associés

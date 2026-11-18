@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const sourcesSlice = createSlice({
     name: 'sources',
-    initialState: {plusGrandeUrgence: 0, sensTri: 1, derniereSourceUtilisee: null, listeNomAlphab:[], sources: [], notation: null}, 
+    initialState: {plusGrandeUrgence: 0, sensTri: 1, derniereSourceUtilisee: null, listeNomAlphab:[], sources: [], notation: null, assocSource: null}, 
     reducers: {
         chargeSources: (state, action) => {
             let liste = [...action.payload]
@@ -34,13 +34,17 @@ export const sourcesSlice = createSlice({
         changeDerniereSource: (state, action) => {
             const index = state.sources.findIndex((elt) => elt.nom === action.payload)
             state.derniereSourceUtilisee = (index >= 0)?state.sources[index]:null
+            state.assocSource = true   // une source vient d'être utilisée : l'association se propose à nouveau
         },
         chargeNotation: (state, action) => {
             state.notation = action.payload
+        },
+        changeAssocSource: (state, action) => {
+            state.assocSource = action.payload
         }
     }
 })
 
-export const {chargeSources, triSources, changeDerniereSource, chargeNotation} = sourcesSlice.actions
+export const {chargeSources, triSources, changeDerniereSource, chargeNotation, changeAssocSource} = sourcesSlice.actions
 
 export default sourcesSlice.reducer

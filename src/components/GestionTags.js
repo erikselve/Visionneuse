@@ -77,6 +77,9 @@ function demandeSuppression(nom) {
                                 fetch_json({tag: nomTagSelec, nouvTag: saisie.value}, 'put', 'tags/rename').then(rep => {
                                     if (rep) {
                                         dispatch(initialise(rep.res))
+                                        // la sélection suit le tag renommé, pas sa position d'hier
+                                        const indexNouv = rep.res.categories[categorieSelec].liste.findIndex(nom => nom === saisie.value.trim())
+                                        setTagSelec((indexNouv !== -1)?indexNouv:null)
                                     }
                                     saisie.value = ""
                                 })
@@ -94,6 +97,7 @@ function demandeSuppression(nom) {
                                 fetch_json({categorieCible: listeCategoriesTags[selec].categorie, categorieInit: listeCategoriesTags[categorieSelec].categorie, tag: nomTagSelec}, 'put', 'tags/move').then(rep => {
                                     if (rep) {
                                         dispatch(initialise(rep.res))
+                                        setTagSelec(null)
                                     }
                                 })
                             }} />
