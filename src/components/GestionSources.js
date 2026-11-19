@@ -182,7 +182,7 @@ function GestionSources() {
                                 })
                             }} />
                             <input type='button' value='annuler' onClick={() => setSourceAlias(null)} />
-                        </div>:null}                        
+                        </div>:null}
                         <div>
                             <div className='notes'>
                                 <span>graphisme {afficheNote(source.graphisme, 'graphisme', source.nom, (source.notesCalculees && source.notesCalculees.graphisme !== undefined))}
