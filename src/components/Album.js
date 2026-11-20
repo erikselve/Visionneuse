@@ -30,7 +30,7 @@ function Album(props) {
 
     useEffect(() => {
         if (props.display === 'complet') {
-            fetch_json({album: props.nom}, 'post', 'album').then(rep => {
+            fetch_json({id: props.id}, 'post', 'album').then(rep => {
                 if (rep) {
                     if (rep.res.length === 1) setTomeSelec(0)
                     setTomes(rep.res)

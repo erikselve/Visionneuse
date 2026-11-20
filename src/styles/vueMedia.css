@@ -5,8 +5,8 @@
     overflow: hidden;               /* rien ne déborde : la page ne scrolle plus du tout */
 }
 
-/* le bloc média (Image/Video) prend TOUT ce qui reste après les deux barres d'info */
-.conteneurImage, .conteneurVideo {
+/* le bloc média (Image/Video/Album) prend TOUT ce qui reste après les deux barres d'info */
+.conteneurImage, .conteneurVideo, .conteneurAlbum {
     flex: 1;
     min-height: 0;                  /* le piège flex classique : sans ça, le bloc refuse de rétrécir */
 }

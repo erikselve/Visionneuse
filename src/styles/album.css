@@ -2,7 +2,9 @@
     display: inline-flex;
 }
 
-.conteneurAlbum img {
+/* scopé au contenu album : un sélecteur img trop large écraserait .icone dans la zone des tags */
+.conteneurAlbum .album img,
+.conteneurAlbum .couv {
     width: 100%;
     height: auto;
     border-top-left-radius: 8px;
@@ -19,6 +21,8 @@
     width: 80%;
     display: flex;
     flex-direction: column;
+    min-height: 0;              /* une fois .conteneurAlbum borné, la liste défile DANS la colonne */
+    overflow-y: auto;           /* sinon le bas de l'album serait rogné par .conteneurComplet (overflow: hidden) */
 }
 
 .conteneurListe {
