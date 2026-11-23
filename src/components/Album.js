@@ -4,7 +4,7 @@ import Vignette from "./Vignette"
 import logo from '../assets/bulle.png'
 import '../styles/album.css'
 import AffichageTagsMedia from "./AffichageTagsMedia"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { sansExtension } from "../modules/sansExtension"
 
 
@@ -15,6 +15,7 @@ function Album(props) {
     const [tomes, setTomes] = useState([])
     const [tomeSelec, setTomeSelec] = useState(-1)
     const [pageSelec, setPageSelec] = useState(-1)
+    const albumRef = useRef(null)   // dans VueMedia, c'est .album qui scrolle (overflow-y: auto), pas la fenêtre
 
     //change un nombre dans un integer x en '0000x' sur 5 caractères (il ne faut pas de nombre de plus de 5 digits)
     function formatNomFichier(nombre) {
@@ -38,6 +39,12 @@ function Album(props) {
             })
         }
     }, [props])
+
+    // à chaque page affichée (clic sur une miniature ou sur la page courante pour la suivante),
+    // le scroll vertical de la zone album revient en haut
+    useEffect(() => {
+        if (pageSelec !== -1 && albumRef.current) albumRef.current.scrollTo(0, 0)
+    }, [pageSelec])
 
     if (props.display === 'mini') {
         return(
@@ -75,7 +82,7 @@ function Album(props) {
         return(
                 <div className="conteneurAlbum">
                     <AffichageTagsMedia id={props.id} media={props.nom} />
-                    <div className="album">
+                    <div className="album" ref={albumRef}>
                         {((tomeSelec !== -1 && tomes.length>1) || pageSelec !== -1)?<div><input type="button" value='retour' onClick={() => {
                             if (pageSelec !== -1)
                                 setPageSelec(-1)
@@ -88,7 +95,6 @@ function Album(props) {
                             })}
                         {/* on affiche une page */}
                         </div>:<div className="page clicable" onClick={() => {
-                            window.scroll(0,0)
                             if (pageSelec === tomes[tomeSelec]) setPageSelec(1)
                             else setPageSelec(pageSelec+1)
                         }}><img src={URL_server+PATH_ALBUM+props.nomFichier+'/'+formatNomFichier(tomeSelec+1)+'/'+formatNomFichier(pageSelec)+'.jpg'} /></div>}
