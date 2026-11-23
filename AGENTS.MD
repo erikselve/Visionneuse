@@ -53,6 +53,15 @@
   déplacement, vider la sélection plutôt que sélectionner un autre tag.
 - Les compteurs (tags, catégories) sont exacts PAR LE BACK : le front n'écrit
   jamais un compteur, il lit ceux que le back tient.
+- Un enfant flex qui doit scroller a besoin de `min-height: 0` — sinon il
+  s'étire à la taille de son contenu et c'est la page entière qui défile, pas
+  lui (la zone des tags d'un album en a fait les frais).
+- Un sélecteur d'images scopé au CONTENEUR capture aussi les icônes
+  (`img.icone`) : viser les zones de contenu (`.album img`, `.couv`), jamais
+  le conteneur entier.
+- Le scroll ne vit pas toujours dans `window` : quand une vue met le défilement
+  dans un conteneur interne (`overflow-y: auto`), une remontée en haut vise ce
+  conteneur via une ref (posée dans un effet), pas `window.scroll`.
 - Les colonnes de miniatures sont en float : tout élément après elles a besoin
   de `clear: both` (le flottement a déjà mordu deux fois).
 
