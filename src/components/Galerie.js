@@ -168,7 +168,7 @@ useEffect(() => {
                 
                 {/*zone de saisie pour ajouter de nouveaux médias */}
                 {(affAjoutData)?<div className='panneauFixe'>
-                    <ZoneAjout affiche={affAjoutData} setAffiche={setAffAjoutData} chargeListe={chargeListe} setListe={setListe} />
+                    <ZoneAjout affiche={affAjoutData} setAffiche={setAffAjoutData} chargeListe={chargeListe} setListe={setListe} setMediaSelec={setMediaSelec} />
                 </div>:null}
 
                 {/*zone de sélection des filtres d'affichage des médias */}

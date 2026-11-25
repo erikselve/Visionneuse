@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 
 export const sourcesSlice = createSlice({
     name: 'sources',
-    initialState: {plusGrandeUrgence: 0, sensTri: 1, derniereSourceUtilisee: null, listeNomAlphab:[], sources: [], notation: null, assocSource: null}, 
+    initialState: {plusGrandeUrgence: 0, sensTri: -1, critereTri: null, derniereSourceUtilisee: null, listeNomAlphab:[], sources: [], notation: null, assocSource: null}, 
     reducers: {
         chargeSources: (state, action) => {
             let liste = [...action.payload]
@@ -21,15 +21,18 @@ export const sourcesSlice = createSlice({
                 listeNom.push({nom: element.nom, nomUsage: element.nomUsage ?? element.nom, alias:element.alias ?? []})
             });
             state.listeNomAlphab = listeNom
-            state.sources = action.payload
+            //le tri actif est réappliqué à chaque rechargement : consulte, note, renommage... ne réinitialisent plus l'ordre
+            if (state.critereTri !== null) state.sources = [...action.payload].sort((a, b) => state.sensTri * (b[state.critereTri] - a[state.critereTri]))
+            else state.sources = action.payload
             if (state.derniereSourceUtilisee !== null) {
                 const index = state.sources.findIndex((elt) => elt.nom === state.derniereSourceUtilisee.nom)
                 state.derniereSourceUtilisee = (index >= 0)?state.sources[index]:null
             }
         },
         triSources: (state, action) => {
+            state.sensTri = state.sensTri * -1   //chaque clic inverse le sens ; sensTri = sens réellement appliqué au dernier tri
+            state.critereTri = action.payload
             state.sources = [...state.sources].sort((a, b) => state.sensTri * (b[action.payload] - a[action.payload])) //tri de la liste
-            state.sensTri = state.sensTri * -1
         },
         changeDerniereSource: (state, action) => {
             const index = state.sources.findIndex((elt) => elt.nom === action.payload)

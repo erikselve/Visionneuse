@@ -4,18 +4,19 @@ import { fetch_json } from '../../modules/com'
 // Envoi de la décision au back (retireDouble) : suppression des doublons cochés + sauvegarde
 // (ou destruction, si mediaBase) du média en attente. C'est aussi ce qui SAUVE le média en attente,
 // donc il part même avec une liste vide. fetch_json résout false en cas d'échec (et alerte déjà
-// l'utilisateur sur les erreurs HTTP) ; true = requête aboutie.
+// l'utilisateur sur les erreurs HTTP) ; sinon la réponse objet part telle quelle — elle porte
+// l'id/name du média en attente sauvegardé, pour la bascule en vueMédia.
 export const envoieSuppressions = createAsyncThunk('mediasComp/envoieSuppressions', async (_, {getState}) => {
     const etat = getState().mediasComp
     const res = await fetch_json({liste: etat.listeSupp, mediaBase: etat.mediaASupp, typeMedia: etat.typeMedia,
         tags: etat.infosHeritees.tags ?? [], favori: etat.infosHeritees.favori,
         notes: etat.infosHeritees.notes, source: etat.infosHeritees.source}, 'DELETE', 'media/upload')
-    return res !== false
+    return res
 })
 
 export const mediasCompSlice = createSlice({
     name: 'imagesComp',
-    initialState: {listeVerif: [], listeSelec: [], etat: 'idle', listeSupp: [], mediaASupp: false, indexMediaActuel: 0, tailleMediaActuelle: {width: 0, height: 0}, typeMedia: null, nomMediaActuel: null, infosHeritees: {}, sourceNouveau: null, suppPrete: false},
+    initialState: {listeVerif: [], listeSelec: [], etat: 'idle', listeSupp: [], mediaASupp: false, indexMediaActuel: 0, tailleMediaActuelle: {width: 0, height: 0}, typeMedia: null, nomMediaActuel: null, infosHeritees: {}, sourceNouveau: null, suppPrete: false, dernierAjoute: null},
     reducers: {
         ajoute: (state, action) => {
             state.listeVerif = [...state.listeVerif, ...action.payload.liste]
@@ -64,6 +65,9 @@ export const mediasCompSlice = createSlice({
         desarme: (state) => {
             //vide la sélection résiduelle une fois les uploads terminés — la machine ne rejoue pas la branche idle au remontage du composant
             if (state.etat === 'idle') state.listeSelec = []
+        },
+        poseDernierAjoute: (state, action) => {
+            state.dernierAjoute = action.payload   //{id, name} du média qui vient d'être créé côté back
         }
     },
     extraReducers: (builder) => {
@@ -72,10 +76,12 @@ export const mediasCompSlice = createSlice({
             state.etat = 'ended'   //même en cas d'échec (action.payload false) : retireDouble consomme le média
             //en attente DÈS le début de la requête, un retry tomberait sur « aucun média en attente » ;
             //l'utilisateur a été alerté par fetch_json, la machine ne doit pas se suspendre.
+            //le back renvoie l'id du média en attente sauvegardé : la vueMédia pourra cibler dessus ; null si détruit (mediaBase) ou échec
+            state.dernierAjoute = (action.payload && action.payload.id != null)?{id: action.payload.id, name: action.payload.name ?? null}:null
         })
     }
 })
 
-export const {ajoute, retire, termine, avance, changeEtat, desarme} = mediasCompSlice.actions
+export const {ajoute, retire, termine, avance, changeEtat, desarme, poseDernierAjoute} = mediasCompSlice.actions
 
 export default mediasCompSlice.reducer

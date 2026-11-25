@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetch_form, fetch_json } from '../../modules/com'
 import { changeTache, agir } from '../../store/slices/indiceProgressionSlice'
-import { ajoute, changeEtat, desarme, envoieSuppressions } from '../../store/slices/mediasCompSlice'
+import { ajoute, changeEtat, desarme, envoieSuppressions, poseDernierAjoute } from '../../store/slices/mediasCompSlice'
 import { changeBarreProgression, changePrinc, changeLoading } from '../../store/slices/displaySlice'
 import { changeAssocSource } from '../../store/slices/sourceSlice'
 import '../../styles/panneaux.css'
@@ -20,6 +20,7 @@ function ZoneAjout(props) {
     const displayPrinc = useSelector((state) => state.display.princ)
     const [site8musesEnsemble, setsite8musesEnsemble] = useState(false)
     const assocSource = useSelector((state) => state.sources.assocSource)
+    const dernierAjoute = useSelector((state) => state.mediasComp.dernierAjoute)   //{id, name} du dernier média créé côté back
 
     //gère l'uploads de nouveaux médias
     useEffect(() => {
@@ -28,9 +29,11 @@ function ZoneAjout(props) {
             if (assocSource && derniereSource !== null)
                 formData.append('source', derniereSource.nom)
             dispatch(changeEtat())
+            let nomMedia = null   //nom d'origine du média uploadé : repli si le back ne renvoie pas le name créé
             if (type === 'album') {
                 const info = listeSelec[indexMediaEnCours][0].webkitRelativePath.split('/')
                 formData.append('nom', info[0])
+                nomMedia = info[0]
                 let tome = (info.length>2)?info[1]:null
                 let nbPage = 0
                 for (let index = 0; index < listeSelec[indexMediaEnCours].length; index++) {
@@ -50,9 +53,12 @@ function ZoneAjout(props) {
             }
             else {
                 formData.append(type, listeSelec[indexMediaEnCours])
+                nomMedia = listeSelec[indexMediaEnCours].name
             }
             fetch_form(formData, type+'/upload').then(res => {
                 if (res) {
+                    //le back renvoie l'id du média créé (name en repli, ou nom d'origine si absent)
+                    dispatch(poseDernierAjoute({id: res.id ?? null, name: res.name ?? res.nouveauNom ?? nomMedia}))
                     if (res.listeVerif === undefined) {
                         dispatch(changeEtat())
                     }
@@ -82,6 +88,10 @@ function ZoneAjout(props) {
             props.chargeListe().then(nouvListe => {
                 if (nouvListe !== null) {
                     props.setListe(nouvListe)
+                    //bascule en vueMédia du dernier média ajouté s'il est retrouvé (absent si supprimé via le comparateur ou exclu par les filtres)
+                    const index = (dernierAjoute !== null)?nouvListe.findIndex(elt => (dernierAjoute.id !== null && String(elt.id) === String(dernierAjoute.id)) || (dernierAjoute.name !== null && elt.name === dernierAjoute.name)):-1
+                    props.setAffiche(false)
+                    if (index >= 0) props.setMediaSelec(index)
                 }
                 dispatch(changeLoading())
                 dispatch(desarme())
